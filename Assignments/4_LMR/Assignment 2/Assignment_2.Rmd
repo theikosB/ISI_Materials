@@ -1,0 +1,240 @@
+---
+title: "Assignment 2"
+author: "Daibik Barik (Bmat2316)"
+date: "2025-04-19"
+output: pdf_document
+---
+
+```{r, echo=FALSE}
+library(knitr)
+```
+
+\textbf{\underline{The Experimental Data}- Production Rates with Replicates}
+
+| **Reagent** | **Catalyst I** | **Catalyst II** | **Catalyst III** |
+|:-----------:|:--------------:|:---------------:|:----------------:|
+|     A       |     4, 6       |      11, 7      |      5, 9        |
+|     B       |     6, 4       |     13, 15      |      9, 7        |
+|     C       |    13, 15      |      15, 9      |    13, 13        |
+|     D       |    12, 12      |     12, 14      |      7, 9        |
+
+Now we try to categorize them in data frames to work with them using R.
+
+```{r}
+reagent <- rep(c("A", "B", "C", "D"), each = 6)
+catalyst <- rep(rep(c("I", "II", "III"), each = 2), times = 4)
+# Now every value that we enter as ProductionData will be
+# sorted in AI to DIII respectively
+production <- c(4, 6, # A-I
+11, 7,
+5, 9, 
+6, 4, 
+13, 15,
+9, 7, 
+13, 15,
+15, 9, 
+13, 13,
+12, 12,
+12, 14,
+7, 9) 
+
+# We still need to organise them in a DataFrame
+experiment_data <- data.frame(
+  Reagent = reagent,
+  Catalyst = catalyst,
+  Production = production
+)
+```
+
+To get started with the **ANOVA** test we need some results, the basic of them being the _Grand Mean_ and the _Total Sum of Squares_.
+
+$$ \text{Now, Grand Mean } (\mu_{grand}) = \frac{\text{Total Sum of all the values}}{\text{Total Number of elements}} $$
+
+```{r}
+# Here the total number of entries is 24
+grandmean <- sum(experiment_data$Production) / nrow(experiment_data)
+cat("Grand Mean =", grandmean)
+```
+
+$$ \text{And, Total Sum of Squares } (SST) = \sum_{i=1}^{24} (P_i - \mu_{grand})^2 $$
+```{r}
+SST <- sum((experiment_data$Production - grandmean)^2)
+cat("SST =", SST)
+```
+Now we find the _Sum of Squares_ for the **Reagents**, **Catalysts**, **Interactions** and **Errors**.
+We obtain them as following:-
+
+#### Reagent Mean $(\mu_{r_i})$
+```{r}
+reagentmean <- c(mean(c(4,6,11,7,5,9)), mean(c(6,4,13,15,9,7)),
+mean(c(13,15,15,9,13,13)), mean(c(12,12,12,14,7,9)))
+cat("Reagent Mean =", reagentmean)
+```
+
+#### Reagent Sum of Squares
+Denoted by _SSR_. Since there are 3 catalysts and 2 replicates,
+$$ SSR = 3 \times 2 \times \sum_{i=1}^{24} (\mu_{r_i} - \mu_{grand})^2 $$
+
+```{r}
+SSR <- 6*sum((reagentmean - grandmean)^2)
+cat("Reagent Sum of Squares =", SSR)
+```
+
+#### Catalyst Mean 
+Denoted by $\mu_{c_i}$.
+```{r}
+catalystmean <- c(mean(c(4,6,6,4,13,15,12,12)), mean(c(11,7,13,15,15,9,12,14)), mean(c(5,9,9,7,13,13,7,9)))
+cat("Catalyst Mean =", catalystmean)
+```
+
+#### Catalyst Sum of Squares
+Denoted by _SSC_. Since there are 4 reagents and 2 replicates,
+$$ SSR = 4 \times 2 \times \sum_{i=1}^{24} (\mu_{c_i} - \mu_{grand})^2 $$
+
+```{r}
+SSC <- 8*sum((catalystmean - grandmean)^2)
+cat("Catalyst Sum of Squares =", SSC)
+```
+
+#### Cell Mean
+Denoted by $\mu_{r_i}$. For the **Interactions Sum of Squares**, we need the _Cell Mean_ and arrange the _Reagent Mean_ and _Catalyst Mean_ in a proper way.
+```{r}
+cellmean <- c(5,9,7,5,14,8,14,12,13,12,13,8)
+cat("Cell Mean", cellmean)
+reagentmeanlist <- rep(reagentmean, each = 3)
+catalystmeanlist <- rep(catalystmean, times = 4)
+```
+
+#### Interaction Sum of Squares
+Denoted by _SSI_. We know,
+$$ SSI = 2 \times \sum_{i=1}^{12} (\mu_{cell_i} - \mu_{r_i} - \mu{C_i} + \mu_{grand})^2 $$
+
+```{r}
+SSI <- 2*sum((cellmean - reagentmeanlist - catalystmeanlist + grandmean)^2)
+cat("Interaction Sum of Squares =", SSI)
+```
+
+#### Error Sum of Squares
+Denoted by _SSE_. We know,
+$$ SSE = \sum (\text{Cell Value} - \text{Cell Mean}) $$
+
+```{r}
+cellmeanlist <- rep(cellmean, each = 2)
+SSE <- sum((production - cellmeanlist)^2)
+cat("Error Sum of Squares =", SSE)
+```
+
+### Degrees of Freedom & Mean Squared values
+To construct the corresponding _Mean Squared values_, we need the degrees of freedom, and we divide the _Sum of Squares_ with that.
+```{r}
+dfR <- 4-1 #dfR= 3
+MSR = SSR / dfR
+dfC <- 3-1 #dfC= 2
+MSC = SSC / dfC 
+dfI <- (4-1)*(3-1) #dfI= 6
+MSI = SSI / dfI
+dfE <- 4*3*(2-1) #dfE= 12
+MSE = SSE / dfE
+```
+
+## F Statistic
+
+\section*{Q1.}
+```{r}
+anova_data <- data.frame(
+Source = c("Reagent", "Catalyst", "Interaction", "Error", "Total"),
+`df` = c(3,2,6,12,23),
+`SS` = c(SSR, SSC, SSI, SSE, " "),
+`MS` = c(MSR, MSC, MSI, MSE, " "),
+`F Statistic` = c(MSR/MSE, MSC/MSE, MSI/MSE, " ", " "),
+check.names = FALSE
+)
+kable(anova_data, align = 'c', caption = "Two-Way (fixed) ANOVA Table")
+```
+Now we need to check with the _F_ Values and compare them to get our analysis results.
+
+```{r}
+#F_reagent = 10
+qf(p = 0.05, df1 = 3, df2 = 6, lower.tail = FALSE)
+```
+
+```{r}
+#F_catalyst = 6
+qf(p = 0.05, df1 = 2, df2 = 6, lower.tail = FALSE)
+```
+
+```{r}
+#F_interactions = 3.5
+qf(p = 0.05, df1 = 6, df2 = 12, lower.tail = FALSE)
+```
+
+As we can see, the calculated values at the ANOVA table are greater than that of the _F_ statistic values at
+$\alpha = 0.05$, hence we do not accept the $H_{01}$.
+\newpage
+
+\section*{Q2.}
+```{r}
+anova_data <- data.frame(
+Source = c("Reagent", "Catalyst", "Interaction", "Error", "Total"),
+`df` = c(3,2,6,12,23),
+`SS` = c(SSR, SSC, SSI, SSE, " "),
+`MS` = c(MSR, MSC, MSI, MSE, " "),
+`F` = c(MSR/MSI, MSC/MSI, MSI/MSE, " ", " "),
+check.names = FALSE
+)
+kable(anova_data, align = 'c', caption = "Two-Way (random) ANOVA Table")
+```
+Now we need to check with the _F_ Values and compare them to get our analysis results.
+
+```{r}
+#F_reagent = 2.85714285714286
+qf(p = 0.05, df1 = 3, df2 = 6, lower.tail = FALSE)
+```
+
+```{r}
+#F_catalyst = 1.71428571428571
+qf(p = 0.05, df1 = 2, df2 = 6, lower.tail = FALSE)
+```
+
+```{r}
+#F_interactions = 3.5
+qf(p = 0.05, df1 = 6, df2 = 12, lower.tail = FALSE)
+```
+
+As we can see, the calculated values at the **ANOVA** table are greater than that of the _F_ statistic values at
+$\alpha = 0.05$ only for $F_{\text{interaction}}$, hence we do not accept the $H_{02}$.
+\newpage
+
+\section*{Q3.}
+```{r}
+anova_data <- data.frame(
+Source = c("Reagent", "Catalyst", "Interaction", "Error", "Total"),
+`df` = c(3,2,6,12,23),
+`SS` = c(SSR, SSC, SSI, SSE, " "),
+`MS` = c(MSR, MSC, MSI, MSE, " "),
+`F` = c(MSR/MSI, MSC/MSI, MSI/MSE, " ", " "),
+check.names = FALSE
+)
+kable(anova_data, align = 'c', caption = "Two-Way (mixed) ANOVA Table")
+```
+Now we need to check with the _F_ Values and compare them to get our analysis results.
+
+```{r}
+#F_reagent = 2.85714285714286
+qf(p = 0.05, df1 = 3, df2 = 6, lower.tail = FALSE)
+```
+
+```{r}
+#F_catalyst = 1.71428571428571
+qf(p = 0.05, df1 = 2, df2 = 6, lower.tail = FALSE)
+```
+
+```{r}
+#F_interactions = 3.5
+qf(p = 0.05, df1 = 6, df2 = 12, lower.tail = FALSE)
+```
+
+As we can see, the calculated values at the **ANOVA** table are greater than that of the _F_ statistic values at
+$\alpha = 0.05$ only for $F_{\text{interaction}}$, hence we do not accept the $H_{02}$.
+
+Therefore, we notice that **Model 2** and **Model 3** are identical, tho both of which are very different from **Model 1**. This happens due to the _randomness_ in them, creating the _variation_ and thus the addition of the _error term_.  

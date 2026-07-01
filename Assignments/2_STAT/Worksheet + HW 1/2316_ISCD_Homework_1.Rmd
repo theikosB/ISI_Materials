@@ -1,0 +1,106 @@
+---
+title: "**Introduction to Statistics and Computation with Data: HomeWork 1**"
+author: "**Daibik Barik**"
+date: "2024-01-15"
+output: pdf_document
+---
+
+\section*{Q2.}
+\subsection*{(a)}
+Using the command 'diff':-
+```{r}
+instasee= c(8,8,3,12,13,10,1,8,7)
+timediff= diff(instasee)
+timediff
+```
+As we can see, 'diff' gives us the difference between the consecutive values in the vector. 
+
+\subsection*{(b)}
+Finding the maximum, minimum and average time between two logins:-
+```{r}
+x = timediff %% 24 #Taking remainder with 24 to get the number of hours between two logins
+x
+x[1] = 24 
+max(x)
+mean(x)
+min(x)
+```
+\section*{Q3.}
+\subsection*{(a)}
+Finding the maximum, minimum and average scores:-
+```{r}
+scoreSS = c(7, 6, 10, 8, 7, 9, 9, 6, 4, 10, 8, 6, 9, 10)
+max(scoreSS)
+mean(scoreSS)
+min(scoreSS)
+```
+\subsection*{(b)}
+Correcting the incorrect entry 4 to '5':- 
+```{r}
+scoreSS_edit = scoreSS
+scoreSS_edit[4] = 5
+mean(scoreSS_edit)
+```
+\subsection*{(c)}
+Using the command sum with a condition:-
+```{r}
+sum(scoreSS >= 9)
+```
+\subsection*{(d)}
+The above command in part (c) gives the number of scores that are greater than or equal to 9.  
+
+Noting by observation, all the scores are less than 17. Following is the procedure to get the percentage of scores less than 17 using R:-
+```{r}
+n = sum(scoreSS < 17)
+n
+percent = n/length(scoreSS) * 100
+percent
+```
+\section*{Q4.}
+\subsection*{(a)}
+Finding the total expenditure on phone bills in the whole year:-
+```{r}
+Shreelakshmibill = c(460, 330, 390, 370, 460, 300, 480, 320, 490, 350, 300, 480)
+sum(Shreelakshmibill)
+```
+\subsection*{(b)}
+Finding the minimum and maximum bill amounts:-
+```{r}
+min(Shreelakshmibill)
+max(Shreelakshmibill)
+```
+\subsection*{(c)}
+Percentage of bill amounts greater than 400:- 
+```{r}
+n = sum(Shreelakshmibill > 400)
+n
+percent = n/length(Shreelakshmibill) * 100
+percent
+```
+\subsection*{(d)}
+Calculating the available balance per month and its average value if the total money is 3000 every month:-
+```{r}
+freemoney = 3000 - Shreelakshmibill
+freemoney
+mean(freemoney)
+```
+\section*{Q5.}
+\subsection*{(a)}
+The dataset diamonds contains details of round cut diamonds:-  
+a) A dataset containing the prices and other attributes of almost 54,000 diamonds.
+b) Has different variables like price, carat, cut, color, depth, clarity, x, y, z, table.
+
+
+\subsection*{(b)}
+```{r, include = FALSE}
+library(tidyverse)
+library(viridis)
+```
+
+```{r}
+ggplot(data = diamonds) + geom_bar(mapping=aes(x = cut, fill = clarity),
+                                   position = "dodge") +  scale_color_viridis_d()
+```
+\subsection*{(c)}
+Observation from graph :-  
+1. As the cut progresses from far to ideal, the average count of all the clarities increases. This can be observed from the height of the histograms along the Y-axis.

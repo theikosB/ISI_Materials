@@ -1,0 +1,300 @@
+---
+title: "**Introduction to Statistics and Computation with Data: HomeWork 10**"
+author: "Daibik Barik (Bmat2316)"
+header-includes:
+    - \usepackage{bm, amsmath, amssymb}
+date: "2024-04-10"
+output: pdf_document
+---
+
+\section{1.}
+**Null Hypothesis** $(H_0): \mu \leq 8.5$ 
+
+**Alternate Hypothesis** $(H_A): \mu > 8.5$
+
+Given, considering a sample of $X_1, X_2, \cdots, X_{300000}$, we have $\overline X= 8.515$ and $S= 4.5$.
+
+\subsection{(a)}
+I think we won't have enough evidence to reject the NULL hypothesis, as the sample mean $\overline X= 8.515 \approx 8.5= \mu$ (acc. NULL).
+
+\subsection{(b)}
+Let $Y_1, Y_2, \cdots, Y_{300000} \sim^{iid} \mathcal N(8.5, 4.5^2)$
+
+$\therefore\;$ The T statistic is $\rightarrow$
+
+$$ T:= \frac{\sqrt n\left(\overline X -\mu\right)}{S}= \frac{100\sqrt{30}\left(8.515 -8.5\right)}{4.5}= 1.825742 $$
+
+\subsection{(c)}
+$p-value \rightarrow$
+$$ \mathbb P\left[t_{299999} \geq 1.825742 \right] = 1- P_t(1.826)_{df= 299999}= 0.034 $$
+
+\subsection{(d)}
+Given level of significance ($\alpha$)= $0.005$
+Now *p-value* is the measure or probability of our sample statistic following the *$t_{299999}$* distribution, i.e. of our NULL hypothesis becoming true.
+
+Since the *p-value*= $0.034 > 0.005= \alpha$, we say it has a value higher than that of significance and hence we don't have enough evidence to reject the NULL hypothesis.
+\newpage
+
+```{r}
+set.seed(2024)
+```
+
+\section{2.}
+
+\subsection{(a)}
+```{r}
+pairedttest= function(X, Y, alpha= 0.05) {
+  n= length(X)
+  Z= X - Y
+  #H0: mu_z= 0, HA: mu_z!=0
+  S2= (1/(n-1)) * sum((Z - mean(Z))^2)
+  T_stat= (mean(Z)- 0)/(sqrt(S2)/sqrt(n))
+  print(paste("t=", T_stat))
+  p_value= 2 -2 *pt(abs(T_stat), df= n-1)
+  print(paste("p- value: ", p_value))
+  if(p_value <alpha)
+    print("There is not enough evidence to accept the NULL hypothesis.")
+  else 
+    print("There is not enough evidence to reject the NULL hypothesis. ")
+}
+```
+\newpage
+
+\subsection{(b)}
+
+\subsubsection{i.}
+```{r}
+suppressPackageStartupMessages(require(MASS))
+pairedttest(shoes$A, shoes$B, 0.05)
+```
+
+\subsubsection{ii.}
+```{r}
+t.test(shoes$A,shoes$B, paired= TRUE)
+```
+
+\subsubsection{iii.}
+The **paired t-test** is nothing but the t-test performed on the difference of the two statistics provided, and hence t.test(a, b, paired= TRUE) = t.test(a-b)
+
+```{r}
+t.test(shoes$A-shoes$B)
+```
+\newpage
+
+
+\section{3.}
+
+\subsection{(a)}
+```{r}
+suppressPackageStartupMessages(require(UsingR))
+plot(heartrate$age, heartrate$maxrate,
+     main= "Heart Rate", xlab= "Age", ylab= "MaxRate")
+abline(lm(maxrate~age, data= heartrate), col="blue")
+```
+\newpage
+
+\subsection{(b)}
+```{r}
+line= lm(maxrate~age, data= heartrate)
+X= resid(line)
+Y= heartrate$maxrate-fitted(line)
+X -Y
+```
+We see the approx error output is $\approx 0$, and hence *resid* $=$ actual values of data - *fitted* 
+
+\subsection{(c)}
+```{r}
+age_df= data.frame(
+  age= c(12, 33, 45, 76)
+)
+predict(line, newdata= age_df)
+```
+\newpage
+
+\subsection{(d)}
+```{r}
+summary(line)
+```
+**$H_0: \beta_1=0$**
+
+**$H_A: \beta_1\neq 0$**
+
+T statistic $\rightarrow$ : 
+$$ T:= \frac{\hat \beta_1- \beta_1}{\sqrt{\frac{RSS}{S_{xx}^2}}} \sim t_{n-2} $$
+
+which is obtained directly from the $[2,3]^{th}$ element from the coefficients of summary on 
+
+*lm(maxrate~age, data= heartrate)*.
+
+```{r}
+test_beta1= function(X= heartrate$age, Y= heartrate$maxrate, alpha= 0.05){
+  n= length(X)
+  regression_line= lm(Y~X)
+  T_stat= summary(regression_line)$coefficients[2,3]
+  print(paste("t=", T_stat))
+  p_value= 2 -2 *pt(abs(T_stat), df= n-2)
+  print(paste("p_value=", p_value))
+  if(p_value >= alpha)
+    print("There is not enough evidence to reject the NULL hypothesis.")
+  else 
+    print("There is not enough evidence to accept the NULL hypothesis. ")
+}
+test_beta1()
+```
+\newpage
+
+\subsection{(e)}
+To find a $95\%$ confidence interval for $\hat \beta_1\; \rightarrow$
+
+The interval is,
+$$ \left(\hat \beta_1 -t_{n-2}(0.025) \sqrt{\frac{RSS}{S_{xx}^2}}, \hat \beta_1 +t_{n-2}(0.025) \sqrt{\frac{RSS}{S_{xx}^2}}\right) $$
+```{r}
+qt(0.025, df= length(heartrate$age) -2)
+```
+$$ (-0.797 - (-2.160) \times 0.06996, -0.797 + (-2.160) \times 0.06996) $$
+$$ (-0.797 + 0.15111, -0.797 - 0.15111) $$
+$$ (-0.94811, -0.64589) $$
+Hence, the required confidence interval is $(-0.94811, -0.64589)$.
+
+\subsection{(f)}
+
+\subsubsection{i.}
+```{r}
+plot(resid(line),fitted(line))
+```
+\newpage
+
+\subsubsection{ii.}
+```{r}
+plot(sqrt(abs((resid(line)-mean(resid(line)))
+              /sd(resid(line)))),fitted(line),
+     xlab= "sqrt(standardised residuals)", ylab= "fitted")
+```
+\newpage
+
+\subsubsection{iii.}
+```{r}
+qqnorm(resid(line))
+qqline(resid(line))
+```
+\newpage
+
+
+\section{4.}
+We have $Y_1 = 13$ masters, $Y_2 = 16$ third years, $Y_3 = 10$ second years and $Y_4 = 11$ first years.
+
+$\therefore\; n = 13 + 16 + 10 + 11 = 50$
+
+Let $p_1, p_2, p_3, p_4$ denote the proportions of masters, third years, second years and first years students respectively.
+
+$$ H_0 \rightarrow p_1 = 20\%,\; p_2 = 24\%,\; p_3 = 26\%,\; p_4 = 30\% $$
+$$ H_A \rightarrow p_1 \ne 20\%,\; p_2 \ne 24\%,\; p_3 \ne 26\%,\; p_4 \ne 30\% $$
+
+Expected number of each type of seed(in the sequence stated above) is,
+
+$n\times p_1 = 10,\; n\times p_2 = 12,\; n\times p_3 = 13,\; n\times p_4 = 15$
+
+The $\chi^2$ statistic is :-
+
+$$ X^2 = \sum_{i=1}^4  \frac{(Y_i- n\times p_i)^2}{n\times p_i} $$
+$$ = \frac{(13 -10)^2}{10} + \frac{(16 - 12)^2}{12} + \frac{(10 - 13)^2}{13} + \frac{(11 - 15)^2}{15} $$
+$$ = 0.9 + 1.333333 + 0.6923077 + 1.066667 $$
+$$ = 3.992308 $$
+If the null is true, the $X^2 \sim \chi^2_3$ distribution.
+
+To get the p-value, we calculate $\mathbb{P}[X^2 > 3.992308] = 1 - \mathbb{P}[X^2 \le 3.992308]$
+
+```{r}
+1 - pchisq(3.992308, df = 3)
+```
+
+Since the $p-value= 0.2622959 > 0.05= \alpha$, there is **not enough evidence to reject the null hypothesis.**
+\newline
+\newline
+
+**## Verification by R-code$\rightarrow$**
+```{r}
+chisq.test(c(13, 16, 10, 11), p= c(0.2, 0.24, 0.26, 0.3))
+```
+\newpage
+
+
+\section{5.}
+We have $Y_1 = 120$ brown-wrinkled, $Y_2 = 48$ brown-round, $Y_3 = 36$ white-wrinkled and $Y_4 = 13$ white-round seeds.
+
+$\therefore\; n = 120 + 48 + 36 + 13 = 217$
+
+Let $p_1, p_2, p_3, p_4$ denote the proportions of brown-wrinkled, brown-round, white-wrinkled and white-round seeds respectively.
+
+$$ H_0 \rightarrow p_1 = \frac{9}{16},\; p_2 = \frac{3}{16},\; p_3 = \frac{3}{16},\; p_4 = \frac{1}{16} $$
+$$ H_A \rightarrow p_1 \ne \frac{9}{16},\; p_2 \ne \frac{3}{16},\; p_3 \ne \frac{3}{16},\; p_4 \ne \frac{1}{16} $$
+
+Expected number of each type of seed(in the sequence stated above) is,
+
+$n\times p_1 = 122.0625,\; n\times p_2 = 40.6875,\; n\times p_3 = 40.6875,\; n\times p_4 = 13.5625$
+
+The $\chi^2$ statistic is :-
+
+$$ X^2 = \sum_{i=1}^4  \frac{(Y_i- n\times p_i)^2}{n\times p_i} $$
+$$ = \frac{(120 - 122.0625)^2}{122.0625} + \frac{(48 - 40.6875)^2}{40.6875} + \frac{(36 - 40.6875)^2}{40.6875} + \frac{(13 - 13.5625)^2}{13.5625} $$
+$$ = 0.0348502 + 1.3142281 + 0.5400345 + 0.0233294 $$
+$$ = 1.912442 $$
+ 
+If the null is true, the $X^2 \sim \chi^2_3$ distribution.
+
+To get the p-value, we calculate $\mathbb{P}[X^2 > 1.912442] = 1 - \mathbb{P}[X^2 \le 1.912442]$
+
+```{r}
+1 - pchisq(1.912442, df = 3)
+```
+
+Since the $p-value > \alpha = 0.05$, there is **not enough evidence to reject the null hypothesis.**
+\newline
+\newline
+
+**## Verification by R-code$\rightarrow$**
+```{r}
+chisq.test(c(120, 48, 36, 13), p= c(9/16, 3/16, 3/16, 1/16))
+```
+\newpage
+
+
+\section{8.}
+
+```{r}
+at_df= read.csv("annual_temp.csv",head=TRUE)
+```
+
+\subsection{(a)}
+```{r}
+plot(at_df$Temp, at_df$CO2, 
+     xlab= "Temperature", ylab= "Co2")
+points(mean(at_df$Temp), mean(at_df$CO2), col= "red", pch= 19)
+abline(h= mean(at_df$CO2), v= mean(at_df$Temp))
+```
+
+\subsection{(b)}
+```{r}
+cor(at_df$Temp, at_df$CO2)
+```
+\newpage
+
+\subsection{(c)}
+```{r}
+plot(at_df$Temp, at_df$CO2, 
+     xlab= "Temperature", ylab= "Co2")
+points(mean(at_df$Temp), mean(at_df$CO2), col= "red", pch= 19)
+abline(h= mean(at_df$CO2), v= mean(at_df$Temp))
+abline(lm(CO2~Temp, data= at_df), col= "blue")
+```
+
+\subsection{(d)}
+**$H_0: \text{slope}=0$**
+
+**$H_A: \text{slope}\neq 0$**
+```{r}
+test_beta1(at_df$Temp, at_df$CO2, alpha= 0.05)
+```
+
+
+

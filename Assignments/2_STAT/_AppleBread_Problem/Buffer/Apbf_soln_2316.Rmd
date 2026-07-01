@@ -1,0 +1,132 @@
+---
+title: "**ABPF solution**"
+author: "Daibik Barik (Bmat2316)"
+date: "2024-04-08"
+output: pdf_document
+---
+
+\section{1.}
+
+\subsection{(a)}
+\paragraph{Logical Notation: } $x\neq 0, y\neq 0 \implies f(x,y)\neq 0$
+\paragraph{Negation Statement: } $x\neq 0, y\neq 0$ and $f(x,y)= 0$
+\paragraph{Logical Negation: } $x\neq 0, y\neq 0$ AND $f(x,y)= 0$
+
+\subsection{(b)}
+\paragraph{Logical Notation: } $\forall M\in \mathbb R,\; \exists x\in \mathbb R$ such that $|f(x)|\geq M$.
+\paragraph{Negation Statement: } $\forall x\in \mathbb R,\; \exists M\in \mathbb R$ such that $|f(x)|< M$.
+\paragraph{Logical Negation: } For all $x\in \mathbb R$ there exists $M\in \mathbb R$ such that $|f(x)|< M$.
+
+\subsection{(c)}
+\paragraph{Logical Notation: } $\forall M\in \mathbb R,\; \exists x\in \mathbb R$ such that $y>x \implies f(y)>M$.
+\paragraph{Negation Statement: } $\forall x\in \mathbb R,\; \exists M\in \mathbb R$ such that $y>x$ and $f(y)\leq M$.
+\paragraph{Logical Negation: } For all $x\in \mathbb R$ there exists $M\in \mathbb R$ such that $y>x$ and $f(y)\leq M$.
+
+\subsection{(d)}
+\paragraph{Logical Notation: } $\forall x \in \mathbb R,\; \exists y\in \mathbb R$ such that $f(y)>f(x)$.
+\paragraph{Negation Statement: } $\forall y \in \mathbb R,\; \exists x\in \mathbb R$ such that $f(x)\leq f(x)$.
+\paragraph{Logical Negation: } For all $y\in \mathbb R$ there exists $x\in \mathbb R$ such that $f(x)\leq f(x)$.
+
+\subsection{(e)} 
+\paragraph{Logical Notation: } $\forall \epsilon>0,\; \exists x_0 \in \mathbb R$ such that $\forall x>x_0\quad |f(x)|< \epsilon$.
+\paragraph{Negation Statement: } $\forall x_0 \in \mathbb R,\; \exists \epsilon>0$ such that $\exists x>x_0$ such that $|f(x)|\geq \epsilon$.
+\paragraph{Logical Negation: } For all $x_0 \in \mathbb R$ there exists $\epsilon>0$ such that there exists $x>x_0$ such that $|f(x)|\geq \epsilon$.
+
+\subsection{(f)}
+\paragraph{Logical Notation: } $\forall \epsilon>0,\; \exists \delta>0$ such that $|x-x_0|< \delta \implies|f(x)-f(y)|< \epsilon$.
+\paragraph{Negation Statement: } $\forall \delta>0,\; \exists \epsilon>0$ such that $|x-x_0|< \delta$ and $|f(x)-f(y)|\geq \epsilon$.
+\paragraph{Logical Negation: } For all $\delta>0$ there exists $\epsilon>0$ such that $|x-x_0|< \delta$ and $|f(x)-f(y)|\geq \epsilon$.
+\newpage
+
+
+\section{2.}
+
+\subsection{(a)}
+$\forall \epsilon>0,\; \forall N\in \mathbb N,\; \exists n> N$ such that $|a_n|<\epsilon$
+\paragraph{Sequence example: } $\{a_n\}_{n\geq1}= 0$
+
+\subsection{(b)}
+$\forall \epsilon>0,\; \exists N\in \mathbb N,\; \exists n> N$ such that $|a_n|<\epsilon$
+\paragraph{Sequence example: } $\{a_n\}_{n\geq1}= \frac{1}{n}$
+
+\subsection{(c)}
+$\forall \epsilon>0,\; \forall N_1\in \mathbb N,\; \exists n_1, n_2\geq N_1$ such that $|a_{n_1}| >11-\epsilon, |a_{n_2}|<3-\epsilon$.
+
+$\forall \epsilon>0,\; \exists N_2\in \mathbb N,\; \forall n\geq N_2$ such that $3-\epsilon< |a_{n_2}|<11+\epsilon$
+\paragraph{Sequence example: } 
+$\{a_n\}_{n\geq1}= \begin{cases}
+3-\frac{1}{n}, & \text{n is odd}\\
+11+\frac{1}{n}, & \text{n is even}
+\end{cases}$
+\newpage
+
+
+\section{3.}
+
+\subsection{(a)}
+$S$ is *not bounded* if \
+$\forall M\in \mathbb R,\; \exists x\in S$ such that $|x| >M$.
+
+\subsection{(b)}
+$f$ is *not increasing* if \
+$x<y$ and $f(x)\geq f(y)$.
+
+\subsection{(c)}
+$f$ is *non-increasing* if \
+$x>y \implies f(x) \geq f(y)$ \
+i.e. $x\geq y$ or $f(x)\geq f(y)$.
+
+**Non increasing** $\implies$ **Not increasing**
+
+But **Not increasing** $\nRightarrow$ **Non increasing**, as we create a counterexample.
+
+\paragraph{CounterExample: } $f(x)= x^2$ is not increasing but also not non increasing as it is strictly decreasing ($f(x) > f(y)$ whenever $x < y$) for $x<0$.
+\newpage
+
+
+\section{4.}
+\paragraph{Statement: } *For every $\epsilon>0$, there exists $\delta>0$ such that $|f(x)|<\epsilon$ whenever $0< |x|< \delta$*. 
+
+Now we see, the options include the case of $x=0$, whereas it is not mentioned in the definition statement as it says $|x| >0$. Hence **none of the options exactly follow the statement**, but again since the definition given is of limit of a function, the options try to define the limit of a continuous function.
+
+Ignoring this $x=0$, the phrase $\forall x \in \mathbb R$ defines the domain of $f$. Here, I think options $(a)$ and $(d)$ try to convey the same sense as te statement given. 
+
+\subsection{(a)}
+\paragraph{Statement: } For every $\epsilon>0$, there exists $\delta>0$ such that $\forall x \in \mathbb R,\; 0< |x|< \delta$ implies $|f(x)|<\epsilon$.
+
+**## TRUE** 
+
+This statement is true as $p$ whenever $q$ holds is logically equivalent to $q \implies p$ (holds for both sides). 
+
+\subsection{(b)}
+\paragraph{Statement: } For every $\delta > 0$, there exists $\epsilon > 0$ such that for all $x \in \mathbb R$, $0 < |x| < \delta$ implies $|f(x)| < \epsilon$.
+
+**## FALSE** 
+\paragraph{CounterExample: } Consider function $f:[0,\pi] \to \mathbb R$ as $f(x)= tan(x)$.
+
+Take $\delta= \frac{3\pi}{4}$ and $x=\frac{\pi}{2}$.
+
+We see $0< |x| = |\frac{\pi}{2}| < \delta= \frac{3\pi}{4}$ but $|f(x=\frac{\pi}{2})| = \infty \nless \epsilon$ for any $\epsilon$.
+
+Hence the option is **not equivalent** to the statement.
+
+\subsection{(c)}
+\paragraph{Statement: } There exists $\delta > 0$ such that for all $\epsilon > 0$ and for all $x \in \mathbb R$, $0 < |x| < \delta$ implies $|f(x)|< \epsilon$.
+
+**## FALSE**
+\paragraph{CounterExample: } Consider function $f:\mathbb R \to \mathbb R$ as $f(x)=x$.
+
+Fix $\delta>0$. Take $\epsilon= \frac{\delta}{3}$ and $x= \frac{2\delta}{3}$.
+
+We can easily check that $0< |x| = |\frac{2\delta}{3}| < \delta$ but $|f(x)|= |x|= \left|\frac{2\delta}{3}\right| \nless \left|\frac{\delta}{3}\right|$ which is a contradiction to the statement given,
+
+as $\lim_{x\to 0} f(x)= 0$. Hence the option is **not equivalent** to the statement.
+
+\subsection{(d)}
+\paragraph{Statement: } For every $\epsilon > 0$ and for all $x \in \mathbb R$, there exists $\delta > 0$ such that $0 < |x| < \delta$ implies $|f(x)| < \epsilon$.
+
+**## TRUE**
+
+This statement is true as rearrangement of “$\forall x \in \mathbb R$” in option $(a)$ does not affect the implication of the given statement, and hence follows from it.
+
+

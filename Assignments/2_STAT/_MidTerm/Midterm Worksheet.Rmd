@@ -1,0 +1,29 @@
+---
+title: "**Introduction to Statistics and Computation with Data: Midterm Worksheet**"
+author: "Daibik Barik (Bmat2316)"
+date: "2024-02-23"
+output: pdf_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r}
+library(tidyverse)
+```
+\newpage
+
+```{r}
+SupDF = read.csv(file= "./SuppandiZoomLog.csv", header = TRUE)
+```
+
+```{r}
+ggplot(data = SupDF) +  
+  geom_bar(mapping = aes(x = Venue, fill = Meeting.Topic)) + 
+  scale_fill_viridis_d(option = "turbo") + coord_polar() +
+  ggtitle("Location Frequency plot") + 
+  ylab("No. of meetings") + xlab("Locations") + 
+  theme(plot.title =element_text(color="#000080",size=14, 
+                                 face="bold",hjust= 0.5))
+```
+

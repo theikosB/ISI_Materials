@@ -1,0 +1,122 @@
+---
+title: "**Introduction to Statistics and Computation with Data: WorkSheet 12**"
+header-includes:
+    - \usepackage{bm, amsmath, amssymb}
+author: "Daibik Barik (Bmat2316)"
+date: "2024-04-05"
+output: pdf_document
+---
+
+\section{1.}
+Let $\mu$ be the mean runtime.
+\paragraph{Null Hypothesis: } $\mu> 480$
+\paragraph{Alternate Hypothesis: } $\mu\leq 480$
+
+(Significance level of $\alpha= 0.05$)
+
+By null hypothesis, $Y_1, Y_2, \dots, Y_{50} \sim^{iid} \mathcal{N}(480, 30^2)$.
+
+By CLT, we know, $$ \frac{\sqrt{n}(\overline{Y}- \mu)}{\sigma} \sim \mathcal{N}(0,1)= Z\; (\text{let}) $$
+
+$\begin{aligned}
+\mathbb{P}[\overline{Y} \geq \overline{X}] &= \mathbb{P}[\overline{Y} \leq 485] \\
+&= \mathbb{P}\left[\frac{\sqrt{n}(\overline{Y}- \mu)}{\sigma} \leq \frac{\sqrt{n}(10.2- \mu)}{\sigma}\right] \\
+&= \mathbb{P}\left[\frac{\sqrt{50}(\overline{Y}- 480)}{30} \leq \frac{\sqrt{50}(485- 480)}{30}\right] \\
+&= \mathbb{P}\left[Z \leq \frac{25\times\sqrt{2}}{6}= 1.1783\right]
+\end{aligned}$
+```{r}
+pnorm(1.1783)
+```
+Therefore, $\mathbb{P}\left[\overline X \geq 480\right]\approx 0.88\;$, which is more than our $\alpha= 0.05$ and hence we don't reject our null hypothesis.
+\newpage
+
+
+\section{2.}
+Let $\mu$ be the mean Brinell hardness.
+\paragraph{Null Hypothesis: } $\mu> 170$
+\paragraph{Alternate Hypothesis: } $\mu\leq 170$
+
+(Significance level of $\alpha= 0.5$)
+
+Let $X_1, X_2, \dots, X_{10}$ take the values $170, 167, 174, 179, 179, 187, 179, 183, 179, 163$ respectively.
+
+```{r}
+X= c(170, 167, 174, 179, 179, 187, 179, 183, 179, 163)
+mean(X); sd(X)
+```
+
+By null hypothesis, $Y_1, Y_2, \dots, Y_{10} \sim^{iid} \mathcal{N}(170, 7.42^2)$
+
+By CLT, we know, $$ \frac{\sqrt{n}(\overline{Y}- \mu)}{S} \sim \mathcal{t}_{n-1=9}= T\; (\text{let}) $$
+
+$\begin{aligned}
+\mathbb{P}[\overline{Y} \leq \overline{X}] &= \mathbb{P}[\overline{Y} \leq 176] \\
+&= \mathbb{P}\left[\frac{\sqrt{10}(\overline{Y}- \mu)}{\sigma} \leq \frac{\sqrt{10}(176-\mu)}{\sigma}\right] \\
+&= \mathbb{P}\left[\frac{\sqrt{10}(\overline{Y}- 170)}{7.42} \leq \frac{\sqrt{10}(176- 170)}{7.42}\right] \\
+&= \mathbb{P}\left[T \leq \frac{6\times\sqrt{10}}{7.42}= 2.557\right]
+\end{aligned}$
+```{r}
+pt(2.557, df=9)
+```
+Therefore, $\mathbb{P}\left[\overline X \geq 170\right]\approx 0.98$, which is more than our $\alpha= 0.05$ and hence we don't reject our null hypothesis.
+\newpage
+
+
+\section{3.}
+Let $p$ be the probability of bottles being contaminated.
+\paragraph{Null Hypothesis: } $p> 0.15$
+\paragraph{Alternate Hypothesis: } $p\leq 480$
+
+(Significance level of $\alpha= 0.1$)
+
+By null hypothesis, $Y_1, Y_2, \dots, Y_{91} \sim^{iid} \text{Bernoulli}(0.15)$.
+
+By CLT, we know, $$ \frac{\sqrt{n}(\overline{Y}- \mu)}{\sigma} \sim \mathcal{N}(0,1)= Z\; (\text{let}) $$
+
+$\begin{aligned}
+\mathbb{P}\left[\overline{Y} \leq \frac{16}{91}\right] &= \mathbb{P}\left[\frac{\sqrt{n}(\overline{Y}- \mu)}{\sigma} \leq \frac{\sqrt{n}(0.175- p)}{\sqrt{p(1-p)}}\right] \\
+&= \mathbb{P}\left[Z \leq \frac{\sqrt{91}(0.175- 0.15)}{\sqrt{0.15\times (1-0.15)}}= 0.668\right] \\
+\end{aligned}$
+```{r}
+pnorm(0.668)
+```
+Therefore, $\mathbb{P}\left[\overline X \geq 0.15\right]\approx 0.75$, which is more than our $\alpha= 0.1$ and hence we don't reject our null hypothesis.
+\newpage
+
+
+\section{4.}
+\paragraph{Null Hypothesis: } $\mu_1= \mu_2$
+\paragraph{Alternate Hypothesis: } $\mu_1 \neq \mu_2$
+
+(Significance level of $\alpha= 0.05$)
+
+By null hypothesis, $V_1, V_2, \dots, V_{20} \sim^{iid} \mathcal{N}(\mu_1,16) \implies \overline V \sim \mathcal{N}(\mu_1, \frac{16}{20})$ and
+
+$W_1, W_2, \dots, W_{25} \sim^{iid} \mathcal{N}(\mu_2,25) \implies \overline W \sim \mathcal{N}(\mu_2, \frac{25}{25}= 1)$.
+
+Now, $\overline V- \overline W \sim \mathcal N(0, \frac{9}{5})$
+
+By CLT, we know, $$ \frac{|\overline V- \overline W|}{\sigma}\sim |Z|, \text{ where } Z\sim \mathcal{N}(0,1) $$
+
+$\begin{aligned}
+\mathbb{P}\left[|\overline V- \overline W| \geq |34.7-29.8| \right] &= \mathbb{P}\left[\frac{\sqrt{5}|\overline V- \overline W|}{3} \geq \frac{\sqrt{5}\times 4.9}{3}\right] \\
+&= \mathbb{P}\left[|Z| \geq 3.642\right] \\
+&= \mathbb{P}\left[Z > 3.642\right] +\mathbb{P}\left[Z < -3.642\right] \\
+&= 2- 2\times\Phi(3.642)
+\end{aligned}$
+```{r}
+2- 2*pnorm(3.642)
+```
+
+Therefore, $p-value\approx 0.0003$, which is less than our $\alpha= 0.1$ and hence we don't have enough evidence to accept our null hypothesis.
+
+
+
+
+
+
+
+
+
+
+

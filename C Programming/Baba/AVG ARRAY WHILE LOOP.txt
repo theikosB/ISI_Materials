@@ -1,0 +1,32 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+
+int main() {
+    int a[5],j=0,s=0;
+    float avg=0;
+    // Write C code here
+    printf("\tHello world\n");
+    printf("\nEnter  5 numbers  numbers:  ");
+    
+    while(j<5)
+        {
+     scanf("%d",&a[j]);
+     j++;
+     }     
+        
+j=0; 
+    printf("\nEntered  5 numbers  numbers:  ");
+    
+    while(j<5)
+        {
+     printf(" %4d  ",a[j]);
+     s=s+a[j];
+     j++;
+     
+     }
+
+  //avg= (float)(i+j)/2;
+  avg=(float)s/5;
+ printf("\n Avg of 5 numbers is %f  ",avg);
+    return 0;
+}

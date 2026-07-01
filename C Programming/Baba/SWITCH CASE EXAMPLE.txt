@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
+void main()
+{  
+int option;
+char *Ptr;
+int size=64000000;
+printf("\nProcess ID: %i\n",getpid());
+
+while (1){
+    printf ("\n[1]   Allocate memory.\n[2]   Release memory.\n");    
+    scanf("%i", &option);
+
+
+    switch (option)
+
+  {
+    case 1:
+           printf("\nAllocating memory...\n");
+           Ptr=malloc(size*sizeof(char));
+         
+           printf("\ Process id here :%i\n",getpid());
+           break;
+    case 2:
+           printf("\nReleasing memory...\n");
+           free(Ptr);
+               printf("\ Process id here :%i\n",getpid());
+           break;
+    }//End switch
+  }//End while (1)
+}

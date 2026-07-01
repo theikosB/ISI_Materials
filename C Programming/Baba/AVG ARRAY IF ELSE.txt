@@ -1,0 +1,40 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+
+int main() {
+    int a[]={1,12,34,55,60},j=0,s=0,r,c=0;
+    float avg=0;
+    // Write C code here
+    printf("\tHello world\n");
+    printf("\nEnter  5 numbers  numbers:  ");
+    
+    /*for(j=0;j<5;j++)
+        {
+     scanf("%d",&a[j]);
+     
+     } */     
+        
+ 
+    printf("\nEntered  5 numbers  numbers:  ");
+    
+    for(j;j<5;j++)
+        {
+     printf(" %4d  ",a[j]);
+     r=a[j]%3;
+    // printf(" %4d  ",r);
+     if(r!=0)
+        {
+      
+            s=s+a[j];
+            c++;
+        }
+        //else
+        //printf("\n number not div by 3:  ");
+     }
+     printf("\n Sum  of numbers  div by 3 is %d  ",s);
+
+  //avg= (float)(i+j)/2;
+  avg=(float)s/c;
+ printf("\n Avg of  numbers disv by 3  is %f  ",avg);
+    return 0;
+}

@@ -1,0 +1,1760 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+%\usepackage{newpxmath}
+\usepackage{amsmath,amssymb,amsthm,amsfonts,tabto,esdiff,subcaption,appendix,kpfonts,tikz,pgffor,color,booktabs,caption,dsfont}
+\usetikzlibrary{calc}
+%%%%macros from Siva
+\usepackage[
+  textwidth=33pc,
+  textheight=48pc,
+]{geometry}
+\setlength{\topskip}{12pt}
+\setlength{\abovedisplayskip}{6.95pt plus 3.5pt minus 3pt}
+\setlength{\belowdisplayskip}{6.95pt plus 4.5pt minus 3pt}
+\setlength{\skip\footins}{20pt}
+\setlength{\dimen\footins}{3in}
+\setlength{\parindent}{22pt}
+\setlength{\parskip}{0pt}
+%%%above is page dimensions
+%%%%%%%%%%%%%%%%
+\usepackage{color}
+
+%%%%%%%%%%%%ColorDocument%%%
+
+\definecolor{maroon}{rgb}{.69,.188,.376}
+\definecolor{darkgreen}{rgb}{0,.5,0}
+\definecolor{darkblue}{rgb}{0,0,.5}
+\definecolor{magenta}{rgb}{1,0,1}
+\definecolor{vry}{RGB}{253, 231, 37}
+\newcommand {\vry}[1]{{\color{vry}{#1}}}
+\definecolor{vrg}{RGB}{94,201,98}
+\newcommand {\vrg}[1]{{\color{vrg}{#1}}} 
+\definecolor{vrdg}{RGB}{33, 145, 140}
+\newcommand {\vrdg}[1]{{\color{vrdg}{#1}}}
+\definecolor{vrb}{RGB}{59,82,139}
+\newcommand {\vrb}[1]{{\color{vrb}{#1}}}
+\definecolor{vrp}{RGB}{68,1,84}
+\newcommand {\vrp}[1]{{\color{vrp}{#1}}}
+\definecolor{vro}{RGB}{249,142,9}
+\newcommand {\vro}[1]{{\color{vro}{#1}}}
+\definecolor{vrr}{RGB}{188,55,84}
+\newcommand {\vrr}[1]{{\color{vrr}{#1}}}
+\definecolor{vrnb}{RGB}{13,8,135}
+\newcommand {\vrnb}[1]{{\color{vrnb}{#1}}}
+%%%%%%%%%%%%%%%%above is colour%%%%%%%%%%%%%%%%%%%%
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\1}{\mathds{1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\PB}{\mathbb{P}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\lf}{\left}
+\newcommand{\rg}{\right}
+\newcommand{\nl}{\\\vspace{0.2cm}}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\newcommand{\Tau}{\text{\Large{$\tau$}}}
+\newcommand{\bmat}[4]{\begin{bmatrix}#1 & #2\\#3 & #4\end{bmatrix}}
+\newcommand{\norm}[1]{\Vert #1\Vert}
+\newcommand{\diam}[1]{\mbox{diam}(#1)}
+\newcommand{\contra}{\implies\impliedby}
+\newcommand{\en}[3]{\lf\{{#1}_{#2}\rg\}_{#2\in #3}}
+\newcommand{\pow}{{\vert\Omega\vert}}
+\newcommand{\sm}{\setminus}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\fb}[1]{\lf(#1\rg)}
+\newcommand{\tb}[1]{\lf[#1\rg]}
+\newcommand{\card}[1]{\lf\vert #1\rg\vert}
+\newcommand{\set}[2]{\lf\{#1_1,\ldots,#1_#2\rg\}}
+\newcommand{\ar}{\ \&\ }
+%%above is to add macros%%
+\def\beqn#1{\begin{equation}#1\end{equation}}
+%%%%%%%%%%%%%%%%%%%%
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{xcolor}       % for colors
+\usepackage{hyperref}     % for clickable links & coloring
+\hypersetup{
+    colorlinks=true,      % enables colored links
+    citecolor=red,        % color of citations, change to your preferred color
+    linkcolor=blue,       % color of links
+    urlcolor=cyan         % color of urls
+}
+%%%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+
+\title{Probability III}
+\author{Adrija Chatterjee}
+\date{July 2025}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\section{Lecture 1 - 22/07/2025}
+``Probability is measure theory with a soul \ensuremath\heartsuit." We start with an arbitrary set $\Omega$ and consider $\F\subseteq 2^\pow.$ 
+\begin{definition}\textbf{(Field/Algebra)}
+    $\F\subseteq 2^\pow$ is called a \textbf{field} if 
+    \begin{enumerate}
+        \item $\emptyset\in\F.$
+        \item $A\in\F\implies A^c\in \F.$
+        \item $A_1,A_2,\ldots,A_n\in\F\implies\bigcap_{i=1}^n A_i\in\F.$
+    \end{enumerate}
+\end{definition}
+\begin{definition}\textbf{($\mathbf{\sigma}-$Field/Algebra)}
+$\F$ is called a \textbf{$\mathbf{\sigma}-$Field/Algebra} if
+    \begin{enumerate}
+        \item[i,ii] Same as above.
+        \item[iii]  $A_1,A_2,\ldots\in F\implies \bigcap_{i=1}^{\infty}A_i\in\F.$
+    \end{enumerate}
+\end{definition}
+\begin{definition}\textbf{(Monotone Class)}
+    $\F$ is called a \textbf{monotone class} if 
+    \begin{enumerate}
+        \item $A_1\subset A_2\subset A_3\ldots\subset A$ and $A_i\in\F\implies A\in\F$ ($A_i\uparrow A,$ i.e., $A=\bigcup_{n=1}^\infty A_i$ and $A_i\in\F\implies A\in\F$.)
+         \item $A_1\supset A_2\supset A_3\ldots\supset A$ and $A_i\in\F\implies A\in\F$ ($A_i\downarrow A,$ i.e., $A=\bigcap_{n=1}^\infty A_i$ and $A_i\in\F\implies A\in\F$.)
+    \end{enumerate}
+\end{definition}
+\begin{example}
+    $\F=\{\Omega,\emptyset\}$
+\end{example}
+\begin{example}
+    $\F= 2^\pow.$ 
+\end{example}
+\begin{theorem}
+    Algebra $+$ MC $\iff$ $\sigma-$Algebra
+\end{theorem}
+\begin{example}
+$\F=\{\emptyset,A,A^c,\Omega\}.$
+\end{example}
+\begin{exercise}
+    $A,B\in\F.$ Construct a $\sigma-$algebra.
+\end{exercise}
+\begin{lemma}
+    $\en{\F}\alpha I$ be $\sigma-$algebras(or MC-s). Then $\bigcap_{\alpha\in I}\F_\alpha$ is a $\sigma-$algebra(or MC).
+\end{lemma}
+Now we can talk about the smallest $\sigma-$algebra for particular cases.
+\begin{exercise}
+    Show the following
+    \begin{enumerate}
+        \item $\limsup A_n:=\bigcap_{n\geq 1}\bigcup_{m\geq n}A_m=\{x\in\Omega\mid x\ \text{i.o. in }A_n\}.$
+        \item $\liminf A_n:=\bigcup_{n\geq 1}\bigcap_{m\geq n}A_m=\{x\in\Omega\mid \exists\ N\in\N\text{ such that }x\in A_n\ \forall\ n\geq N\}.$
+    \end{enumerate}
+\end{exercise}
+\section{Lecture 2 - 23/07/2025}
+\begin{example}
+    $\F=\{A\subseteq \Omega\mid A\text{ or }A^c$\text{ is countable}\} is a $\sigma-$algebra.
+\end{example}
+\begin{example}
+    $\F=\{A\subseteq \Omega\mid A\text{ or }A^c\text{ if finite}\}$ is an algebra, may not be a $\sigma-$algebra.
+\end{example}
+\begin{example}
+    Let $\Omega'\subseteq \Omega$ and $\F':=\{A\cap \Omega'\mid A\in\F\}\subseteq 2^{\Omega'}.$ We can check that 
+    \begin{itemize}
+        \item $\emptyset \in \F',\ A\cap \Omega'\in\F'$ and $\Omega'\cap (A\cap \Omega')^c=\Omega'\cap A^c\in\F'.$
+        \item $B_1,B_2,\ldots,B_n,\ldots\in\F'\ \implies\ \bigcup_{i=1}^\infty B=\bigcup_{i=1}^\infty A_i\cap \Omega'\in F'$ where $B_i=A_i\cap \Omega'.$
+    \end{itemize}
+\end{example}
+\begin{exercise}
+When is $\F'=\{A\mid A\in\F,A\subseteq \Omega'\}\subseteq \F\cap 2^{\Omega'}$?
+\end{exercise}
+\noindent Answer: \textbf{Yes} if $\Omega'\in\F.$ $(\Omega,\F)$ is a ``\textbf{measurable}" space. Let $(\Omega,\Tau)$ be a Topological space. Then $\B(\Omega):=\sigma(\Tau)$ is the \textbf{Borel} $\sigma-$algebra.
+\begin{definition}\textbf{(Borel $\sigma-$algebra)}
+    Let $\Omega$ be a set and $\F_0\subseteq 2^\Omega.$ Then $$\sigma(\F_0):=\bigcap_{\substack{\G\supseteq \F_0\\\G\text{ is a }\sigma-\text{algebra}}}\G,$$ i.e., it is the smallest $\sigma-$algebra containing $\F_0$ and is called the \textbf{Borel} $\sigma-$algebra of $\Omega.$
+\end{definition}
+\begin{exercise}
+    $\F_0=\en A\alpha{I}$ and $\bigsqcup_{\alpha\in I}A_\alpha =\Omega.$ Then $\sigma(\F_0)=?$
+\end{exercise}
+\begin{lemma}
+The Borel $\sigma-$algebra of $\R$ is given by $\B(\R)=\sigma\lf(\{(a,b]\mid -\infty\leq a\leq b\leq \infty,\ a,b\in\R\}\rg).$
+\end{lemma}
+\begin{proof}
+    $(a,b)=\bigcup_{n=1}^\infty (a,b_n]$ for some $b_n$ which shows that $(a,b)\in\F:=\sigma\{(a,b]\mid a,b\in\R\cup \{\pm\infty\}\}.$
+    Every $A\in \Tau$ where $A=\bigcup_{i=1}^\infty (a_i,b_i)\ \implies\ A\in\F.$ Thus $\Tau\subseteq\F.$ $\B(\R)=\sigma(\Tau)\subseteq\F.$ 
+    
+    $(a,b]=\bigcap_{n=1}^{\infty}(a,b_n)\ \implies\ (a,b]\in \B(\R).$ Then $\F=\sigma{(a,b]}\subseteq \B(\R).$ 
+\end{proof}
+We can show similarly that $$\B(\R^d)=\sigma\lf\{\prod_{i=1}^d(a_i,b_i]\mid a_i,b_j\in \R\cup \{\pm\infty\}\ \forall\ 1\leq i,j\leq d\rg\}.$$
+\begin{exercise}
+    Say $\Omega=\Omega_1\times\Omega_2\times\ldots\times \Omega_d$ with $\B(\Omega_i)=\F_i\ \forall\ 1\leq i\leq d.$ Let $\F_0=\F_1\times \F_2\times\ldots\times \F_d.$ Then check if $\B(\Omega)=\sigma(\F_0).$ Also check if $\sigma(\F_0)=\F_0.$
+\end{exercise}
+\begin{definition}\textbf{(Probability Measure)}
+    $(\Omega,\F)$ be the sample space. Then $\PB:\F\mapsto [0,\infty)$ is a \textbf{probability measure} if 
+    \begin{itemize}
+        \item $\PB(\Omega)=1.$
+        \item $A_1,\ldots A_n,\ldots$ pairwise disjoint sets, then \textbf{countable additivity} holds, i.e., $$\PB\lf(\bigcup_{i=1}^\infty A_i\rg)=\sum_{i=1}^\infty \PB(A_i).$$
+    \end{itemize}
+\end{definition}
+$(\Omega,\F,\PB)$ a probability space; $(\Omega,\F)$ the sample space and $\PB$ a probability measure on $\F.$
+\begin{lemma}
+    Let $A\in \F$. Then
+    \begin{enumerate}
+        \item $A_n\uparrow A\implies \PB(A_n)\uparrow \PB(A).$
+        \item $A_n\downarrow A\implies \PB(A_n)\downarrow \PB(A).$
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    Idea: $A=\bigcup_{i=1}^{\infty}A_i=A_n\sqcup\bigsqcup_{i>n}(A_i\sm A_{i-1})$, then apply countable additivity. The latter part follows similarly.
+\end{proof}
+\begin{exercise}
+    Start with the lattice $\{-n,-n+1,\ldots,0,1,\ldots,n\}\times \{-n,-n+1,\ldots,0,1,\ldots,n\}$. At each step, for each edge in the lattice, toss a coin. Keep an edge in case of heads and remove it in case of tails. 
+    $N_n=\mid E_n\mid,$ $E_n$ being the set of edges at the $n^{th}$ step. Then $\Omega=\{0,1\}^{\mid E_n\mid}$ and $\F=2^\Omega.$ Then for $x\in\Omega,$ $\PB(x)=\PB(\{x\})=\f1{2^{N_n}}$ and $\PB(A)=\f{\mid A\mid}{2^{N_n}}.$ Name $A_{n,k}=\{x\in\Omega\mid \exists\text{ a path from L-R in } x\}.$ What is $\lim_n \PB(A_{n,k})?$
+\end{exercise}
+\textbf{Properties of Probability Measure:}
+\begin{enumerate}
+    \item $\PB(A)\leq \PB(B)$ if $A\subseteq B.$
+    \item $\PB\lf(\bigcup_{i=1}^\infty A_i\rg)\leq \sum_{i=1}^\infty\PB(A_i)$ [\textbf{Countable Sub-additivity}].
+    \item $\PB(A\cup B)=\PB(A)+\PB(B)-\PB(A\cap B)$ [\textbf{Bonferroni Inequality/Inclusion-Exclusion}]
+\end{enumerate}
+Question: $\F_0\subseteq \F$ given and $\F=\sigma(\F_0)$. If we know $\PB$ on $\F_0,$ can we determine $\PB$ on $\F?$
+
+\begin{definition}\textbf{($\mathbf{\pi-}$class)}
+    $\F_0$ is a $\mathbf{\pi-}$\textbf{class} if $A,B\in\F_0\ \implies\ A\cap B\in\F_0.$
+\end{definition}
+\begin{definition}\textbf{($\mathbf{\lambda-}$system)}
+    $\LL$ is a $\mathbf{\lambda-}$\textbf{system} if it is a Monotone class, $\Omega\in\LL$ and $$A\subseteq  B\in\LL\ \implies\ B\sm A\in\LL.$$ 
+\end{definition}
+\noindent We have $\{(a,b]\}-\lambda-$class and $\PB$ a probability measure on $\R.$ We know that $$(a,b]=(-\infty,b]\sm (-\infty,a]\ \implies\ \PB(a,b]=\PB(-\infty,b]- \PB(-\infty,a].$$ Define $F:\R\mapsto [0,1]$ with $\F(a):=\PB(-\infty,a].$ Then $\PB(a,b]=F(b)-F(a).$
+\begin{example}
+    $\PB(a,b]=b-a\ \forall\ 0\leq a\leq b\leq 1.$
+\end{example}
+\begin{theorem}\textbf{(Dynkin's $\pi-\lambda$ Theorem)}\label{th:dynkin}
+    Given $\Omega$ a set, $\F_0$ a $\pi-$class and $\LL$ a $\lambda-$system containing $\F_0$. Then $\sigma(\F_0)\subseteq\LL.$ Consequently, $\sigma(\F_0)=\lambda(\F_0).$
+\end{theorem}
+\begin{proof}[\textbf{Proof of consequence}]
+    \begin{itemize}
+        \item $\lambda(\F_0)\subseteq \sigma(\F_0)$ is trivially true.
+        \item $\F_0\subseteq \lambda(\F_0)\implies \sigma(\F_0)\subseteq \lambda(F_0).$
+    \end{itemize}
+\end{proof}
+\begin{theorem}\textbf{(Monotone Class Theorem)}
+    $\F_0$ an algebra and $\LL$ a MC such that $\F_0\subseteq\LL$. Then $\sigma(\F_0)=MC(\F_0).$ Then $\sigma(\F_0)\subseteq \LL.$ Consequently $\sigma(\F_0)=MC(\F_0).$ 
+\end{theorem}
+\begin{example}
+    $\Omega$ a countable set and $\F=2^{\mid \Omega\mid}.$ Define $\PB:\Omega\mapsto [0,1]$ by $\sum_{x\in\Omega}\PB(x)=1.$ Then $\PB(A)=\sum_{x\in A}\PB(x).$
+\end{example} 
+\noindent\textbf{Claim:} $\PB$ is a probability measure of $(\Omega,\F).$ 
+\begin{enumerate}
+    \item $\PB(\Omega)=1.$
+    \item $\PB\lf(\bigsqcup_{i=1}^\infty A_i\rg)=\sum_{x\in\Omega}\mathbb{1}\lf(x\in\bigcup_{i=1}^\infty A_i\rg)\PB(x)=\sum_{i=1}^\infty \PB(A_i).$
+\end{enumerate}
+\begin{example}
+$\Omega$ uncountable and $\F=2^\pow.$ Define $\PB:\Omega\mapsto [0,\infty)$ such that $\sum_{x\in\Omega}\PB(x)=1$ [$\iff\ \exists$ countable $R$ such that $\sum_{x\in R}\PB(x)=1$ and $\PB(x)=0\ \forall\ x\notin R.$] Define $$\PB(A):=\sum_{x\in A}\PB(x)=\sum_{x\in A\cap R}\PB(x).$$ Check that $(\Omega,\F,\PB)$ is a probability space.
+\end{example}
+\section{Lecture 3 - 24/07/2025}
+\textbf{Question:} Is there unique $\PB$ on $([0,1],\B)$ such that $\PB(a,b]=b-a\ \forall\ 0\leq a\leq b\leq 1?$
+\begin{example}
+    $\Omega=\{1,2,3,4\}$ and $\F_0=\{\{1,2\},\{2,3\},\{3,4\}\}$ [Not a $\pi-$system]. We define $\PB(A)=\f12\ \forall\ A\in\F_0.$
+    \begin{enumerate}
+        \item $p_1(i)=\f14\ \forall\ i\in\Omega.$
+        \item $p_2(1)=p_2(3)=\f12$ and $p_2(2)=p_2(4)=0.$
+    \end{enumerate}
+    Thus probability is not unique.
+\end{example}
+\begin{theorem}
+    Let $\PB,\Q$ be two probability measures on $(\Omega,\F)$ such that $\Q(A)=\PB(A)\ \forall\ A\in\F_0$ where $\F_0$ is a $\pi-$system such that $\F=\sigma(\F_0).$ Then $\PB=\Q.$
+\end{theorem}
+\begin{proof}
+    Let $\G=\{A\in\F\mid \PB(A)=\Q(A)\}.$ Observe that $\F_0\subseteq\G.$ We will show that $\G$ is a $\lambda-$system. If so, then by Dynkin's $\pi-\lambda$ theorem, $$\F=\sigma(\F_0)\subseteq \G\ (\subseteq\F)$$ and we are done.
+    \begin{proof}[Proof that $\G$ is a $\lambda-$system]
+        \begin{itemize}
+            \item $\Omega\in\G$ as $\PB(\Omega)=\Q(\Omega)=1.$
+            \item $A,B\in\G$ and $A\subseteq B\implies \PB(B\sm A)=\PB(B)-\PB(A)=\Q(B)-\Q(A)=\Q(B\sm A).$
+            \item Let $A_n\in\G$ such that $A_n\uparrow A\implies\PB(A_n)\uparrow \PB(A)$ and $\Q(A_n)\uparrow \Q(A).$ Thus $\PB(A_n)=\Q(A_n)\ \forall\ n\ \implies\ \PB(A)=\Q(A)\ \implies\ A\in\G.$ Thus $\G$ is a $\lambda-$system.
+        \end{itemize}
+    \end{proof}
+\end{proof} 
+\begin{theorem}
+Let $\F_0$ be an algebra and $\F=\sigma(\F_0).$ $\PB$ be a probability measure on $(\Omega,\F).$ Then for all $A\in\F$ and $\forall\ \epsilon>0,\ \exists\ A_\epsilon\in\F_0$ such that $\PB(A\triangle A_\epsilon)<\epsilon.$
+\end{theorem}
+\begin{proof}
+   To be done later.
+\end{proof}
+\begin{example}
+There exists at most one $\PB$ on $([0,1]^d,\B)$ such that $\PB\lf(\prod_{i=1}^d(a_i,b_i]\rg)=\prod_{i=1}^d(b_i-a_i).$
+\end{example}
+\begin{example}
+$\Omega=\{0,1\}^\N.$ Let $J\subset\subset \N$ be a finite (?) set and $A_J=\{x\in\Omega:x_j=a_j\ \forall\ j\in J\}$ given $\en ajJ,\ a_j\in\{0,1\}.$
+$A_J's$ are $\pi-$systems and are called \textbf{cylinder sets}. $$\text{cyl}=\lf\{A_J:J\subset\subset\N,\ \en ajJ\in\{0,1\}^J\rg\}$$ and $\F=\sigma(\text{cyl}).$ If $\PB,\Q$ on $(\Omega,\F)$ such that $\PB(A)=\Q(A)$ on $A\in\text{cyl},$ then $\PB=\Q$ on $\F.$
+\end{example}
+\subsection{Proofs:}
+**Theorem.**
+Let $\mathcal F_0$ be an algebra on $\Omega$, $\mathcal F=\sigma(\mathcal F_0)$, and $\mathbb P$ a probability measure on $(\Omega,\mathcal F)$. Then for every $A\in\mathcal F$ and every $\varepsilon>0$ there exists $B\in\mathcal F_0$ such that $\mathbb P(A\triangle B)<\varepsilon$.
+
+**Proof (using Dynkin’s $\pi$-$\lambda$ theorem).**
+
+Define
+
+$$
+\mathcal G:=\Big\{A\in\mathcal F:\ \forall\varepsilon>0\ \exists B\in\mathcal F_0\ \text{with }\mathbb P(A\triangle B)<\varepsilon\Big\}.
+$$
+
+We show $\mathcal G$ is a Dynkin system (a $\lambda$-system) that contains $\mathcal F_0$. Since $\mathcal F_0$ is an algebra (hence a $\pi$-system: nonempty and closed under finite intersections), the $\pi$-$\lambda$ theorem implies $\sigma(\mathcal F_0)\subset\mathcal G$. But $\mathcal G\subset\mathcal F=\sigma(\mathcal F_0)$ by definition, so $\mathcal G=\mathcal F$ and we are done.
+
+So check the Dynkin properties and containment:
+
+1. **$\mathcal F_0\subset\mathcal G$.**
+   If $B\in\mathcal F_0$ then choose $B$ itself; $\mathbb P(B\triangle B)=0$. Thus every element of $\mathcal F_0$ is in $\mathcal G$.
+
+2. **$\Omega\in\mathcal G$.**
+   $\Omega\in\mathcal F_0$ (algebra contains $\Omega$), hence $\Omega\in\mathcal G$.
+
+3. **Closed under complement.**
+   If $A\in\mathcal G$ and $\varepsilon>0$ pick $B\in\mathcal F_0$ with $\mathbb P(A\triangle B)<\varepsilon$. Since $\mathcal F_0$ is closed under complements, $B^c\in\mathcal F_0$ and
+
+   $$
+   \mathbb P(A^c\triangle B^c)=\mathbb P(A\triangle B)<\varepsilon,
+   $$
+
+   so $A^c\in\mathcal G$.
+
+4. **Closed under countable *disjoint* unions.**
+   Let $(A_n)_{n\ge1}\subset\mathcal G$ be pairwise disjoint, and fix $\varepsilon>0$. For each $n$ choose $B_n\in\mathcal F_0$ with
+
+   $$
+   \mathbb P(A_n\triangle B_n)<\varepsilon_n,
+   $$
+
+   where $\varepsilon_n>0$ are chosen so $\sum_{n=1}^\infty\varepsilon_n<\varepsilon$ (for instance $\varepsilon_n=\varepsilon2^{-(n+1)}$). Because the $A_n$ are disjoint, the symmetric difference between the disjoint union and the union of the approximants satisfies
+
+   $$
+   \Big(\bigcup_{n\ge1}A_n\Big)\triangle\Big(\bigcup_{n\ge1}B_n\Big)
+   \subset \bigcup_{n\ge1}(A_n\triangle B_n),
+   $$
+
+   so by subadditivity of $\mathbb P$,
+
+   $$
+   \mathbb P\Big(\Big(\bigcup_{n\ge1}A_n\Big)\triangle\Big(\bigcup_{n\ge1}B_n\Big)\Big)
+   \le \sum_{n=1}^\infty \mathbb P(A_n\triangle B_n)
+   <\sum_{n=1}^\infty\varepsilon_n<\varepsilon.
+   $$
+
+   Now each finite union $\bigcup_{n=1}^k B_n$ belongs to $\mathcal F_0$ because $\mathcal F_0$ is an algebra; taking a limit argument (or approximating the infinite union by finite unions and using the above inequality with tails chosen small) shows that for some finite union $B^{(k)}\in\mathcal F_0$ we can make $\mathbb P\big((\cup_n A_n)\triangle B^{(k)}\big)<\varepsilon$. Hence the disjoint union lies in $\mathcal G$. (Equivalently, one can first approximate by the *infinite* union $\bigcup_n B_n$ and then truncate using the finiteness of $\mathbb P$ to get an element of the algebra within $\varepsilon$.)
+
+Thus $\mathcal G$ is a Dynkin system.
+
+Since $\mathcal F_0$ is a $\pi$-system (an algebra is closed under finite intersections) and $\mathcal F_0\subset\mathcal G$, the $\pi$-$\lambda$ theorem gives $\sigma(\mathcal F_0)\subset\mathcal G$. But $\mathcal G\subset\sigma(\mathcal F_0)$ by definition, so equality holds and the theorem is proved.
+
+$\square$
+\section{Lecture 4 - 29/07/2025}
+\begin{example}
+$\PB$ on $\R$ with countable support (i.e., $\PB(\{x\})>0$ for at most countable $x$)
+\end{example}
+\begin{example}
+    Is there $\PB$ on $[0,1]$ such that $\PB(a,b]=b-a?$
+\end{example}
+\begin{definition}\textbf{(Caratheodory's Program)}
+   Given $\A$ an Algebra and $\F=\sigma(\A).$ We define $\PB:\A\mapsto [0,1]$ countably additive and $\PB(\Omega)=1.$
+   \begin{enumerate}
+       \item $\PB^*(A)=\inf\lf\{\sum \PB(A_n):A\subseteq \bigcup_n A_n,\ A_n\in \A\rg\}$ exists on $\Omega\in\A.$
+       \begin{itemize}
+           \item $\PB^*(\emptyset)=0.$
+           \item $\PB^*(A)\leq \PB^*(B)$ for $A\subseteq B.$
+           \item $\PB^*(\bigcup_n A_n)\leq \sum_n \PB^*(A_n)$ (Countable sub-additivity)
+       \end{itemize}
+       A probability distribution $\rho:2^\Omega\to [0,1]$ is called an \textbf{outer measure} if the above conditions hold. Thus $\PB^*:2^\Omega\mapsto [0,1]$ is an outer measure.
+       \item ``$\PB^*(A)+\PB^*(A^c)=\PB^*(\Omega)$." We define $$\F^*=\{A\subseteq\Omega:\PB^*(A\cap E)+\PB^*(A^c\cap E)=\PB^*(E)\ \forall\ E\subset\Omega\}.$$
+       \textbf{Claim:} $\F^*$ is $\sigma-$algebra and $\A\subseteq\F^*.$ So $\F\subseteq\F^*.$
+       \begin{proof}[\textbf{Proof of} $\mathbf{\A\subseteq \F^*}$] Let $A\in\A$ and $E\subseteq\Omega.$ Let $\en An\N,\ A_n\in\A$ be a covering of $E$ such that $\epsilon+\PB^*(E)\geq \sum_n \PB(A_n).$ Define $B_n=A_n\cap A$ and $C_n=A_n\cap A^c.$ Then $A\cap E\subseteq \bigcup_n B_n$ and $A^c\cap E\subseteq \bigcup_n C_n.$ Then $$\PB^*(A\cap E)+\PB^*(A^c\cap E)\leq^\text{defn} \sum_n\PB(B_n)+\sum_n\PB(C_n)$$ $$=\sum_n (\PB(B_n)+\PB(C_n))=^\text{f.a.}\sum_n \PB(A_n)\leq \PB^*(E)+\epsilon$$ $$\implies\ \PB^*(A\cap E)+\PB^*(A^c\cap E)=^\text{f.s.a.} \PB^*(E)\ \implies\ A\in\F^*\implies\ \A\subseteq\F^*.$$
+       \end{proof}
+       \item $\PB^*(A)=\PB(A)\ \forall\ A\in\A.$ We have 
+       \begin{itemize}
+           \item $\PB^*(A)\leq \PB(A).$
+           \item $A\subseteq\bigsqcup_n(A_n),\ A_n\in\A.$
+       \end{itemize}
+       Then $$\PB(A)=\PB\lf(\bigsqcup_n(A\cap A_n)\rg)\leq^\text{ctbl. add.}\sum_n\PB(A\cap A_n)\leq \sum_n\PB(A_n)\ \implies\ \PB(A)\leq\PB^*(A).$$
+       $A_n\in\F^*$ and $A=\bigsqcup_n A_n\in\F^*.$ Then by countable sub-additivity, $$\PB^*(A)\leq \sum_n \PB^*(A_n)$$ and $$\PB^*(A)\geq^\text{monotone}\PB^*\lf(\bigsqcup_{i=1}^nA_i\rg)=^{1:\ \text{f.a. on }\F^*}\sum_{i=1}^n \PB^*(A_i)\to \sum_{i=1}^\infty\PB^*(A_i).$$
+       \begin{proof}[\textbf{Proof of 1: f.a. on $\mathbf{\F^*:}$} It is enough to show that $\mathbf{\F^*}$]
+           Prove for $A\sqcup B=E,\ A,B\in\F^*$ that $$\PB^*(A)+\PB^*(B)=\PB^*(A\cap E)+\PB^*(A^c\cap E)=^{A\in\F^*}\PB^*(E)=\PB^*(A\cup B).$$
+       \end{proof}
+   \end{enumerate}
+\end{definition}
+\subsection{Proofs:}
+To show that \(\mathcal{F}^*\) is a \(\sigma\)-algebra, we need to verify the following three properties:
+
+1. \(\Omega \in \mathcal{F}^*\).
+2. If \(A \in \mathcal{F}^*\), then \(A^c \in \mathcal{F}^*\).
+3. If \(A_1, A_2, \dots \in \mathcal{F}^*\), then \(\bigcup_{n=1}^\infty A_n \in \mathcal{F}^*\).
+
+Additionally, we are given that \(\mathcal{A} \subseteq \mathcal{F}^*\), which implies that \(\mathcal{F} = \sigma(\mathcal{A}) \subseteq \mathcal{F}^*\) since \(\mathcal{F}^*\) is a \(\sigma\)-algebra containing \(\mathcal{A}\).
+
+Let's proceed step by step.
+
+---
+
+       1. Show \(\Omega \in \mathcal{F}^*\):
+
+We need to check that for every \(E \subseteq \Omega\),
+\[
+\mathbb{P}^*(\Omega \cap E) + \mathbb{P}^*(\Omega^c \cap E) = \mathbb{P}^*(E).
+\]
+Note that \(\Omega \cap E = E\) and \(\Omega^c \cap E = \emptyset\). So,
+\[
+\mathbb{P}^*(E) + \mathbb{P}^*(\emptyset) = \mathbb{P}^*(E) + 0 = \mathbb{P}^*(E).
+\]
+Thus, \(\Omega \in \mathcal{F}^*\).
+
+---
+
+       2. Show that if \(A \in \mathcal{F}^*\), then \(A^c \in \mathcal{F}^*\):
+
+Since \(A \in \mathcal{F}^*\), for every \(E \subseteq \Omega\),
+\[
+\mathbb{P}^*(A \cap E) + \mathbb{P}^*(A^c \cap E) = \mathbb{P}^*(E).
+\]
+But note that \((A^c)^c = A\), so for \(A^c\) we have:
+\[
+\mathbb{P}^*(A^c \cap E) + \mathbb{P}^*(A \cap E) = \mathbb{P}^*(E),
+\]
+which is the same equation. Therefore, \(A^c \in \mathcal{F}^*\).
+
+---
+
+       3. Show that if \(A_1, A_2, \dots \in \mathcal{F}^*\), then \(\bigcup_{n=1}^\infty A_n \in \mathcal{F}^*\):
+
+This is the most involved part. We need to show that for every \(E \subseteq \Omega\),
+\[
+\mathbb{P}^*\left( \left( \bigcup_n A_n \right) \cap E \right) + \mathbb{P}^*\left( \left( \bigcup_n A_n \right)^c \cap E \right) = \mathbb{P}^*(E).
+\]
+
+Let \(A = \bigcup_n A_n\). Since \(\mathbb{P}^*\) is subadditive, we always have
+\[
+\mathbb{P}^*(A \cap E) + \mathbb{P}^*(A^c \cap E) \geq \mathbb{P}^*(E),
+\]
+so it suffices to prove the reverse inequality:
+\[
+\mathbb{P}^*(A \cap E) + \mathbb{P}^*(A^c \cap E) \leq \mathbb{P}^*(E). \tag{1}
+\]
+
+To prove (1), we use the fact that each \(A_n \in \mathcal{F}^*\). Define a disjoint sequence:
+\[
+B_1 = A_1, \quad B_2 = A_2 \setminus A_1, \quad B_3 = A_3 \setminus (A_1 \cup A_2), \quad \dots
+\]
+Then \(\bigcup_n B_n = \bigcup_n A_n = A\), and the \(B_n\) are disjoint.
+
+Now, for any \(E \subseteq \Omega\), since each \(B_n \in \mathcal{F}^*\) (because \(\mathcal{F}^*\) is closed under complements and finite unions, which we can show inductively, but here we use that each \(A_n \in \mathcal{F}^*\) and \(B_n\) are differences), we have:
+\[
+\mathbb{P}^*(B_n \cap E) + \mathbb{P}^*(B_n^c \cap E) = \mathbb{P}^*(E). \tag{2}
+\]
+
+However, a more standard approach is to first show that \(\mathcal{F}^*\) is closed under finite unions and then use countable additivity of \(\mathbb{P}^*\) on \(\mathcal{F}^*\) (which we will get later).
+
+Alternatively, we can proceed as follows:
+
+For fixed \(E\), and for each \(n\),
+\[
+\mathbb{P}^*(E) = \mathbb{P}^*(A_n \cap E) + \mathbb{P}^*(A_n^c \cap E),
+\]
+since \(A_n \in \mathcal{F}^*\).
+
+Now, we want to relate this to \(A = \bigcup_n A_n\). Note that \(A^c \subseteq A_n^c\) for all \(n\), so by monotonicity, \(\mathbb{P}^*(A^c \cap E) \leq \mathbb{P}^*(A_n^c \cap E)\).
+
+Actually, the typical proof uses induction to show that for every \(N\),
+\[
+\mathbb{P}^*(E) \geq \sum_{n=1}^N \mathbb{P}^*(B_n \cap E) + \mathbb{P}^*(A^c \cap E),
+\]
+and then lets \(N \to \infty\).
+
+Indeed, since the \(B_n\) are disjoint and \(B_n \in \mathcal{F}^*\) (which we can show by induction that \(\mathcal{F}^*\) is closed under finite unions and differences), we have for each \(N\):
+\[
+\mathbb{P}^*(E) = \mathbb{P}^*\left( \bigcup_{n=1}^N B_n \cap E \right) + \mathbb{P}^*\left( \left( \bigcup_{n=1}^N B_n \right)^c \cap E \right),
+\]
+because \(\bigcup_{n=1}^N B_n \in \mathcal{F}^*\) (finite union). But \(\left( \bigcup_{n=1}^N B_n \right)^c \supseteq A^c\), so
+\[
+\mathbb{P}^*(E) \geq \sum_{n=1}^N \mathbb{P}^*(B_n \cap E) + \mathbb{P}^*(A^c \cap E).
+\]
+Letting \(N \to \infty\),
+\[
+\mathbb{P}^*(E) \geq \sum_{n=1}^\infty \mathbb{P}^*(B_n \cap E) + \mathbb{P}^*(A^c \cap E) \geq \mathbb{P}^*\left( \bigcup_n B_n \cap E \right) + \mathbb{P}^*(A^c \cap E) = \mathbb{P}^*(A \cap E) + \mathbb{P}^*(A^c \cap E),
+\]
+where the last inequality is by countable subadditivity. This gives (1).
+
+Therefore, \(\bigcup_n A_n \in \mathcal{F}^*\).
+
+---
+
+       4. Show \(\mathcal{A} \subseteq \mathcal{F}^*\):
+
+Let \(A \in \mathcal{A}\). We need to show that for every \(E \subseteq \Omega\),
+\[
+\mathbb{P}^*(A \cap E) + \mathbb{P}^*(A^c \cap E) = \mathbb{P}^*(E).
+\]
+
+By subadditivity, we always have \(\geq\), so we need to show \(\leq\).
+
+Since \(\mathbb{P}^*\) is defined from \(\mathbb{P}\) on \(\mathcal{A}\), for any \(\epsilon > 0\), there exists a covering \(\{A_n\} \subseteq \mathcal{A}\) of \(E\) such that
+\[
+\sum_n \mathbb{P}(A_n) \leq \mathbb{P}^*(E) + \epsilon.
+\]
+
+Now, note that \(A_n = (A_n \cap A) \cup (A_n \cap A^c)\), and since \(\mathcal{A}\) is an algebra, \(A_n \cap A \in \mathcal{A}\) and \(A_n \cap A^c \in \mathcal{A}\). Then,
+\[
+\mathbb{P}(A_n) = \mathbb{P}(A_n \cap A) + \mathbb{P}(A_n \cap A^c),
+\]
+because \(\mathbb{P}\) is additive on \(\mathcal{A}\).
+
+Now, \(\{A_n \cap A\}\) covers \(A \cap E\), and \(\{A_n \cap A^c\}\) covers \(A^c \cap E\). Therefore,
+\[
+\mathbb{P}^*(A \cap E) \leq \sum_n \mathbb{P}(A_n \cap A), \quad \mathbb{P}^*(A^c \cap E) \leq \sum_n \mathbb{P}(A_n \cap A^c).
+\]
+So,
+\[
+\mathbb{P}^*(A \cap E) + \mathbb{P}^*(A^c \cap E) \leq \sum_n [\mathbb{P}(A_n \cap A) + \mathbb{P}(A_n \cap A^c)] = \sum_n \mathbb{P}(A_n) \leq \mathbb{P}^*(E) + \epsilon.
+\]
+Since \(\epsilon > 0\) is arbitrary, we get
+\[
+\mathbb{P}^*(A \cap E) + \mathbb{P}^*(A^c \cap E) \leq \mathbb{P}^*(E).
+\]
+Thus, \(A \in \mathcal{F}^*\), so \(\mathcal{A} \subseteq \mathcal{F}^*\).
+
+---
+
+       Conclusion:
+We have shown that \(\mathcal{F}^*\) is a \(\sigma\)-algebra and that \(\mathcal{A} \subseteq \mathcal{F}^*\). Therefore, \(\mathcal{F} = \sigma(\mathcal{A}) \subseteq \mathcal{F}^*\).
+
+\[
+\boxed{\mathcal{F}^*\text{ is a }\sigma\text{-algebra and }\mathcal{A} \subseteq \mathcal{F}^*\text{, so }\mathcal{F} \subseteq \mathcal{F}^*.}
+\]
+
+\section{Lecture 5 - 30/07/2025}
+\begin{theorem}
+    $\A$ an algebra, $\F=\sigma(\A).$ $\PB:\A\to [0,1]$ be a probability with $\PB(\Omega)=1$ and countable additive set function. Then $\exists!$ extension $\PB^*$ on $\F$ such that $\PB^*=\PB$ on $\A.$ Often we will denote $\PB^*$ as $\PB.$
+\end{theorem}
+\begin{proof}
+    Define $$\PB^*(A):=\inf\{\sum_n A_n:A\subset \bigcup_n A_n,\ A_n\in\A\}\ \forall\ A\subseteq\Omega$$ and $$\F\subseteq\F^*:=\{A\subseteq\Omega:\PB^*(A\cap E)+\PB^*(A^c\cap E)=\PB^*(E)\}.$$ 
+\end{proof}
+\textbf{Q:} $\F_0-\pi$ system. Does $\PB$ on $\F_0$ extend to $\F=\sigma(\F_0)?$ 
+\begin{example}
+    $[0,1]^d$ and $\F_0=\lf\{\prod_{i=1}^d(a_i,b_i]:0\leq a_i\leq b_i\leq n\rg\}.$ This is a $\pi-$system with $$\PB\lf(\prod_{i=1}^d(a_i,b_i]\rg)=\prod_{i=1}^d(b_i-a_i).$$
+\end{example}
+\begin{example}
+    $\R$ with $\F_0=\lf\{\prod_{i=1}^d(a_i,b_i]:0\leq a_i\leq b_i\leq n\rg\}.$
+    Then $$F\uparrow;\text{ Right continuous};\ \lim_{x\to-\infty}F(x)=0;\lim_{x\to\infty}F(x)=1.$$
+\end{example}
+Let $F:\R\to [0,1].$ Such $F$ are called distribution functions. Say $\PB(a,b]=F(b)-F(a)\geq 0.$\label{pdef1} Does $\PB$ extend to p.m. on $\B(\R)?$ \textbf{If yes}, $F(x)=\PB(-\infty,x].$ A probability measure implies $F\uparrow,\ \text{Right continuous } (-\infty,x_n]\downarrow (-\infty,x]$ and also limits at $\pm\infty.$ 
+\begin{definition}\textbf{(Semi-Algebra)}
+$\F_0$ a semi-algebra if $\pi-$system, $\Omega,\emptyset\in\F_0$ and if $A\subseteq B$ with $A,B\in\F_0,$ then $B\sm A=\bigsqcup_{i=1}^n A_i,\ A_i\in\F_0.$
+\end{definition}
+\begin{example}
+Half-open rectangles in $\R^d.$ 
+\end{example}
+\begin{example}
+    $\PB(\R)=\lim_{x\to\infty}\PB(-\infty,x]=\lim_{x\to\infty}F(x)-1.$ 
+    $$\PB\lf(\underbrace{\bigsqcup_{i=1}^n(a_i,b_i]}_{(a,b]}\rg)=F(b)-F(a)=\sum_{i=1}^n (F(b_i)-F(a_i)).$$
+    $\PB$ as in \ref{pdef1} satisfies finite additivity on $\F_0$ (Right continuity not used). Let $(a,b]=\bigsqcup_n(a_n,b_n].$ $$F(b)-F(a)=^\text{R.C.}\sum_n(F(b_n)-F(a_n)).$$
+\end{example}
+\begin{theorem}
+   Given $\F_0-$semi algebra with $\F=\sigma(\F_0)$ with $\PB:\F\to [0,1]$ such that $\PB(\Omega)=1$ and countable additivity. Then $\exists!$ probability measure $\PB^*$ on $\F$ extending $\PB$ (Denoted later by $\PB).$ 
+\end{theorem}
+\begin{proof}
+    Let $\A$ an algebra generated by $\F_0=\G:=\lf\{\bigsqcup_{i=1}^n A_i:A_i\in\F_0\rg\}.$ Then $\G\subseteq \A$. If we can show that $\G$ is an algebra $\implies \A\subseteq\G$ and we are done.
+    \begin{proof}[Proof that $\G$ is an algebra]
+        \begin{itemize}
+            \item We know that $\emptyset\in\G.$
+            \item $\G$ is closed under \textbf{finite intersections}: $\bigsqcup_{i=1}^n A_i\cap \bigsqcup_{j=1}^m B_j=\bigsqcup_{i,j=1}^{n,m}\underbrace{(A_i\cap B_j)}_{\in\F_0}\in\G$.
+            \item \textbf{Complementation}: Say $A=\bigsqcup_{i=1}^nA_i\in\G\implies A^c=\bigcap_{i=1}^n A_i^c.$ Then $$A^c=\bigcap_{i=1}^n\bigsqcup_{j=1}^m B_j$$ for $B_j\in\F_0.$ Thus $$A_i^c\in\G\ \forall\ i\implies A^c\in\G.$$ 
+        \end{itemize}
+        Thus $\G$ is an algebra $\implies\ \G=\A.$
+    \end{proof}
+\end{proof}
+Define $\PB$ on $\A$ by $\PB(A)=\sum_{i=1}^n \PB(A_i)$ for $A=\bigsqcup_{i=1}^n A_i.$ Given $\PB(\Omega)=1.$ Check that $\PB$ is countably additive and that for $\bigsqcup_{i=1}^n A_i=\bigsqcup_{j=1}^m B_j,$$$\PB\lf(\bigsqcup_{i=1}^n A_i\rg)=\PB\lf(\bigsqcup_{j=1}^n B_j\rg)\implies \sum_{i=1}^n \PB(A_i)=\sum_{j=1}^m \PB(B_j).$$
+\begin{example}
+    $\Omega=\R^d,\ \F_0=\{\prod_{i=1}^d (a_i,b_i],\ldots\}.$ Define $F:\R^d\mapsto [0,1],$ coordinate-wise $\uparrow$ and right continuous as $$F(\underbrace{x}_{(x_i)_{i=1}^d})\to 0\text{ if }\min_i x_i\to -\infty\text{ and }$$ $$F(x)\to 1\text{ if }\min_i x_i\to\infty.$$ Then there exists unique probability measure $\PB$ on $\B_d=\B(\R^d)$ such that $$\PB\lf(\prod_{i=1}^D (-\infty,a_i])\rg)=F(a_1,\ldots, a_d).$$ Then, $$\PB\lf(\prod_{i=1}^D (a_i,b_i])\rg)=\sum_{c_i=\{a_i,b_i\}}\pm F(c_1,\ldots ,c_d).$$
+    \textbf{d=2:} $F(b_1,b_2)-F(a_1,b_2)-F(b_1,a_2)+F(a_1,a_2).$ [$+$ sign if $b,d$ have same parity, $-$ if not.] 
+\end{example}
+\begin{theorem}\textbf{(Some Properties)}
+    $\F_0$ a semi-algebra with $\F=\sigma(\F_0).$ $\PB$ be a probability measure on $(\Omega,\F).$
+    \begin{enumerate}
+        \item if $B\in\F$ and $\epsilon>0,\ \exists$ disjoint $A_1,...A_n\in\F_0$ such that $\PB(B\triangle \bigsqcup_{i=1}^n A_i)<\epsilon.$
+        \item if $B\in\F$ and $\epsilon>0,\ \exists$ disjoint $A_n\in\F_0$ such that $B\subseteq\bigsqcup_n A_n,\ \PB(\bigcup_n A_n\sm B)<\epsilon.$
+    \end{enumerate}
+\end{theorem}
+\begin{proof}[Proof of 2.]
+    By !, $\PB^*=\PB$ on $\F.$ Then $\exists\ \tilde{A_n}\in\G=A$ such that $$B\subseteq\bigcup_n \tilde{A_n},\ \PB(\bigcup_n \tilde{A_n}\sm B)<\epsilon.$$ Then $$\PB\lf(\bigcup_n \tilde{A_n}\rg)\leq \sum_n \PB(\tilde{A_n})\leq \PB^*(B)+\epsilon.$$ Also, $$\bigcup_n \tilde{A_n}=\bigsqcup_n \tilde{A_n}\cap \tilde{A}_{n-1}\cap\ldots \cap \tilde{A_1}^c$$ with \[
+\tilde{A_k}^c \underset{\text{semi-algebra}}{=} \bigsqcup_l c_{kl},\quad c_{kl} \in \mathcal{F}_0.
+\]
+\end{proof}
+\section{Lecture 6 - 05/08/2025}
+\begin{example}
+   Consider $(\R^d,\B)$ with $\Omega=\R^d,\ \F_0=\{\prod_{i=1}^d(a_i,b_i],\ \B=\sigma(\F_0).\}$ $\PB$ is a probability measure in $\Omega.$
+\end{example}
+\begin{theorem}
+    \begin{enumerate}
+        \item $\forall\ A\in\F,\ \epsilon>0,\ \exists\ C$ closed and $G$ open such that $$C\subseteq A\subseteq G\text{ and }\PB(G\sm C)<\epsilon.$$
+        \item $$\PB(A)=\sup_{\substack{K\subseteq A\\K\text{ compact}}}\PB(K),\ A\in\B.$$
+    \end{enumerate}
+\end{theorem}
+\textbf{Consequence:} $\exists\ \en Gn\N$ open s.t. $$A\subseteq\bigcap_n G_n\ \&\ \PB\lf(\bigcap_n G_n\sm A\rg)=0.$$ Parallely for closed sets, $A\sm C,\ G\sm A\subseteq G\sm C.$ 
+\begin{proof}
+    Note that $A\sm C\ \sqcup\ G\sm A=G\sm C.$
+\end{proof}
+\begin{proof}[Regularity Theorems $1\implies 2:$]
+   Let $W_k=[-k,k]^d.$ Then $$A\cap W_k\uparrow A\implies \PB(A\cap W_k)\uparrow \PB(A)$$$$\implies \exists\ K\st\PB(A\sm A\cap W_k)<\epsilon.$$
+$1\ \implies\ \exists$ closed $C\subseteq A\cap W_k$ s.t. $$\PB(A\cap W_k\sm C)<\epsilon.$$ (Apply $1$ to $A\cap W_k\in \B).$ So $C$ is compact and $$C\subseteq A\ \&\ \PB(A\sm C)<2\epsilon\ \implies$$ $$\sup_{\substack{K\subseteq A\\K\text{ compact}}}\PB(K)=\PB(A)\iff \inf_{\substack{K\subseteq A\\K\text{ compact}}}\PB(A\sm K)=0\ \iff\ 2.$$ 
+\end{proof}
+\begin{proof}[Proof of 1]
+    Enough to prove $G\supseteq A\st\PB(G\sm A)<\epsilon.$ For closed $C$, apply this to $A^c,$ then $\exists\ C^c$ open s.t. $$A^c\subseteq C^c\ \&\ \PB(G^c\sm A^c)<\epsilon\ \implies\ \ldots \PB(A\sm C)<\epsilon.$$ Let $A\in\F_0,\ A=\prod_{i=1}^d (a_i,b_i].$ $$G_n=\lf(a_i,b_i+\f1n\rg)\downarrow A\text{ as }n\to\infty$$$$\implies\ \exists\ n\st\PB(G_n\sm A)<\epsilon.$$ Let $A\in\F\to^{\text{approx. thm.}}$ $$\exists\ A_k\in\F_0,\ k\geq 1\st A\subseteq \bigcup_k A_k\ \&\ \PB \lf(\bigcup_k A_k\sm A\rg)<\epsilon.$$ Thus $\forall\ A_k,$ $$ \exists\text{ open }G_k\supseteq A_k\ \&\ \PB(G_k\sm A_k)<\f\epsilon{2^{k+1}}.$$ Then $G=\bigcup_k G_k$ open $$\implies G\supseteq\bigcup_k A_k\supseteq A.$$ We can thus say that $$\PB(G\sm A)=\PB\lf(G\sm\bigcup_k A_k\rg)+\PB\lf(\bigcup_k A_k\sm A\rg)$$$$\leq^{\text{ctbl. sa.}}\sum_k\PB(G_k\sm A_k)+\epsilon)\leq \f\epsilon k\cdot \f\epsilon {2^{k+1}}+\epsilon\leq 2\epsilon.$$
+\end{proof}
+Let $$\overline{\F}=\{A\cup N\mid A\in\F\ \&\ N\subseteq M\in\F\st \PB(M)=0\}.$$ $\PB(A\cup N)=\PB(A).$
+\begin{exercise}
+    Check $\overline{\F}$ is a $\sigma-$algebra.
+\end{exercise}
+$\overline{\F}$ is the completion of $\F$ w.r.t. $\PB$. Consider the space $(\R^d,\B).$ Then
+\[
+\quad 
+\B \subsetneq 
+\B^* \subsetneq 
+2^{\Omega}\ ;\ 
+\underbrace{\B^* = \overline{\B}}_{\text{depends on }\PB=\text{ Lebesgue measure}}\ 
+\]
+where \begin{itemize}
+    \item $\B$ is the Borel $\sigma-$algebra.
+    \item $\B^*$ is the Lebesgue $\sigma-$algebra obtained from Caratheodory's extension.
+\end{itemize}
+\begin{definition}\textbf{(Random Element/Variable)}
+    $(\Omega,\F,\PB)$ and $(S,\G)$ be the sample space. Then $X:\Omega\to S$ is a random element (measurable function) if $$X^{-1}(A)\in\F\ \forall\ A\in\G.$$ $$X^{-1}(A)=\{\omega\in\Omega:X(\omega)\in A\}=\{X\in A\}.$$
+\end{definition}
+\begin{example}
+    \begin{itemize}
+        \item Random Variable: $S=\R,\ \G=\B.$
+        \item Random Vector: $S=\R^d,\ \G=\B,\ d\geq 2.$
+    \end{itemize}
+\end{example}
+\section{Lecture 7 - 07/08/2025}
+$(\Omega,\F,\PB),\ (S,\G)$ sample space. $$X:(\Omega,\F)\mapsto (S,\G)$$ is a measurable $\Omega$ to $S.$ 
+\begin{exercise} See that 
+    $$\sigma(X):=\{X^{-1}(A)\mid A\in\G\}\subseteq 2^\Omega$$ is the smallest $\sigma-$algebra w.r.t. which $X$ is measurable.
+    \[
+    \left.
+\begin{array}{l}
+    X^{-1}(A^c) = X^{-1}(A)^c \\
+    X^{-1}\left( \bigcup_n A_n \right) = \bigcup_n X^{-1}(A_n)
+\end{array}
+\right\}
+\qquad \text{$\sigma$-algebra}
+\]
+Take $\F\st X^{-1}(A)\in\F\ \forall\ A\in\G(\sigma-$algebra$)\ \implies\ \sigma(X)\subseteq\F.$ Check that $$X:(\Omega,\F)\mapsto (S,\G)$$ is measurable $\iff\ \sigma(X)\subseteq\F.$ Given $X:\Omega\mapsto S$ and $\G$ a $\sigma-$algebra on $S,$ we have defined $\sigma(X),$ a $\sigma-$algebra on $\Omega.$ Given $X:\Omega\mapsto S$ a function and $\F$ a $\sigma-$algebra on $\Omega,$ we define $$S_X:=\{A\subseteq S\mid X^{-1}(A)\in\F\}.$$ Check $S_X$ is a $\sigma-$algebra and if $X:(\Omega,\F)\mapsto (S,\G),\ \G\subseteq S_X.$
+\end{exercise}
+\begin{proposition}
+    $\G=\sigma(\G_0),\ X:(\Omega,\F)\mapsto (S,\G)\ \iff\ X^{-1}(A)\in \F\ \forall\ A\in\G_0.$
+\end{proposition}
+\begin{proof}
+    $$\{X^{-1}\mid A\in\G_0\}\subseteq\F\ \implies\ \sigma(\{X^{-1}\mid A\in\G_0\})=\sigma(X)\subseteq\F.$$ By definition, $\sigma(\{X^{-1}\mid A\in\G_0\})\subseteq\sigma(X)$ is true trivially. To check $\sigma(X)\subseteq \sigma(\{X^{-1}\mid A\in\G_0\}),$ check that $$\G=\{A\in\G\mid X^{-1}(A)\in\F\}\supseteq\G_0.$$
+\end{proof}
+\begin{corollary}
+    $X:(\Omega,\F)\mapsto (\R^d,\B)\iff \{X\leq x\}\in\F.$  Then $$X=\{X_1,\ldots,X_d\}\leq x=(x_1,\ldots,x_d)\iff X_i\leq x_i\ \forall\ i.$$
+\end{corollary}
+\begin{exercise}
+    Given $(S,\B)$ is topological space, $$X:(\Omega,\F)\mapsto (S,\B)\iff X^{-1}(O)\in\F\ \forall\text{ open }O\implies\text{ continuous functions are measurable}.$$ 
+\end{exercise}
+Let $X,Y$ be random vectors ($\exists\ (\Omega,\F)\st\ X,Y:(\Omega,\F)\mapsto \R^d).$ Then
+\begin{itemize}
+    \item $aX+bY$ is a random vector $\forall\ a,b\in\R$.
+    \item $XY$ is a random vector.
+    \item $X,Y$ random vectors in $\R^d$ and $\R^{d'}$ respectively. Then $Z=(X,Y)$ is a random vector in $\R^{d+d'}.$ $$\{Z\leq (x,y)\}=\{X\leq x\}\cap \{Y\leq y\}=\{\omega\in\Omega\mid X(\omega)\leq x\}.$$
+    \item $(\Omega,\F)\mapsto^X(S_1,\G_1)\mapsto^Y (S_1,\G_1).$ $(X,Y)$ countable $\implies Y\circ X$ is measurable with $(Y\circ X)^{-1}(A)=X^{-1}(Y^{-1}(A)).$ We define a measurable indicator $\1_A:(\Omega,\F)\mapsto \R$ by $$\begin{cases}
+       1 & \text{if } \omega\in A\\
+       0 & \text{ otherwise}
+    \end{cases}$$ Then $\sum_{i=1}^k c_i\1_{A_i}$ is measurable $\forall\ c_i\in\R,\ A_i\in\F.$
+    \item X,Y be random variables. Then $\{X=Y\}\in\F;\ \{X-Y=0\}$ is an random variable. 
+    \item Let $\en Xn\N$ be a sequence of random variables. Then $\inf X_n$ and $\sup X_n$ are random variables.
+    \begin{proof}
+        $$\{\sup_n X_n\leq x\}=\bigcap_n \{X_n\leq x\}\ \forall\ x\in\R.$$ Then $\inf_n X_n(\omega):=\inf_n X_n(\omega).$
+    \end{proof}
+    \item $\limsup X_n\ \&\ \liminf X_n$ are random variables.
+    \item $\{\lim X_n\text{ exists}\}\in\F=\{\omega\in\Omega:\lim X_n(\omega)=\liminf X_n(\omega)=\limsup X_n(\omega)\text{ exists}\}.$
+    \end{itemize}
+\section{Lecture 8 - 13/08/2025}
+Define $\PB_X(A):=\PB(\underbrace{X\in A}_{\in\F})=\PB(X^{-1}A)$ and $A\in\G.$ $\PB_X$ is a probability measure on $(S,\G)$ [$X:(\Omega,\F)\mapsto (S,\G)$ a random variable]. Then 
+\begin{enumerate}
+    \item $\PB_X(S)=\PB(X\in S)=1$.
+    \item $\PB_X\geq 0.$
+    \item $\PB_X\lf(\bigsqcup_n A_n\rg):= \PB\lf(X\in \bigsqcup_n A_n\rg)=\PB\fb{\bigsqcup_n (X\in A_n)}=\sum_n\PB(X\in A_n)=\sum_n\PB_X(A_n).$
+\end{enumerate}
+Thus $(S,\G,\PB_X)$ is a probability space.
+\begin{corollary}
+    $X$ is a random vector in $\R^d$ then $(\R^d,\B,\PB_X)$ is a probability space. Also, $\PB_X$ in determined by $\PB(X\leq x)\ \forall\ x\in\R^d.$
+\end{corollary}
+\begin{proof}
+    The second part follows from the uniqueness of algebra from $\pi-$system.
+\end{proof}
+If $Q$ is a probability measure on $(\R^d,\B)\st$ $$\Q((-\infty,x])=\PB(X\leq x)\implies Q=\PB_X.$$ Given $(\Omega,\F,\PB),\ \exists\ X\st \PB_X=\PB.$ Define $X:(\Omega,\F)\mapsto (\Omega,\F)$ with $X=\1$. Then $X$ is measurable and $\PB_X(A)=\PB(A).$
+
+Say $X:(\Omega,\F,\PB)\mapsto (S,\G)$ be a random variable. Then $\exists\ Y=\1:S\mapsto S\ \&\ \PB_Y=\PB_X.$ Suppose $f:S,\G)\mapsto (S_1,\G_1)$ be a function. If $X:(\Omega,\F,\PB)\mapsto (S,\G),$ then $f(X):(\Omega,\F,\PB)\mapsto (S_1,\G_1)$ given by $$\PB(f(X)\in A)=\PB(X\in f^{-1}(A))=\PB_X(f^{-1}(A)).$$ $\PB_{f(X)}$ can be determined from $\PB_X$ alone! 
+$X$ is $``xyz"$ random variable and $\PB_X$ has $``xyz"$ distribution. 
+
+\noindent\textbf{Uniform:} $X$ is a uniform random variable if $$\PB((-\infty,x])=\PB(X\leq x)=\begin{cases}
+        0,&x\leq 0\\x,&x\leq 1\\1,&x>1
+    \end{cases}$$
+    
+    Take $([0,1],\B,\text{Lebesgue})$ and $X=\1$ (Uniform distribution). 
+    $X$ is a discrete random variable iff $\sum_{x\in\R}\PB(X=x)=1.$ Let $\en xn\N$ be the non-zero values (Support of $X$) and $p_i=\PB(X=x_i).$ Then $p_i\geq 0$ and $\sum_i p_i=1.$
+    
+    Say Support$(X)$ is finite, say $x_1,\ldots,x_n$ and define $f:[0,1]\mapsto \{x_1,\ldots,x_n\}$ by $$f(y)=x_i,\text{ if }\sum_{j=1}^{i-1}p_j\leq y\leq \sum_{j=1}^ip_j,\ p_0=0.$$ Then $f$ is piecewise continuous $\implies$ measurable and $$\PB(f(u)=x_i)=\PB(\sum_{j=1}^{i-1}p_j\leq u\leq \sum_{j=1}^ip_j)=p_i$$ meaning $f(u)$ is a random variable with probability distribution $\{p_i\}_{i=1}^n.$
+    \begin{exercise}
+        Show for countable case.
+    \end{exercise}
+$X$ a random variable/vector with CDF $F(x)=F_X(x)=\PB(X\leq x),\ x\in\R/\R^d.$ Then
+\begin{enumerate}
+    \item $F\uparrow$ (coordinate-wise).
+    \item $\lim_{\substack{x\downarrow -\infty\\(\min\{x_i\})}}F(x)=0$ and $\lim_{\substack{x\uparrow \infty\\(\max\{x_i\})}}F(x)=1.$
+    \item $F$ is right-continuous $(F(x_n)\downarrow F(x)$ if $x_n\downarrow x).$
+\end{enumerate}
+A function $F:\R^d\mapsto\R$ is called a distribution function (DF) if the above hold.
+\begin{theorem}
+    Given a distribution function, $\exists$ a random variable $X\st F_X=F.$ 
+\end{theorem}
+\begin{proof}
+    We will show that $\exists\ f:[0,1]\mapsto\R\st X=f(U)$ has CDF $F.$ Suppose $f\uparrow$ and one-one. Possible: $\PB(f(U)\leq x)=\PB(U\in f^{-1}(-\infty,x])=f^{-1}(x)=F(x).$ If possible then $f=F^{-1}.$
+    
+    \noindent\textbf{Generalised inverse}: $F^{-1}(u)=\inf\{x\in\R:\ F(x)\geq u\}.$ Say $F$ is continuous and strictly increasing, then $F(F^{-1}(u))=u\ \forall\ u\in (0,1)\ \&\ F^{-1}(F(x))=x\ \forall\ x\in\R.$ 
+
+\begin{lemma}
+    Let $u\in (0,1)\ \&\ x\in\R.$ Then 
+    \begin{enumerate}
+        \item $F^{-1}(u)$ is monotone increasing.
+        \item $u\leq F(x)\ \iff\ F^{-1}(u)\leq x.$
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    \begin{enumerate}
+        \item $u_1\leq u_2\ \iff\ \{x:F(x)\geq u_2\}\subseteq \{x:F(x)\geq u_1\}.$ Taking $\inf$ on both sides, $F^{-1}(u_2)\geq F^{-1}(u_1).$
+        \item $u\leq F(x)\implies F^{-1}(x)\leq u.$ Say $F^{-1}(x)\leq x\implies F(x+\epsilon)\geq u\ \forall\ \epsilon>0$ (by contradiction). Then by right continuity, $$F(x)=\lim_{\epsilon\downarrow0}F(x+\epsilon)\geq u$$
+    \end{enumerate}
+\end{proof}
+Let $U\sim Unif$ ($U$ is the uniform random variable). We set $X:=F^{-1}(U)$ where $F^{-1}$ is the generalised inverse. By 2, $F^{-1}$ is $\B-$measurable and hence $X$ is a random variable. Then $$\PB(X\leq x)=\PB(F^{-1}(U)\leq x)=\PB(U\leq F(x))=F(x).$$
+\end{proof}
+$X\sim U[a,b]$ is the uniform rv on $[a,b]$ with CDF $$F_X(x)=\begin{cases}
+    0,& x\leq a\\\f{x-a}{b-a},& a\leq x\leq b\\1,&x\geq b
+\end{cases}$$
+Say $U\sim Unif[0,1].$ Then $$Y=(b-a)U+a\ \implies\ \PB(Y\leq x)=F_X(x).$$
+The next random variable we will see is \textbf{Bernoulli}. $X\sim Ber(p)$ if $$F_X(x)=\begin{cases}
+    0,&x\leq 0\\1-p,&0\leq x\leq 1\\1,&x\geq 1
+\end{cases}$$
+$Y=\1(U\geq 1-p)$ follows Bernoulli. Say $X$ is a random variable, we want to find $f$ such that $f(X)\sim Unif.$ Then $\PB(f(X)\leq u)=\PB(X\leq f^{-1}(u)=\PB(f^{-1}(U)).$ If $f$ is continuous and strictly increasing that $\PB(f(x))\leq u)=\PB(X\leq F^{-1}(u))=u.$
+\section{Lecture 9 - 14/08/2025}
+\begin{proposition}
+    \begin{enumerate}
+        \item $\lim_{y\uparrow x}F(y)=:F(x-)$ exists
+        \item $F$ has at most countable number of discontinuities.
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    \begin{enumerate}
+        \item as $y\uparrow x,\ \{X\leq y\}\uparrow\{X\leq x\}$ $$\implies \lim_{y\uparrow x}F(y)=^{\text{cty of }\PB}\PB(X<x)=F(x-).$$
+        \item Discontinuities of $F:$ $\exists\ x\st F(x)\neq F(x-).$ Since $F(x-)\leq F(x),$ $x$ is a discontinuity if $$F(x)-F(x-)=\PB(X=x)>0\ (x\text{ is atom of }\PB_X).$$ Then $\sum\PB(X=x)\leq \PB(X\in\R)=1$ (positive only for countably many values of $x$). Let $$\Lambda_n:=\lf\{x\in\R:\PB(X=x)>\f1n\rg\}\ \&\ \Lambda=\lim_{n\to\infty}\Lambda_n=\{x:\PB(X=x)=0\}.$$ Then $$1\geq \sum_{x\in A_n}\PB(X=x)\geq \card{\Lambda_n}\f1n\ \implies\ \card{\Lambda_n}\leq n\ \implies$$ $\Lambda$ is countable.
+    \end{enumerate}
+\end{proof}
+$X$ is a continuous random variable if $F(x)=\int_{\infty}^xf(s)ds$ is Riemann-integrable with $f(s)>0$ and $\int_{-\infty}^\infty f(s)ds=1.$
+\begin{exercise}
+    $F$ a continuous DF but $X$ not continuous?
+\end{exercise}
+\begin{example}
+    $Exp(\lambda):\ f(x)=\lambda e^{-\lambda x}$ and $F(x)=1-e^{-\lambda x}.$ If $f_1\neq f_2$ in at most countable many points then $F_1=F_2.$
+\end{example}
+\begin{theorem}
+    If $F:\R^d\mapsto\R$ is a distribution function then $\exists$ a random variable $X\st$ $F(x)=\PB(X\leq x).$
+\end{theorem}
+\begin{proof}
+    \label{assume} Assume $\exists\ U=(U_1,\ldots,U_d)\in [0,1]^d\st \PB(U\leq u)=\prod_{i=1}^d F_u(u_i)$ where $F_{U}$ is the CDF of $U[0,1].$ 
+    
+    Let $F(x)=\prod_{i=1}^d F_i(x)\ \implies$ all $F_i's$ are DF on $\R.$ We define $X_i=\substack{F_i^{-1}(U_i)}_{\text{gen. inv}}\sim F_i$ (CDF of such $X_i).$ $X=(X_1,\ldots, X_d)$ with $\PB(X\leq x)=\PB(F_i^{-1}(U_i)\leq x_i\ \forall\ i)=\PB(U_i\leq F-iX_i)\ \forall\ i)=\prod_{i=1}^d F_i(x_i).$
+
+    \ref{assume} why? What is $h\st h(u)=(u_1,\ldots,u_d).$ $u\in [0,1],\ u=\sum_{h\geq 1}\f{x_n(u)}{2^n}$ when not $!.$ $$h_n:[0,1]\mapsto \{0,1\},\ h_n(u)=x_n(u).$$ Then $Y_n=h_n(U)$ is $Ber\fb{\f12}.$ Also, $$\PB(Y_1=\epsilon_1,\ldots,Y_n=\epsilon_n)=\prod_{i=1}^n\PB(Y_i=\epsilon_i).$$ Say $$U_{k+1}=\sum_{n\geq 1}\f {Y_{nd+k}}{2^n},\ k=0,\ldots,d-1.$$ Then $\PB(U_i\leq u_i)=F_{U_0}(u_i).$ Let $U=(U_1,\ldots,U_d).$ Then $$\PB(U\le u)=\prod_{i=1}^d\PB(U_i\leq u_i).$$
+    \end{proof}
+\section{Lecture 10 - 19/08/2025}
+We consider random variables $X:(\Omega,\F,\PB)\mapsto\R.$ Let $X$ be discrete and $p_X$ be its PMF. Then $\sum_x\underbrace{F(x)-F(x-)}_{\PB(X=x)}=1.$ The expectation of $X$ is defined as $$\E(X):=\sum_xxp_X(x)\text{ if }\sum_x\card{x}p_X(x)<\infty.$$
+Let $x_+:=\max\{x,0\}\ \&\ x_-:=\max\{-x,0\}.$ Then $$\sum_xxp_X(x):=\sum_xx_+p_X(x)-\sum_xx_-p_X(x)$$ if either is $<\infty.$
+We have $x=x_+-x_-$ and $\card{x}=x_++x_-$ with $x_+x_-=0\ \forall\ x\in\R.$ Thus $$\sum_x\card{x}p_X(x)<\infty\iff \sum_xx_+p_X(x)<\infty\ \&\ \sum_xx_-p_X(x)<\infty.$$
+\begin{example}
+    Say $X=\sum_{i=1}^nc_i\1_{A_i},\ c_i\geq 0,\ A_i\in\F,\ n<\infty.$ This is a \textbf{simple} random variable. $\1_{A_i}'s$ are r.v.'s, hence $c_i1_{A_i}'s$ also and hence $X.$ Then $$\E[X]:=\sum_{i=1}^nc_i\PB(A_i).$$ 
+    \begin{exercise}
+        Check for $X=\sum_{i=1}^nc_i\1_{A_i}=\sum_{j=1}^md_j\1_{B_j},$ it holds that $$\sum_{i=1}^nc_i\PB(A_i)=\sum_{j=1}^md_j\PB(B_j).$$
+    \end{exercise}
+$\E(X)$ for $X$ simple is well-defined. 
+\begin{itemize}
+    \item $\E(X)\ge 0.$
+    \item $\E(1)=1.$
+    \item  $X,Y$ simple with $\E(X+Y)=\E(X)+E(Y).$
+    \item Then $$\E(X+Y)=\E(\sum_{i=1}^nc_i\1_{A_i}+\sum_{j=1}^mb_j\1_{B_j}=\E(X)+\E(Y).$$
+    \item $X\ge Y\ge 0,\ X,Y$ simple $\implies^{Ex. A}\E(X)\ge \E(X)=\E(Y).$
+\end{itemize}
+\end{example}
+\begin{example}
+    $$\E(X):=\sup\{\E(Y):EY:0\leq Y\leq X,\ Y\text{ is simple}\}.$$
+    \begin{itemize}
+        \item $\E(X)\geq 0.$
+        \item $\E(\1)=\1.$
+         \item $X+U\ge 0\ \implies\ X+Y\ge 0.$ So let $X'\geq 0$ and $Y'\ge 0\ \st X'\leq X,\ Y'\le Y.$ Then $X'+Y'\leq X+Y\ \&\ X'+Y'\ge 0\text{ and simple.}$ By definition, $$\E(X_Y)\geq \E(X'+Y')=^{\text{lim. for simple}}\E(X')+\E(Y').$$
+    Take $\sup$ over $X'$ and $Y'$ on RHS. Thus $$\E(X+Y)\geq \E(X)+\E(Y).$$
+    \item $X\ge Y\ge 0\implies \E(X)\geq \E(Y).$ Then 
+    \begin{enumerate}
+        \item[\textbf{MCT-1:}] If $0\leq X_n$ simple and $X_n\uparrow X,$ then $\E(X_n)\uparrow\E(X).$ For example, take $$X_n(\omega)=\sum_{k=0}^{2^{2n}-1}\f k{2^n}\times \1[X(\omega)\in \underbrace{[k2^{-n},(k+1)2^{-n})}_{A_k}$$ with $\Omega\in [0,1].$ We then have $$X_n(\omega)\leq X_{n+1}(\omega)\leq X(\omega).$$ $$0\leq X(\omega)-X_n(\omega)\leq 2^{-n}\ \implies\ X_n(\omega)\uparrow X(\omega)\ \forall\ \omega\in\Omega.$$ \textbf{MCT} $\implies\ \sum_{k=1}^{2^{2n-1}}\f k{2^n}\PB(X\in [k2^{-n},(k+1)2^{-n}))=\E(X_n(\omega))\uparrow \E(X(\omega))$. 
+    \end{enumerate}
+    \end{itemize}
+\end{example}
+\section{Lecture 11 - 20/08/2025}
+\textbf{\underline{Expectation of a Random Variable: }} 
+\begin{enumerate}
+    \item[Step 1:] $X=\sum_{i=1}^nc_i\1_{A_i},$ simple with $c_i\geq 0,\ A_i\in\F.$ Then $$\\E[X]=\sum_{i=1}^nc_i\PB(A_i).$$ 
+    \item[Step 2:] ;et $X:(0,1)\mapsto \R.$ Riemann way:
+    \begin{itemize}
+        \item $$L_n=\sum_{k=0}^{2^n}\min_{\omega\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}\PB\fb{\lf[\f k{2^n},\f{k+1}{2^n}\rg)}.$$
+        \item $$U_n=\sum_{k=0}^{2^n}\max_{\omega\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}\PB\fb{\lf[\f k{2^n},\f{k+1}{2^n}\rg)}.$$
+    \end{itemize}
+     Say $X\geq 0$ is a random variable. Then
+    \begin{enumerate}
+        \item $\E[X]\geq 0$
+        \item $\E[1]=1$
+        \item $\E[X+Y]=\E[X]+\E[Y]$
+        \item $X\geq Y\geq 0\implies \E[X]\geq \E[Y]$
+    \end{enumerate}
+    \item[Step 3:] $\E[X]=\E[X_+]-\E[X_-]$ where $X_+=\max\{X,0\}$ and $X_-=\max\{-X,0\}$ if one of them exists. Check that the functions $x\mapsto \max\{x,0\}$ and $x\mapsto \max\{-x,0\}$ are measurable $\implies\ X_+$ and $X_-$ are random variables with $X_+,X_-\geq 0.$ By Step $2,$ $\E[X_+]$ and $\E[X_-]$ are well-defined. Else $\E[X]$ is not defined.
+\end{enumerate}
+\begin{definition}\textbf{(Integrable Random Variable)}
+    $X$ is \textbf{integrable} if $$\E[X]=\E[X_+]+\E[X_-]<\infty.$$ Also we define
+    $$L'(\Omega):=L'(\PB):=\{X:(\Omega,\F,\PB)\mapsto \R\st \E[X]<\infty\}.$$
+\end{definition}
+Let $X:(\Omega,\F,\PB)\mapsto\R$ and $Y:(\Omega',\G,\Q)\mapsto\R$ be non-negative random variables such that $\PB_X=\Q_Y.$ We take $X_n's$ and $Y_n's$ as cannonical choices. Then $$\PB\fb{X\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}=\Q\fb{Y\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}$$$$\implies \E[X_n]=\E[Y_n]\uparrow\E[Y]\implies \E[X]=\E[Y].$$ Now say $X,Y: (\Omega,\F,\PB)\mapsto\R$ be randomv variables such that $\PB_X=\Q_Y$ $$\implies \PB_{X_+}=\Q_{Y_+},\ \PB_{X_-}=\Q_{Y_-}$$ $$\implies\E[X_+]=\E[Y_+],\ \E[X_-]=\E[Y_-]$$ $$\implies \E[X]=\E[Y]$$ if one of them is well-defined. Thus $$X\in L'(\PB)\iff Y\in L'(\Q).$$ Say $f:(\R,\B,\PB_X)\mapsto\R_+$ measurable with $$\E[f(X)]=^{MCT}\lim_{n\to\infty}\E[f_n(X)]$$ where for $x\in\R,$ $$f_n(x)=\sum_{k=0}^{2^{2n}-1}\f k{2^n}\1\tb{f(x)\in \underbrace{\lf[\f k{2^n},\f{k+1}{2^n}\rg)}_{\in\B}}.$$ Then $$\E[f_n(X)]=\sum_{k=0}^{2^{2n}-1}\f k{2^n}\underbrace{\PB\tb{X\in f^{-1}\lf[\f k{2^n},\f{k+1}{2^n}\rg)}}_{=\PB_X\fb{f^{-1}\fb{\lf[\f k{2^n},\f{k+1}{2^n}\rg)}}}.$$ For all $x\in\R,$ $f_n(x)\uparrow f(x).$ Let $Y=f(X):(\Omega,\F,\PB)\mapsto\R$ with $Y_n=f_n(X)$ (cannonical choice). Say $f:\R\mapsto\R$ measurable with $f(x)_+:=f_+(x):=\max\{f(x),0\}$ and $f(x)_-:=f_-(x):=\max\{-f(x),0\}.$ Then $\E[f(X)_+]$ and $\E[f(X)_-]$ depend only on $\PB_X$ as $f_+,f_-$ are $\geq 0$ and measurable. Then $$\Omega\mapsto^\PB\R\mapsto^f\R\mapsto^\pm \R_+.$$ 
+\begin{proof}
+    $1,2$ are done. We will prove $3.$ We have $$\card{X+Y}\leq \card{X}+\card{Y}\equiv \card{X(\omega)+Y(\omega)}\leq \card{X(\omega)}+\card{Y(\omega)}\ \forall\ \omega\in\Omega.$$ 
+    $X+Y$ is a monotonous $\geq 0$ random variable $$\implies\E[X+Y]\leq\E[X]+\E[Y]<\infty$$$$\implies X+Y\in L'\implies aX+bY\in L'\ \forall\ a,b\in\R.$$ We will show $$\E[\underbrace{X+Y}_Z]=\E[X]+\E[Y].$$ $$X+Y=Z=Z_+-Z_-=X_++Y_+-X_--Y_-=Z_++X_-+Y_-=X_++Y_++Z_-\geq 0.$$ Since $X,Y,Z\in L'$, all are finite and $$\E[Z_++X_-+Y_-]=^{\lim?}E[Z_+]-\E[Z_-]=\E[X_-]+\E[Y_+]-\E[X_-]-\E[Y_-].$$ 
+    \end{proof}
+    Let $L'(\Omega)\mapsto\R$ given by $X\mapsto\E[X].$ Note the following:
+    \begin{itemize}
+        \item $\E[X]\geq 0$ for $X\geq 0$
+        \item $\E[\1]=1$ where $\1=\1_\Omega$
+        \item For $\Omega=[0,1],\ \C[0,1]\subseteq L'(\Omega).$
+        \item $\card{X}\leq Y$ and $Y\in L'\implies X\in L'.$        
+    \end{itemize}
+    $Y\geq 0$ and $Y\in L'\ \implies\ \E[Y]<\infty$ and thus monotonicity $\implies\ E[X]\leq \E[Y].$ $X$ is \textbf{bounded} if for some $a\geq 0,\ \card{X}\leq a.$ We define $$\C[0,1]=\{X:\Omega=[0,1]\mapsto\R,\ X\text{ is continuous}\}.$$ Since $X$ is bounded, $X\in L'.$ Let $I:\C[0,1]\mapsto\R$ with the properties
+    \begin{itemize}
+        \item $X\geq 0\implies I(X)\geq 0.$
+        \item $I(1)=1.$
+        \item $I$ is linear.
+    \end{itemize}
+    \begin{example}
+        $I(X)=\E[X]$ and $I(X)=\int_{0}^1X(\omega)d\omega.$ 
+        \end{example}
+        Property on $\Omega\in\F$ holds \textbf{almost surely (a.s.)} if $\PB(\text{property})=1.$ 
+    \begin{example}
+        $X\geq 0\ a.s.\ \text{if}\ \PB_X[X\geq 0]=\PB_X[0,\infty)=1.$ 
+    \end{example}
+    \begin{lemma}\label{leexy}
+         If $X=Y\ a.s.,$ then $Y\in L'\iff X\in L'$ and parallely $\E[X]=\E[Y].$
+    \end{lemma}
+   \begin{proof}
+       First lets assume $X,Y\geq 0.$ Let $$\Omega_=:=\{X=Y\}\text{ and }\Omega_\ne=\{X\ne Y\}.$$ We assume that $\PB(\Omega_\ne)=0.$
+       Then $$Y=Y\1_{\Omega_=}+Y\1_{\Omega_\ne}\text{ and }X=X\1_{\Omega_=}+X\1_{\Omega_\ne}$$ $$\implies \E[X]=\E[X\1_{\Omega_=}]=\E[Y\1_{\Omega_=}]=\E[Y].$$
+   \end{proof} 
+Generally $X,Y\st X=Y\ a.s.\implies X_+=Y_+\text{ and }X_-=Y_-\ a.s.$ Lemma~\ref{leexy} $\implies \E[X_+]=\E[Y_+],\ \E[X_-]=\E[Y_-].$ 
+\begin{lemma}
+    $Y\geq 0$ and $A\st\PB(A)=0\implies \E[Y\1_A]=0.$
+\end{lemma}
+\begin{proof}
+    Consider simple $\geq0,\ Y_n\st Y_n\uparrow Y.$ Let $Y_n'=Y_n\1_A\implies$ $$\E[Y_n']=\sum_{i=1}^nc_i\PB(A_i\cap A)\leq \sum_{i=1}^nc_i\PB(A)=0.$$ $$MCT\implies \E[Y_n']=0\uparrow\E[X\1_A].$$ 
+\end{proof}
+\section{Lecture 12 - 21/08/2025}
+\begin{enumerate}
+    \item $X=\sum_{i=1}^nc_i\1_{A_i};\ c_i\geq 0,\ A_i\in\F.$ Then $$\E[X]:=\sum_{i=1}^nc_i\PB[A_i].$$
+    \item $X\geq 0,\ \E[X]=\sup\{\E[Y]:0\leq Y\leq X,\ Y\text{ simple}\}.$ Then $$X_n=\sum_{k=0}^{2^{2n}-1}\f k{2^n}\1\tb{X\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}\uparrow X\text{ and }\E[X_n]\uparrow\E[X].$$
+    \item $X$ generalised, $X=X_+-X_-.$ $$\E[X]=\E[X_+]-\E[X_-]$$ if RHS is well-defined. We define $L'(\Omega)=\{X:\E[\card{X}]<\infty\}.$
+\end{enumerate}
+\begin{proposition}
+    \begin{enumerate}
+        \item $\E[X]\geq 0\text{ for }X\geq 0\ a.s.$
+        \item $\E[1]=1.$
+        \item $\E[aX+bY]=a\E[X]+b\E[Y].$
+        \item $X\geq Y\ a.s.\implies \E[X]\geq \E[Y],\ X,Y\in L'.$
+    \end{enumerate}
+\end{proposition}
+Let $f:\R\mapsto\R$ be measurable. Then $\E[f(X)]$ is determined only by $\PB_X.$ $X$ be a discrete random variable. Then $$\sum_X\underbrace{\PB(X=x)}_{=:p_X(x)\text{ pmf}}=1.$$ 
+\begin{theorem}
+    \begin{enumerate}
+        \item $$\E[X]=\sum_Xxp_X(x)\text{ if }\sum_X\card{x}p_X(x)<\infty.$$
+        \item Let $f:\R\mapsto\R.$ Then $$\E[f(X)]=\sum_Xf(x)p_X(x)\text{ if }\sum_X\card{f(x)}p_X(x)<\infty.$$
+    \end{enumerate}
+\end{theorem}
+Assume $X\geq 0\implies p_X(x)=0\ \forall\ x<0.$ Let $\{x_1,\ldots,x_k,\ldots\}$ be $x\st p_X(x)>0.$ We define $$X_n(\omega):=\sum_{i=1}^nx_i\1[X(\omega)=x_i],\ \omega\in\Omega.$$ Then $X_n\geq 0$ simple, $X_n(\omega)\uparrow X(\omega)\ \forall\ \omega.$ $X(\omega)=x_k$ for some $k\implies$$$ X_n(\omega)=X(\omega)\ \forall\ n\geq k\implies \E[X_n]\uparrow \E[X]$$ as $\sum_{i=1}^nx_ip_X(x_i)\uparrow\sum_{i=1}^nx_ip_X(x_i)=\sum_xxp_X(x).$
+\begin{exercise}
+Check $\E[X_\pm]=\sum_xx_\pm p_X(x).$   
+\end{exercise}
+And so $\E[X]=\sum xp_X(x)$ if one of them exists.
+Let $Y=f(X)$ ($f\geq 0$ WLOG). Then $\{y_1,\ldots,y_j,\ldots\}=\{f(x_1),\ldots,f(x_j),\ldots\}$ and $$\E(f(X))=\E(y)=\sum_yyp_Y(y)=\sum_yy\sum_{x\in f^{-1}(y)}p_X(x).$$ Observe that
+$$p_X(y)=\PB(f(X)=y)=\PB(X\in f^{-1}(y))=\sum_{x\in f^{-1}(y)}p_X(x).$$ Thus $$\E(f(X))=\sum_{x\in\R}f(x)p_X(x).$$ Also, $$\bigsqcup_{y\in\R}f^{-1}(y)=\bigsqcup_{y\in\R}\{x\in\R:x\in f^{-1}(y)\}=\bigsqcup_{x\in\R}\{x\}.$$
+Thus $\E[X^p]=\sum x^pp_X(x)$ if $\sum \card{x^p}p_X(x)$ exists. 
+\begin{lemma}
+    \begin{enumerate}
+        \item $\E[X]=\int xp_X(x)dx$ if $\int\card{x}p_X(x)dx<0$
+        \item $f:\R\mapsto\R$ (Riemann integrable - check measurable) given. Then $$\E[f(X)]=\sum f(x)p_X(x)\text{ if }\int\card{f(x)}p_X(x)<\infty$$
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    We will just prove $2$ as $2\implies 1$ with $f$ being identity. Assume $f\geq 0.$ We know that $$\PB(X\in (a,b])=\int_a^bp_X(x)dx.$$ Let us define $$g_n(x)=\sum_{k=0}^{2^{2n}-1}\min_{y\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}g(y)\1\tb{x\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}$$ and $$g(x)=f(x)p_X(x).$$ The lower sum of $g_n$ is $$\int g_n=\sum_{k=0}^{2^{2n}-1}\min_{y\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}g(y)\f1{2^n}\uparrow\int g$$ by Riemann Integrability of $g.$ 
+\end{proof}
+Let $(\Omega,\F,\PB)\mapsto^x(\R,\B,\PB_X)\mapsto^f (\R,\B),$ $\E[f(x)]=\E_X(f).$ Then $\forall\ x\in\R,$ $$f_n(x)-\sum_{k=0}^{2^{2n}-1}\min_{y\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}f(y)\1\tb{x\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}\uparrow f(x)$$ with $f_n\geq 0$ and simple. Then $$\E_X(f)=\lim_{n\to\infty}\E_X[f_n]=\lim_{n\to\infty}\sum_{k=0}^{2^{2n}-1}\min_{y\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}f(y)\PB\tb{X\in\lf[\f k{2^n},\f{k+1}{2^n}\rg)}$$ $$=\sum_{k=0}^{2^{2n}-1}\int_{k2^{-n}}^{(k+1)2^{-n}}\min_{}f(y)p_X(x)dx\geq \sum_{k=0}^{2^{2n}-1}\int_{k2^{-n}}^{(k+1)2^{-n}}\min_{}f(y)p_X(y)dx=\int g_n\uparrow \int fp_X.$$ 
+\section{Lecture 13 - 26/08/2025}
+\begin{definition}\textbf{(Moments)}
+\textbf{Mean:} $\E[X]$ "if it exists" and \textbf{$\mathbf{k^{th}}$-moment:} $$\E[X^k]\ \forall\ k\in\N_0\text{ when }X^k>0\text{ or }\E\card{X}^k<\infty).$$ The \textbf{$\mathbf{k^{th}}$-central moment} is given by $$\E[(X-\E[X])^k]\text{ when }\E[X]<\infty\ar k\text{ even / }\E\tb{\card{X-E[X]^k}}<\infty.$$ If $X\geq \E[X]$ a.s. ($\PB(X\geq\E[X])=0$) then $\E[X-\E[X]]=0$ and $X-\E[X]\geq 0$ a.s. $\implies\ X=\E[X]$ a.s.
+The \textbf{variance} is given by $$VAR(X)=\E[(X-\E[X])^2]\text{ if }\E[X]<\infty.$$ The \textbf{standard deviation} is given by $$SD(X)=\sqrt{VAR(X)},\ ``X\in[\E[X]\pm SD(X)]".$$
+\end{definition}
+\begin{proposition}
+    If $\E\card{X}^k<\infty$ for some $k\geq 1$ then $$\E\card{X}^j<\infty\ar \E\card{X-\E[X]}^j<\infty\ \forall\ 0\leq j\leq k.$$
+\end{proposition}
+\begin{proof}
+    $$x\in\R\ar \begin{cases} \card{X}\geq 1\implies \card{x}^j\leq\card{x}^k\ \forall\ 0\leq j\leq k.\\ \card{X}\leq 1\implies \card{x}^j\leq 1\ \forall\ 0\leq j\end{cases}$$ For all $x\in\R,$ $$\card{x}\leq 1+\card{x}^k\ \forall\ 0\leq j\leq k,\ \card{X}^j\leq 1+\card{X}^k.$$ We know that $$\card{x+y}^k\leq 2^k(\card{x}^k+\card{y}^k)\implies \E[X]^j\leq 1+\E[X]^k<\infty.$$ Thus $$\E\card{X+\E X}^k\leq 2^k(\E\card X^k+\card{\E [X]}^k)\leq 2^k(\E\card X^k+\E\card X^k)=2^{k+1}\E\card X^k<\infty$$ by assumption.
+\end{proof}
+\begin{definition}\textbf{(Moment Generating Function MGF)}
+   The \textbf{MGF} of a random variable $X$ is given by $$M(t):=\E[e^{tX}]\ \forall\ t\in\R.$$
+\end{definition}
+\begin{proposition}
+    \begin{enumerate}
+        \item $M(0)=1.$
+        \item $M(t_0)<\infty$ for some $t_0>0\implies M(t)<\infty\ \forall\ 0\leq t\leq t_0.$
+        \item $M(t_0)<\infty$ for some $t_0<0\implies M(t)<\infty\ \forall\ t_0\leq t\leq 0.$
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    \begin{enumerate}
+        \item $\checkmark$
+        \item $t>0\implies e^{tX}\leq 1+e^{t_0X}$ ($\forall\ x\in\R,\ e^{tX}\leq 1+e^{t_0}\ \forall\ 0\leq t\leq t_0$) $$\implies M_X(t)\leq M_X(t_0)<\infty\ \forall\ 0\leq t\leq t_0.$$
+        \item $M_X(t)=M_{-X}(-t)+(2)\implies (3).$
+    \end{enumerate}
+\end{proof}
+\begin{proposition}
+    Suppose $M_X(t)<\infty\ \forall\ \card t\leq t_0\text{ for some }t_0>0.$ Then \begin{enumerate}
+        \item $X^n\in L^1\ \forall\ n=0,1,2,\ldots(\E\card X^n<\infty)$
+        \item $$\E[X^n]=\lf.\f{d^n M(t)}{d t^n}\rg\vert_{t=0},n\in \N_0.$$
+        \item $M(t)=\sum_{n=0}^\infty \f{t^n}{n!}\E X^n\ \forall\ \card t<t_0.$
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    \begin{enumerate}
+        \item Choose $t>0\st M_X(t),M_X(-t)<\infty.$ $x>0\ \forall\ t>0\ar$ $$\f{x^nt^n}{n!}\leq e^{tx},\ x\in\R,\ \card{x}^n\leq \f{n!}{t^n}(e^{tx}+e^{-tx}).$$
+        By monotonicity and linearity of expectation, $$\E\card X^n\leq \f{n!}{t^n}(\E e^{tX}+\E e^{-tX})=\f{n!}{t^n}(M_X(t)+M_X(-t))<\infty.$$
+        \item $$\f{dM_X(t)}{dt}=\f{d}{dt}\E e^{tX}=^?\E\f{d}{dt}e^{tX}=\E Xe^{tX}$$ $$\implies \lf.\f{dM_X(t)}{dt}\rg\vert_{t=0}=E [X]$$
+        Then $$\f{d^n M_X(t)}{dt^n}=\E X^ne^{tX}\implies \lf.\f{d^n M_X(t)}{dt^n}\rg\vert_{t=0}=\E X^n.$$
+    \end{enumerate}
+\end{proof}
+\section{Lecture 14 - 28/08/2025}
+\begin{definition}\textbf{(Probability Generating Function)}
+    The PGF of a random variable $X$ is given by $$G_X(t)=\E[t^X],\ t\geq 0.$$
+\end{definition}
+\begin{proposition}
+    If $M_X(t)<\infty\ \forall\ \card{t}<t_0\ar t_0>0,$ then $$M_X(t)=\sum_{n=0}^\infty \f{t^n}{n!}\E[X^n],\ \card{t}<t_0.$$
+\end{proposition}
+\begin{proof}
+    $$\sum_{k=0}^n\f{\card{t}^k}{k!}\E[\card{X}^k]\leq \sum_{k=0}^n\f{\card{t}^k}{t_1^k}\E[e^{t_1\card{X}}]\ \fb{\text{as }x^n\leq \f{n!}{t_1^n}e^{t_1x}}$$ $$\leq (M_X(t_1)+M_X(-t_1))\sum_{k=0}^n\f{\card{t}^k}{t_1^k}\leq (M_X(t_1)+M_X(-t_1))\sum_{k=0}^\infty \f{\card{t}^k}{t_1^k}<\infty.$$
+    For all $\card{t}<t_0,$ $$\sum_{n=0}^\infty \f{t^n}{n!}\E[X^n]$$ is absolutely summable. Then $$M_X(t)=\E\lim_{n\to\infty}\sum_{k=0}^n \f{t^k}{k!}X^k=^? \lim_{n\to\infty}\E\tb{\sum_{k=0}^n\f{t^k}{k!}X^k}=\lim_{n\to\infty}\sum_{k=0}^n\f{t^k}{k!}\E[X^k]$$
+    $$=\sum_{k=0}^\infty \f{t^k}{k!}\E[X^k]\ (\text{absolute convergence of series}).$$
+\end{proof}
+\begin{theorem}\textbf{(Markov's Inequality)}
+    If $X\geq 0$ a.s., then $$\PB[X>t]\leq \f{\E[X]}t,\ \forall\ t>0.$$
+\end{theorem}
+\begin{proof}
+    For all $t\geq 0,$ $$X\geq^{a.s.}X\1[X\geq t]\geq t\1[X\geq t].$$ Taking expectation on all, $$\E[X]\geq^{a.s.}\E[X\1[X\geq t]]\geq \E[t\1[X\geq t]]$$ $$=t\E[\1[X\geq t]]=t\PB[X\geq t].$$
+\end{proof}
+\begin{corollary}\textbf{(Moment Inequality)}
+    Let $X$ be an r.v. and $f:\R\mapsto\R^+$ an increasing function. Then $$\PB[X\geq t]\leq\f{\E[f(X)]}{f(t)},\ t\in\R,\ f(t)>0.$$ Particularly, $$\PB[\card{X}\geq t)\leq\f{\E[\card{X}^p]}{t^p},\ t,p>0.$$
+\end{corollary}
+\begin{proof}
+    $$\PB(\card{X}\geq t)\leq \PB(\card{X}^p\geq t^p)\leq^{\text{Markov}}\f{\E[\card{X}^p}{t^p}.$$
+\end{proof}
+\begin{theorem}\textbf{(Chebyshev's Inequality)}
+    $$\PB(\card{X-\E[X]})\leq \f{VAR(X)}{t^2},\ t>0.$$
+\end{theorem}
+\begin{theorem}\textbf{(Chernoff Bound)}
+    $X$ be an r.v. Then $$\PB(X\geq t)\leq e^{-st}\E[e^{sX}]=e^{-st}M_X(s)\ \forall\ s>0,$$$$\leq \inf_{s>0}e^{-st}M_X(s),\ t\in\R.$$
+\end{theorem}
+Thus $$\PB(X\leq t)=\PB(-X\geq -t)\leq \inf_{s>0}e^{st}M_X(-s).$$
+\section{Lecture 15 - 02/09/2025}
+Let $X\geq 0.$
+\[
+\begin{array}{ll}
+     &  \text{First Moment Principle - }\PB(X\geq t)\leq \f{\E[X]}t,\ t>0\\
+     & \text{Second Moment Principle - }\PB(X\geq 0)\geq \f{\E[X]^2}{\E[X^2]}
+\end{array}
+\]
+\begin{theorem}\textbf{(Cauchy Schwartz Inequality)}
+    Let $\E[X^2],\ \E[Y^2]<\infty .$ Then $$\E[XY]\leq\sqrt{\E[X^2]\E[Y^2]}.$$ There is equality iff for some $a\in\R,\ X=aY.$
+\end{theorem}
+\begin{proof}
+    $X=0\ a.s.$ or $Y=0\ a.s.\implies$ equality holds. Assume $X\ne 0\ar Y\ne 0\ (\because \PB(X\ne 0)>0,\ \PB(Y\ne 0)>0). Fix a\in\R.$ Then $$\E[X-aY]^2\geq 0\implies \E[X^2]-2a\E[XY]+a^2\E[y^2]\geq 0\implies\E[XY]\leq \f 1{2a}\E[X^2]+\f a2\E[Y^2].$$Consider $a=\f{\sqrt{\E[X^2]}}{\sqrt{\E[Y^2]}}.$ Thus $$\E[XY]\leq \f12\sqrt{\E[X^2]\E[Y^2]}+\f12\sqrt{\E[X^2]\E[Y^2]}=\sqrt{\E[X^2]\E[Y^2]}.$$ Equality $\iff$ $(X=aY)^2=0\ a.s.$ for some $a.$
+\end{proof}
+Now, $\E[X]=\E[X\1[X> 0]+X\1[X=0]]\leq^{CS}\sqrt{\E[X^2]\PB(X>0)}$ which gives us our $2^{nd}$ moment principle.
+\begin{theorem}\textbf{(Paley-Zygmond)}
+Say $X$ is a random variable such that $\E[X]\geq 0,\ \E\card{X}<\infty.$ Then for all $\theta\in [0,1],$
+    $$\PB(X>\theta\E[X])\geq (1-\theta)^2\f{\E[X]^2}{\E[X^2]}.$$
+\end{theorem}
+\begin{proof}
+    We know that $$\E[X]=\E[X\1[X>\theta\E[X]]]+\E[X\1[X\leq\theta\E[X]]$$ $$\leq \underbrace{\sqrt{\E[X^2]\PB(X>\theta\E[X])}}_{2^{nd}\text{ moment principle}}+\theta\E[X]\implies (1-\theta)\E[X]\leq \sqrt{\E[X^2]\PB[x>\theta\E[X]]}.$$
+\end{proof}
+\begin{theorem}\textbf{(Jensen's Inequality)}
+    Let $\phi$ be a convex function on $(a,b)$ and $X\in(a,b)\ a.s.$ Suppose $\E\card{X},\ \E\card{\phi(X)}<\infty.$ Then $$\phi(\E [X])\leq \E[\phi(X)].$$
+\end{theorem}
+\begin{definition}\textbf{(Convex Function)}
+    Let $a<x<y<b,\ x\in [0,1].$ If $$\phi(\lambda x+(1-\lambda)y)\leq \lambda \phi(x)+(1-\lambda)\phi(y),$$ then $\forall\ x_0\in (a,b),\ \exists\ m\in\R\st \forall\ x\in (a,b),$ $$\phi(x)\geq \phi(x_0)+m(x-x_0).$$
+\end{definition}
+\begin{proof}
+    $x_0=\E[X]\in (a,b)\ a.s.,\ X\in (a,b)\ a.s.$ Then almost surely,\ $$\phi(X)\geq \phi(\E[X])+m(X-\E[X])\ \forall\ x\in (a,b),\ \omega\in\Omega.$$ We use monotonicity and linearity as $\E\card{X}<\infty,\ \E\card{\phi(X)}<\infty.$ Thus $$\E[\phi(X)]\geq \phi(\E[X])+m(\E[X]-\E[X])=\phi(\E[X]).$$
+\end{proof}
+\begin{proposition}\textbf{(Change of Variables)}
+    $X$ be a random variable with pdf $f_X.$ Let $g:\R\mapsto\R$ be countably differentiable and $1-1$ (i.e., strictly increasing or decreasing). Then for $Y=g(X),$ $$f_Y(g(x))=f_X(x)\f 1{\card{g'(x)}}.$$
+\end{proposition}
+\begin{proof}
+    Observe $$F_Y(y)=\PB(Y\leq y)=\PB(g(X)\leq y)=\PB(X\leq g^{-1}(y))=F_X(g^{-1}(y)).$$ Then $$F_Y'(y)=\f{dF_X(g^{-1}(y))}{dy}=F_X'(g^{-1}(y))\f{dg^{-1}(y)}{dy}=f_X(g^{-1}(y)\f 1{g'(g^{-1}(y))}.$$
+\end{proof}
+Counter-Example: $U=[-1,1],\ Y=X^2.$ For $y\in [0,1],$ $$\PB(Y\leq y)=\PB(X^2\leq y)=\PB(-\sqrt{y}\leq X\leq \sqrt{Y})=\sqrt{y}.$$ Thus $f_Y(y)=\f 1{2\sqrt{y}}$ but $X^2\sim U[0,1].$
+\section{Lecture 16 - 03/09/2025}
+\textbf{\underline{Joint Distributions: }} $X=(X_1,\ldots,X_n):\Omega\to\R^n$ (Row vector). Let $X_1,\ldots, X_n$ be random variables on $(\Omega,\F,\PB).$
+Then $$F_X(x_1,\ldots,x_n)=\PB(X_i\leq x_i\ \forall\ 1\leq i\leq n)\ -\ \text{Joint CDF}.$$ The marginal distribution and CDF of $X_i$ are given by $\PB(X_i\in \ldots)\ar F_{X_i}(x)=\PB(X_i\leq x).$ In case of continuous random variables, $$\PB\fb{X\in\prod_{i=1}^n (a_i,b_i]}=\int_{a_1}^{b_1}\ldots\int_{a_n}^{b_n}f_X(x_1,\ldots,x_n)dx_1dx_2\ldots dx_n.$$
+\begin{definition}\textbf{Independent}
+    \begin{enumerate}
+        \item $X_1,\ldots,X_n$ are \textbf{independent} if $$F_X(x_1,\ldots,x_n)=\prod_{i=1}^nF_{X_i}(x_i)\ \forall\ x_i\in\R,\ 1\leq i\leq n.$$ Then $$F_X(x_1,\ldots,x_n)=\prod_{i=1}^n F_{X_i}(x_i),\ \PB(X_1\leq x_1,\ldots,X_n\leq x_n)=\prod_{i=1}^n\PB(X_i\leq x_i).$$
+        \item $(X_\alpha)_{\alpha\in I}$ are independent if $X_{\alpha_1},\ldots,X_{\alpha_n}$ are independent for all $n\geq 1,\ \forall\ \alpha_1,\ldots,\alpha_n\in I.$
+    \end{enumerate}
+\end{definition}
+$1\implies\ \forall\ i_1,\ldots,i_k\in\{1,\ldots,n\},$ $$\PB(X_{i_1}\leq x_{i_1},\ldots, X_{i_k}\leq x_{i_k})=\prod_{j=1}^k \PB(X_{i_j}\leq x_{i_j}).$$ Then $$\PB(X_i\leq x_i,\ 1\leq i\leq n-1)=^{\text{cty of }\PB} \lim_{x_n\to\infty}F_X(x_1,\ldots, x_n)=^{\text{ind.}}\lim_{x_n\to\infty}F_{X_i}(x_i)=\prod_{i=1}^{n-1}F_{X_i}(x_i)=\prod_{i=1}^{n-1}\PB(X_i\leq x_i).$$
+\begin{theorem}
+    TFAE:
+    \begin{enumerate}
+        \item $X,Y$ independent
+        \item $\PB(X\in A, Y\in B)=\PB(X\in A)\PB(Y\in B)\ \forall\ A,B\in\B(\R).$
+        \item $\E(f(X),g(Y))=\E[f(X)]\E[g(Y)]\ \forall\ f,g$ bounded Borel functions.
+    \end{enumerate}
+\end{theorem}
+\section{Lecture 17 - 04/09/2025}
+$X,Y$ integrable, $\E[X^2],\ \E[Y^2]<\infty.$
+$$Cov(X,Y):=\E[(X-\E[X])(Y-\E[Y])]=\E[XY]-\E[X]\E[Y]$$ and $$Cor(X,Y):=\f{Cov(X,Y)}{\sigma_X\sigma_Y}=Cor\fb{\f X{\sigma_X},\f Y{\sigma_Y}}.$$
+\begin{theorem}
+    \begin{enumerate}
+        \item $-1\leq Cor(X,Y)\leq 1.$
+        \item $Cor(X,Y)=1\ \iff\ Y=aX+b$ a.s. for some $a>0,\ b\in\R.$
+        \item $Cor(X,Y)=-1\ \iff\ Y=aX+b$ a.s. for some $a<0,\ b\in\R.$
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    If $Y=aX+b,$ $$Cor(X,Y)=Cor(X,aX)=\f a{\card{a}}Cor(X,X)=\f a{\card{a}}=\sgn(a).$$ Now, let $\card{Cor(X,Y)}=1.$ Then $$Cor(X,Y)=\pm 1\iff\ \text{Equality in Cauchy Schwartz }\iff\ \f{Y-\E[Y]}{\sigma_Y}=a\fb{\f{X-\E[X]}{\sigma_X}}\ a.s.$$
+\end{proof}
+\begin{definition}\textbf{(Identically Distributed)}
+    $X$ and $Y$ are \textbf{identically distributed} (i.d.) if $F_X=F_Y\ (\iff\ \PB_X=\PB_Y)\ \iff\ \E[f(X)]=\E[f(Y)]\ \forall\ f\in B_b\ (\text{bounded measurable functions}).$ 
+\end{definition}
+\begin{theorem}
+  $X_1,\ldots,X_n$ iid random variables such that $\sigma_{X_i}<\infty.$. Then for all $\epsilon>0,\ n\geq 1,$ $$\PB\fb{\card{\bar{X}-\mu}\geq\epsilon}\leq\f{\sigma^2}{n\epsilon^2},\ \mu=\mu_{X_i}=\E[X_i].$$  
+\end{theorem}
+
+$X_1,\ldots, X_n$ be second integrable random variables such that $$Var\fb{\sum_{i=1}^n X_i}=\sum_{i=1}^n Var(X_i)+2\sum_{1\leq i<j\leq n}CovX_i,X_j).$$
+
+\begin{proof}
+    Identically distributed $\implies$ $\sigma_{X_i}=\sigma,\ \mu_{X_i}=\mu.$ Let $S_n=\f 1n\sum_{i=1}^n X_i,\ \E[S_n]=\f 1n\sum_{i=1}^n \E[X_i]=\mu.$ Then $$\PB(\card{S_n-\mu}\geq \epsilon)\leq^{\text{Chebyshev}}\f{Var\fb{\sum_{=1}^n X_i}}{n^2\epsilon^2}=\f{n\sigma^2}{n^2\epsilon^2}=\f{\sigma^2}{n\epsilon^2}.$$
+\end{proof}
+\begin{theorem}\textbf{(Borel-Countelli Theorem)}
+    Given space $(\Omega,\F,\PB).$ Then 
+    \begin{enumerate}
+        \item If $A_n$ are events such that $\sum_{n=1}^\infty \PB(A_n)<\infty,$ then $$\PB(\limsup A_n)=\PB(A_n\ i.o.)=0.$$
+        \item If $A_n$ are pairwise independent events and $\sum_{n=1}^\infty\PB(A_n)=\infty$ then $$\PB(\limsup A_n)=\PB(A_n\ i.o.)=1.$$
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    $A_n\ i.o.\ \iff\ \sum_{n=1}^\infty\1_{A_n}=\infty.$ Let $X=\sum_{n=1}^\infty \1_{A_n}.$ $$\sum_{k=1}^m\1_{A_k}\uparrow X\implies^{\text{MCT and simple}\geq 0} \sum_{k=1}^m\PB(A_k)\uparrow \E[X]\implies\ \E[X]=\sum_{n=1}^\infty \PB(A_n).$$ 
+    \begin{enumerate}
+        \item Assumption $\implies$ $$\E[X]<\infty\implies\PB(X<\infty)=1=\PB(\sum_{k=1}^\infty \1_{A_k}=\infty)=0\contra$$ Thus $\PB(A_n\ i.o.)=0$.
+        \item $X_n=\sum_{k\geq n}\1_{A_k},\ X_{n,m}=\sum_{k=n}^m\1_{A_k}.$ Then $$\{A_n\ i.o.\}=\{X_n\geq 1\ \forall n\}=\bigcap_{n\geq 1}\bigcup_{m\geq n}\{X_{m,n}\geq 1\}.$$ For all $n\geq 1,$ we prove h=that $\PB(X_{m,n}\geq 1)\uparrow 1\ a.s.\ m\to\infty .$ Then $$\PB(X_{m,n}>0)\geq \f{\E [X_{m,n}]^2}{\E[X_{m,n}^2]}\geq \f 1{1+(\E X_{m,n})^{-1}}.$$
+    \end{enumerate}
+\end{proof}
+\section{Lecture 18 - 17/09/2025}
+\textbf{\underline{CONVERGENCE:}}
+$(X_n,X):(\Omega,\F,\PB)\mapsto \R.$
+\begin{definition}\textbf{(Pointwise Convergence)}
+    We say that $X_n\to X$ if $X_n(\omega)\to X(\omega)\ \forall\ \omega\in\Omega.$ 
+\end{definition}
+\begin{definition}\textbf{(Almost sure Convergence)}
+    $X_n\to^{a.s.} X$ if $\PB(\{\omega:X_n(\omega)\to X(\omega)\})=1.$ Check that the set $$\{\omega:X_n(\omega)\to X(\omega)\}=\{\omega:\limsup_n X_n=\liminf_n X_n=X\}=\{\omega:\limsup_n X_n=X\}\ \cap\ \{\omega:\liminf_n X_n=X\}$$ is measurable.
+\end{definition}
+\begin{definition}\textbf{(Convergence in Porobability)}
+    $X_n\to^p X$ if  $\forall\ \epsilon>0\ \PB(\card{X_n-X}>\epsilon)\to 0.$
+\end{definition}
+\begin{definition}\textbf{($\mathbf{L^p}$ Convergence)}
+   Let $p>0,$ $X_n\to^{L^p} X$ if $\E[\card{X_n-X}^p]\to 0.$
+\end{definition}
+\begin{proposition}
+    Pointwise convergence $\implies$ Almost sure convergence $\implies$ Convergence in probability $\impliedby$ $L^p$ coonvergence.
+\end{proposition}
+\begin{proof}
+    \begin{enumerate}
+        \item $\PB(\card{X_n-X}>\epsilon)\leq^{Markov} \f{\E[\card{X_n-X}^p]}{\epsilon^p}.$ Thus $L^p$ convergence $\implies$ convergence in probability.
+        \item Let $\Omega'=\{\omega\in\Omega:X_n(\omega)\to X(\omega)\}$ and consider $z_n(\omega)=\sup_{k\geq n}\card{X_k(\omega)-X(\omega)},\ n\geq 1.$ Then $$\omega\in\Omega'\iff z_n(\omega)\to 0.$$ Let $\Omega_n^\epsilon=\{z_n\geq\epsilon\},$ a decreasing sequence. Then $$\bigcap_n\Omega_n^\epsilon\subseteq\{X_n\not\to X\}=(\Omega')^c.$$
+        $\PB(\card{X_n-X}\geq\epsilon)\leq \PB(z_n\geq\epsilon)\to^{cty.}\PB(\bigcap_n\Omega_n^\epsilon)\leq^{mon.}\PB((\Omega')^c)=0.$
+        \begin{example}
+            $([0,1],\B,\PB=Leb)$ and $X_n(\omega)=n\1_{\tb{0,\f 1n}}(\omega),\ \omega\in [0,1].$ Then $X_n\to^{a.s.} 0.$ However $$\E[X_n]=1\ \forall\ n\geq 1\implies \E[X_n]\not\to 0=\E[X].$$ Thus almost sure convergence does not imply $L^1$ convergence.
+        \end{example}
+        \begin{example}
+        $([0,1],\B,\PB=Leb)$ and \[
+\begin{array}{cccccccc}
+X_1 &= 1 \\
+X_2 &= \mathbf{1}_{[0,\tfrac{1}{2}]} & 
+X_3 &= \mathbf{1}_{(\tfrac{1}{2},1]} \\
+X_4 &= \mathbf{1}_{[0,\tfrac{1}{4}]} & 
+X_5 &= \mathbf{1}_{(\tfrac{1}{4},\tfrac{1}{2}]} &
+X_6 &= \mathbf{1}_{(\tfrac{1}{2},\tfrac{3}{4}]} &
+X_7 &= \mathbf{1}_{(\tfrac{3}{4},1]} \\
+& \vdots
+\end{array}
+\]
+
+        Then $$X_n(\omega)\not\to 0(=X),\ \omega\in [0,1]\implies X_n\not\to^{a.s.} 0.$$ Fix $\epsilon\in (0,1).$
+        $$\PB(\card{X_n-X})>\epsilon)=\PB(X_n\ne 0)=\f1 {2^k},\ 2^k\leq n<2^{k+1}-1.$$ Thus $X_n\to^p X$ as $n\to\infty.$
+        \end{example}
+    \end{enumerate}
+\end{proof}
+\begin{theorem}\textbf{(Lyapunov's Inequality)}
+    \begin{enumerate}
+        \item $(\E\card{X})^p\leq \E[\card X^p].$
+        \item $\E[\card{X}^p]^{\f 1p}\leq \E[\card{X}^q]^{\f 1q}\iff L^p\text{ convergence}\implies L^q\text{ convergence}.$
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    \begin{enumerate}
+        \item $q\geq 1.$ Let $\phi(x)=x^q\ \implies\ \phi''(x)=q(q-1)x^{q-2},\ x\geq 0.$ Thus $\phi$ is convex. By Jensen's, $$\phi(\E\card X)=\E[\card{X}]^q\leq \E[\phi(\card X)]=\E[\card X]^q.$$ 
+        \item $\E[\card X^p]^{\f qp}\leq \E\card{X}^q.$ In 1, substitute $\card X\to\card X^p$ and $q\to \f qp.$
+    \end{enumerate}
+\end{proof}
+\begin{theorem}\textbf{(Monotone Convergebce Theorem)}
+    $X_n\geq 0\ a.s.\ar X_n\uparrow X\ a.s.$ Then $\E[X_n]\uparrow\E[X].$
+\end{theorem}
+\begin{corollary}
+    $X_n\geq 0\ a.s.\ar X_n\downarrow X\ a.s.$ Let $\E[X_1]<\infty.$ Then $\E[X_n]\downarrow\E[X].$
+\end{corollary}
+\begin{proof}
+    Note that $$0\leq^{a.s.}X_1-X_n\uparrow^{a.s.} X_1-X\implies\ \E[X_1-X_n]\uparrow\E[X_1-X].$$ Since $\E[X_1]<\infty$, $$\E[X_n]<\infty\ \forall\ n>1.$$ Then $$\E[X_1]-\E[X_n]\uparrow \E[X_1]-\E[X]\implies \E[X_n]\downarrow\E[X].$$
+\end{proof}
+\begin{corollary}
+    Let $X_n\uparrow X\ a.s.\ar \E[\card{X}]<\infty,\ \E[\card{X_n}]<\infty\ \forall\ n\geq 1.$ Then $\E[X_n]\uparrow\E[X].$ 
+\end{corollary}
+\begin{lemma}\textbf{(Fatou's Lemma)}
+    $X_n\geq 0\ a.s.$ Then $\E[\liminf X_n]\leq \liminf \E[X_n].$
+\end{lemma}
+\begin{proof}
+    $\liminf_n x_n=\lim_{n\to\infty}\inf_{j\geq n}x_j,$ an increasing sequence. Also $x_n\geq\inf_{j\geq n}x_j.$ Then $$\liminf \E[X_n]\geq^{Mon}\liminf \E[\inf_{j\geq n}X_j]=\lim\E[\inf_{j\geq n}X_j]=^{MCT} \E[\lim \inf_{j\geq n} X_j]=\E[\liminf X_n].$$
+\end{proof}
+\begin{theorem}\textbf{(Dominated Convergence Theorem)}
+    Let $X_1,\en Xn\N$ be random variables $\st X_n\to X\ a.s.$ or in probability. Suppose $\exists\ Y\st \card{X_n}\leq Y\ a.s.\ \forall\ n\geq 1\ar \E[Y]<\infty.$ Then $\E[X_n]\to\E[X].$
+\end{theorem}
+\begin{proof}
+    Assume $X_n\to^{a.s.}X;\ Y-X_n,Y+X_n\geq 0\ a.s.$ Then $\E[\card{X_n}]\leq\E[Y]<\infty,\ \E[X]\leq\E[Y]<\infty.$ Then, $$\E[Y]-\E[X]=\E[Y-X]=\E[\liminf(Y-X_n)]\leq^{FL}\liminf\E[Y-X_n]=^{int+lin}\E[Y]-\limsup X_n.$$ Also,
+    $$\E[Y]+\E[X]=\E[Y+X]=\E[\liminf(Y+X_n)]\leq^{FL}\liminf\E[Y+X_n]=^{int+lin}\E[Y]-\liminf X_n.$$
+    Then $$\limsup \E[X_n]\leq\E[X]\leq\liminf\E[X_n]\implies \E[X]=\lim\E[X_n].$$
+
+\begin{lemma}
+    Let $X_n\to^p X.$ Then $\exists$ subsequence $n_k\st X_{n_k}\to^{a.s.} X.$ 
+\end{lemma}
+\begin{proof}[Proof of Lemma]
+    $\PB\fb{\card{X_n-X}>\f 1m}\to 0\ \forall\ m\geq 1.$ Choose $n_1\st \PB(X_{n_1}>1)<\f 12.$ Given $n_1,n_2,\ldots,n_{m-1},$ choose $n_m\st$ $\PB\fb{\card{X_{n_m}-X}>\f 1m}\leq \f 1{2^m}.$ Then $$\sum_{m\geq 1}\PB\fb{\card{X_{n_m}-X}\geq \f 1m}<\infty\implies^{B.C.}\PB\fb{\card{X_{n_m}-X}>\f 1m\ i.o.}=0.$$ Thus $a.s.\ \exists\ N\st\forall\ m\geq N,\ \card{X_{n_m}-X}\leq \f1m\implies X_{n_m}\to X\ a.s.$
+\end{proof}
+Uniqueness of limit: Assume $X_n\to^p X.$ $\E[X_n]\leq\E[Y]<\infty.$ If $\E[X_n]\not\to\E[X]\implies\exists$ subsequence $n_k\st E[X_{n_k}]\to L\ne\E[X].$ $X_{n_k}\to^p X\implies^{Lemma}\exists n_j\subseteq n_k\st X_{n_j}\to^{a.s.}X\implies^{DCT} \E[X_{n_j}]\to\E[X]\contra.$ 
+\end{proof}
+\section{Lecture 19 - 18/09/2025}
+\begin{proposition}
+    $X_n\to^p X\iff$ for all subsequences $n_k\ \exists$ a further subsequence $n_j\subseteq n_k\st X_{n_j}\to^{a.s.} X.$ 
+\end{proposition}
+\begin{proof}
+    $\implies$ Done in Lemma
+    \noindent $\impliedby$ Fix $\epsilon>0,\ a_n=\PB(\card{X_n-X}>\epsilon).$
+    \begin{exercise}
+        $a_n\to 0\iff \forall \{n_k\},\ \exists\ \{n_j\}\subseteq\{n_k\}\st a_{n_j}\to 0.$ By assumption $\exists\ \{n_j\}\subseteq\{n_k\}\st X_{n_j}\to^{a.s.} X\implies a_{n_j}\to 0.$ 
+    \end{exercise}
+\end{proof}
+In the following statements $*$ can substitute pointwise, a.s., p and $L^p.$
+\begin{enumerate}
+    \item $X_n\to^* X\implies X_{n_k}\to^* X\ \forall\ \{n_k\}.$
+    \item $X_n\to^* X,\ X_n\to^* Y\implies X=Y\ a.s.$
+     $X_n\to^{a.s.} X,\ X_n\to^{a.s.} Y;\ \Omega'=\{X_n\to X\}\ \cap\ \{X_n\to Y\}.$ Then $X=Y$ on $\Omega'$ and $\PB(\Omega')=1.$ For all $\omega\in\Omega,\ X(\omega)=Y(\omega).$
+     \item $\PB(\card{X-Y}>\epsilon)\leq \PB\lf(\card{X-X_n}>\f\epsilon 2\rg)+\PB\lf(\card{X_n-Y}>\f\epsilon2\rg)=0\ \forall\ \epsilon>0\implies\PB(\card{X-Y}>0)=0.$
+     \item $\E\card{X-Y}^p\leq 2^{\f p2}(\E\card{X-X_n}^p+\E\card{X_n-Y}^p),\ p\geq 1$ (Jensen's)
+     \item $X_n\to^{L^p} X,\ X_n\to^{L^p} Y\implies \E\card{X-Y}^p=0\implies X-Y=0\ a.s.$
+     \item $X_n\to^p X,\ Y_n\to^p Y.$ Find subsequence $\{n_k\}\st X_{n_k}\to^{a.s.}X,\ Y_{n_k}\to^p Y$. Then $\exists\ \{n_j\}\subseteq\{n_k\}\st Y_{n_k}\to^{a.s.} Y,\ X_{n_k}\to^{a.s.} X\implies X_{n_k}Y_{n_k}\to^{a.s.} XY\ar$ bylemma, $X_nY_n\to^p XY.$
+     \item $X_n\to^{L^p} X\implies \sup_{n\geq 1}\E\card{X_n}^p <\infty.$
+     \begin{proof}
+         $\E\card{X_n}^p\leq2^{\f p2}(\E\card{X_n-X}^p+\underbrace{\E\card{X}^p}_{<\infty}).$ Then $X_n\to^{L^p} X\implies\sup_n\E\card{X_n-X}^p<\infty. $
+     \end{proof}
+\end{enumerate}
+\begin{theorem}\textbf{Bounded Convergence Theorem}
+$X,\{X_n\}_{n\geq 1}$ random variables such that $X_n\to^p X.$ Let $M\geq 0\st \card{X_n}\leq M\ a.s.$ Then $\E X_n\to \E X.$
+\end{theorem}
+$f:\R\mapsto\R$ continuous and $X_n\to^* X,$ then $f(X_n)\to^* f(X)$ and $\forall\ f:\R\mapsto\R$ continuous, $\E f(X_n)\to\E f(X).$
+\begin{proof}
+    Take $Y\equiv M,$ constant r.v. Then DCT holds for $X_n$ with $Y\implies \E X_n\to\E X.$ Now $f(X_n)\to^p f(X).$ Check $\exists\ M'\st\card{f(X_n)}\leq M'\ \forall\ n\geq 1$ where $M'=\sup_{x\in [-M,M]}\card{f(X)}<\infty.$
+    Then DCT $\implies\E\card{X_n-X}\to 0.$ Then $\card{X_n}\leq Y\ \forall\ n\geq 1\ar X_n\to^{a.s.} X\implies \underbrace{\card{X_n-X}}_{\to^{a.s.} 0}\leq 2Y.$
+\end{proof}
+\begin{proposition}
+    $M_X(t)=\E e^{tX}<\infty\ \forall\ \card{t}<t_0.$ Then $M_X^k(t)=\E X^ke^{tX}\ \forall\ k\ge 1.$ In particular, $M^k(0)=\E X^k\ \forall\ k\geq 1.$
+\end{proposition}
+\begin{proof}
+    $k=1$ and induction. $$M'(t)=\lim_{h\to 0}\E\tb{\f{e^{(t+h)X}-e^{tX}}h}=\lim_{h\to 0}\E\tb{e^{tX}-\f{e^{hX}-1}h}$$ $$=^{DCT}\E\tb{e^{tX}\lim_{h\to 0}\f{e^{hX}-1}h}=\E Xe^{tX}.$$ MVT, $$\f{e^{(t+h)x}-e^{tx}}h=xe^{t'x},\ t'\in [t-\card{h},t+\card{h}]\subseteq^{\exists h\st}(t_0-\epsilon,t_0+\epsilon).$$ Thus $$\card{\f{e^{(t+h)x}-e^{tx}}h}\leq \card{x}e^{\card{t'}\card{x}}\leq \card{x}e^{-\epsilon\card{x}}e^{t_0\card{x}}\leq ce^{t_0\card{x}}.$$ Apply DCT with $Y=ce^{t_0\card{X}},\ \E[Y]\leq c(M_X(t_0)+M_X(-t_0)).$
+\end{proof}
+\section{Lecture 20 - 23/09/2025}
+Facts: $X_n\to^{L^p} X,\ Y_n\to^{L^p} Y \implies X_n+Y_n\to^{L^p} X+Y$ but $X_nY_n\not\to^{L^p} XY.$ However if the above holds true for all $p>0$ then $X_nY_n\to^{L^p} XY.$
+
+This can be shown using the fact that $\card{x+y}^p\leq 2^{p-1}(\card{x}^p+\card{y}^p),\ p\geq 1$ and $\card{x+y}^p\leq \card{x}^p+\card{y}^p,\ \leq p\leq 1.$ However,
+$$\E[\card{X_nY_n-XY}^p]\leq (\card{X_n}\card{Y_n-Y}+\card{Y}\card{X_n-X})^p$$ $$\leq \E[\card{X_n}^p\card{Y_n-Y}^p]+\E[\card{Y}^p\card{X_n-X}^p]\leq \sqrt{\E[\card{X_n}^{2p}]\E[\card{Y_n-Y}^{2p}]}+\sqrt{\E[\card{Y}]^{2p}\E[\card{X_n-X}^{2p}]}.$$ Thus $$X_n\to^{L^{2p}} X,\ Y_n\to^{L^{2p}}Y\implies X_nY_n\to^{L^p} XY.$$
+\begin{theorem}\textbf{(Holder's Inequality)}
+    $\E\card{XY}\leq (\E[\card{X}^p])^{\f 1p}(\E[\card{X}^p])^{\f 1p},\ \f 1p+\f 1q=1.$
+\end{theorem}
+\begin{theorem}\textbf{(Independence)}
+    $\F_1,\ldots,\ \F_n$ be independent $\sigma-$algebras. Then $\PB=(\bigcap A_i)=\prod_{i=1}^n \PB(A_i).$ 
+\end{theorem}
+\begin{theorem}
+    \begin{enumerate}
+        \item $\{A_i\}_{1\leq i\leq n}$ are algebras and $\F_i=\sigma(A_i).$ If $t_1,\ldots. t_n$ are independent then so are $\F_1,\F_2,\ldots$
+        \item $\C_1,\ldots,\ C_n$ are independent $pi-$systems. Then $\sigma(\C_1),\ldots,\sigma(\C_n)$ are independent.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    $\forall\ _i\in\F_i,\ \exists\ B_i\in A_i\st$$$\PB(B_i\triangle A_i)<\epsilon.$$ Then $$\card{\PB\fb{\bigcap_{k=1}^n A_i}-\PB\fb{B_1\ \cap\ \bigcap_{k=2}^n A_k}}\leq \PB(B_1\triangle A_1)<\epsilon.$$ Extending this, $$\card{\PB\fb{\bigcap_{k=1}^n A_i}-\PB\fb{\bigcap_{k=1}^n B_i}}<n\epsilon.$$ 
+\end{proof}
+Check that $$\card{\PB\fb{\bigcap_{i=1}^n A_i}-\prod_{i=1}^n \PB(A_i)}<2n\epsilon.$$ Let $\epsilon\downarrow 0.$$$\implies \PB\fb{\bigcap_{i=1}^n A_i}=\prod_{i=1}^n \PB(A_i).$$
+(2) Fix $c_i\in\C_i\ \forall\ 2\leq i\leq n.$ Take $C\in\F$ and put $c$ in $\C\subseteq\F$ if \beqn{\PB\fb{c\ \cap\ \bigcap_{i=2}^n c_i}=\PB(c)\prod_{i=2}^n\PB(c_i).\label{2309}} Assumption $\implies\ \C\supseteq \C_1.$ Check $\C$ is a $\pi-$system $\implies^{Dynkin}$ $$\C\supseteq \sigma(\C_1)\implies\eqref{2309}\text{ holds }\forall\ c\in\sigma(\C_1),\ c_i\in\sigma(\C_i)\ \forall\ i\geq 2.$$
+Fix $c_1\in\sigma(\C_1),\ c_i\in\C_i\ \forall\ 3\leq i\leq n.$ Consider $c_2\in\F$ satisfying \eqref{2309} on $c_1,c_3,\ldots,c_n$ as above. 
+Again Dynkin $\implies \eqref{2309}$ holds $\forall\ c_1\in\sigma(\C_1),c_2\in\sigma(\C_2),c_i\in\C_i\ \forall\ i\geq 3.$ Recursively, \eqref{2309} holds $\forall\ c_i\in\sigma(\C_i).$
+Fact: $$\sigma(X)=\sigma(\{X\leq x\}=^{\pi-\lambda}\sigma(\{X^{-1}(B):B\in\B\})=\{X^{-1}(B):B\in\B\}=X^{-1}(\B).$$ Let $X:(\Omega,\F,\PB)\to(\R,\B)\st X^{-1}(\B)$ is a $\sigma-$algebra.
+Smallest $\sigma-$algebra: $X:(\Omega,\F,\PB)\mapsto (\R,\B).$
+\begin{theorem}
+    $\{X_i\}_{1\leq i\leq n}$ are independent $\iff$ $\{\sigma(X_i)\}_{1\leq i\leq n}$ are independent.
+\end{theorem}
+\begin{proposition}
+    $X,Y:(\Omega,\F)\to(\R,\B)$. Then $Y$ is $\sigma(X)$ measurable $\iff\ Y=f(X)$ for some $f:\R\to\R$ Borel Measurable. 
+\end{proposition}
+\begin{proof}
+    $\impliedby$ is trivial. For $\implies,$ fix $n\in\N$ and $k\in\Z.$ Then $$\sigma(X)\ni\{Y\in(k2^{-n},(k+1)2^{-n})\}=\{X\in B_{k,n}\}$$ for some $B_{k,n}\in\B.$ Given $x\in \R,$ $$f_n(X)=\sum_{k\in\Z}k2^{-n}\1[x\in B_{kn}]$$ is Borel Measurable.
+    Then $$f_n(X)\leq Y\leq f_n(X)+2^{-n}\implies f_n(x)\leq f_{n+1}(x)\leq f_n(x)+2^{-n}\ \forall\ x\in\R.$$ Define $f(x)=\lim_{n\to\infty}f_n(x)$ exists and is Borel Measurable. Thus $Y=f(X).$
+\end{proof}
+\section{Lecture 21 - 25/09/2025}
+\begin{theorem}\textbf{(Weak Law of Large Numbers)}
+   $X_1,X_2,\ldots,X_n$ independent random variables of mean $0$ and $\sup_n\E[X_n^2]\leq \sigma^2<\infty.$ Let $S_n=\sum_{i=1}^n X_i.$ Then $$\f {S_n}n\to^p 0.$$   
+\end{theorem}
+\begin{theorem}\textbf{(Strong Law of Large Numbers or Cantelli)}
+    $X_1,\ldots,X_n$ be independent random variables of mean $0$ with $\sup_n\E[X_n^4]<\leq M<\infty.$ Then $$\f {S_n}n\to^{a.s.} 0.$$ 
+\end{theorem}
+Define $Y_i=X_i-\E[X_i]\implies\ Y_i's$ are independent mean $0$ with $Var(Y_i)=\E[Yi^2]<\infty$ [assume]. Then WLLN $\implies$
+$$\f 1n\sum_{i=1}^n (X_i-\E[x_i])\to^p 0$$ as $\f 1n\sum_{i=1}^n\E[X_i]\to\mu$ as $n\to\infty.$ 
+
+Kolmogorov's SLLN holds under $\sup_n\E[X_n^2]<\infty$ whereas SLLN holds under $\sup_n\E[\card{X_n}]<\infty.$ 
+\begin{proof}[Proof of WLLN]
+    $\E[S_n^2]=Var(S_n)=\sum_{i=1}^n\E[X_i^2]\leq n\sigma^2.$ Chebyshev says that $$\PB\tb{\card{\f {S_n}n}\geq\epsilon}\leq \f{\E[S_n^2]}{n^2\epsilon^2}\leq \f{\sigma^2}{n\epsilon^2}\to 0.$$ 
+Suppose $$\sum_n\PB\tb{\card{\f{S_n}n\geq\epsilon}}<\infty\implies^{B.C.}a.s.\ \limsup_n\card{\f{S_n}n}\leq\epsilon.$$
+\[
+\forall \epsilon > 0, \quad \sum_n \mathbb{P}\left( \left| \frac{S_n}{n} \right| > \epsilon \right) < \infty 
+\quad \text{B.C.} \Rightarrow \text{a.s. } \lim \left| \frac{S_n}{n} \right| \leq \epsilon
+\]
+
+\[
+\Rightarrow \forall \epsilon > 0, \quad \mathbb{P} \left( \lim \left| \frac{S_n}{n} \right| < \epsilon \right) = 1 
+\quad \text{[Borel Cantelli]}
+\]
+
+\[
+\Rightarrow \forall m \geq 1, \quad \mathbb{P} \left( \lim \left| \frac{S_n}{n} \right| \leq \frac{1}{m} \right) = 1
+\]
+
+\[
+1 = \mathbb{P} \left( \bigcap_m \left\{ \lim \left| \frac{S_n}{n} \right| \leq \frac{1}{m} \right\} \right) 
+= \mathbb{P} \left( \lim \left| \frac{S_n}{n} \right| = 0 \right)
+\]
+
+\[
+\Rightarrow \text{a.s. } \lim \frac{S_n}{n} = 0
+\]
+
+\[
+\mathbb{E}(S_n^3) = \sum_{i,j,k} \mathbb{E}[X_i X_j X_k] = \sum_i \mathbb{E}[X_i^3] 
++ \sum_{i \neq j} \mathbb{E}[X_i^2] \underbrace{\mathbb{E}[X_j]}_{=0} + \cdots
+\]
+
+\[
+\mathbb{E} \left| S_n \right|^3 = \mathbb{E} \left[ \sum_{i,j,k} X_i X_jX_k \right] 
+= \sum_{i,j,k} \mathbb{E}[X_i X_j X_k] \leq \sum_{i,j,k} \left| \mathbb{E}[X_i X_j X_k] \right|
+\]
+
+\[
+\mathbb{E} \left[ S_n^4 \right] = \sum_{i,j,k,l} \mathbb{E}[X_i X_j X_k X_l] 
+= \sum_{i} \mathbb{E}[X_i^4] + \sum_{i \neq j} \mathbb{E}[X_i^2] \mathbb{E}[X_j^2]
+\]
+
+\[
+= \sum_{i} \mathbb{E}(X_i^4) + \sum_{i \neq j} \left| \mathbb{E}[X_i^2 X_j^2] \right|
+\leq \sum_i \mathbb{E}(X_i^4) + \sum_{i \neq j} \mathbb{E}(X_i^2) \mathbb{E}(X_j^2)
+\]
+
+\[
+< M(n + n(n-1)) = Mn^2
+\]
+\end{proof}
+\begin{proof}[Proof of SLLN:]
+\[
+    \mathbb{P}\left( \left| \frac{S_n}{n} \right| \geq \epsilon \right) 
+\leq \frac{\mathbb{E}[S_n^4]}{n^4 \epsilon^4} \leq \frac{M}{n^2 \epsilon^4}
+\]
+
+\[
+\Rightarrow \sum_n \mathbb{P}\left( \left| \frac{S_n}{n} \right| \geq \epsilon \right)
+\leq \sum_n \frac{\mathbb{E}[S_n^4]}{n^4 \epsilon^4} \leq \sum_n \frac{M}{n^2 \epsilon^4} < \infty
+\]
+
+\[
+\text{(use easy Borel-Cantelli and complete)}
+\]
+
+\textbf{Chebyshev:}
+
+\[
+\mathbb{P} \left( \left| \frac{S_n}{n} \right| \geq \epsilon_n \right)
+\leq \frac{\mathbb{E}[S_n]^2}{n^2 \epsilon_n^2} \leq \frac{\sigma^2}{n \epsilon_n^2}
+\]
+
+\[
+n \epsilon_n^2 \to \infty, \quad \text{take } \epsilon_n = \frac{1}{n^{\frac{1}{2} - \delta}} 
+\Rightarrow n \epsilon_n^2 = n^{2\delta} \to \infty
+\]
+
+\[
+\sum_n \frac{1}{n \epsilon_n^2} 
+= \sum_n \frac{1}{n} \left( \frac{1}{n^{2\delta}} \right) 
+= \sum_n \frac{1}{n^{1 + 2\delta}} < \infty 
+\quad \text{for } \epsilon_n = \frac{1}{n^{\frac{1}{2} - \delta}}
+\]
+\end{proof}
+\begin{enumerate}
+    \item $X_1,X_2,\ldots,X_n,\ldots$ be iid random variables
+    \item $f:\R\mapsto\R$ be Riemann integrable
+    \item Let $Var(X_i)=\int_{-\infty}^\infty \card{f(x)^2}p(x)dx<\infty.$
+\end{enumerate}
+Say $\E[f(X_i)]=\int_{-\infty}^\infty f(x)p(x)dx=I.$ Define $$\hat f_n=\f 1n\sum_{i=1}^n f(X_i)\implies\E[\hat f_n]=I.$$
+WLLN: $\hat f_n\to^p I;$ K-SLLN: $\hat f_n\to^{a.s.} I;$ 
+$\PB(\hat f_n\in (I-\epsilon_n,I+\epsilon_n))=1\ \forall\ n.$
+\section{Lecture 22 - 26/09/2025}
+Let \( X_1, X_2, \ldots, X_n \) be i.i.d. with CDF \( F \) and \( \mathbb{E}[X_1^2] < \infty \).
+
+\noindent\textbf{Empirical CDF:}
+\[
+F_n(x) = \frac{1}{n} \sum_{i=1}^n \1_{[X_i \leq x]}, \quad x \in \mathbb{R}
+\]
+\begin{theorem}\textbf{(Khinchin’s SLLN:)}
+\[
+\forall x \in \mathbb{R}, \quad F_n(x) \xrightarrow{\text{a.s.}} F(x)
+\quad \text{; i.e., } \mathbb{P}\left( F_n(x) \to F(x) \right) = 1
+\]
+\end{theorem}
+\begin{theorem}\textbf{(Glivenko–Cantelli Theorem:)}
+\[
+\sup_{x \in \mathbb{R}} |F_n(x) - F(x)| \xrightarrow{\text{a.s.}} 0
+\]
+\end{theorem}
+\begin{proof}[Sketch] First assume \( X_i \sim U_i \), where \( U \sim \mathcal{U}[0,1] \), and let the CDF be \( F^0 \).
+
+\[
+F_n^0(x) = \frac{1}{n} \sum_{i=1}^n \1_{[U_i \leq x]}
+\]
+
+\[
+F_n^0(x) - F^0(x) \to 0 \quad \forall x \not\in \{0,1\}
+\]
+
+\# \( F^0 \) is a CDF and corresponds to r.v.s \( \text{Unif}(\{U_1, \ldots, U_n\}) \)
+\end{proof}
+\begin{theorem}\textbf{(Castelli's SLLN:)} \( \forall x \in \mathbb{R}, \quad F_n^0(x) \xrightarrow{\text{a.s.}} F^0(x) \)
+\[
+\mathbb{P}\left( F_n^0(x) \to F^0(x), \ \forall x \in \mathbb{Q} \right) = 1
+\]
+\end{theorem}
+\begin{theorem}{(Variant of Dini's Theorem:)} \\
+For \( f: \mathbb{R} \to \mathbb{R} \), with \( f \) continuous, 
+\[
+f_n(x) \to f(x) \quad \text{for} \quad x \in \mathbb{Q} \implies \sup_{\alpha \in (0,1)} |f_n(\alpha) - f(\alpha)| \to 0 \quad \text{as} \quad n \to \infty
+\]
+\end{theorem}
+\[
+\Rightarrow^{Dini} \mathbb{P}\left( \sup_{x \in \mathbb{R}} |f_n(x) - f(x)| \to 0 \right) = 1
+\]
+Thus,
+\[
+\sup_{x \in \mathbb{R}} |f_n(x) - f(x)| \to 0 \quad \text{for all} \quad x \in \mathbb{R}
+\]
+
+\noindent\textbf{General Case:} \\
+Let \( x_1, x_2, \dots, x_m \in \mathbb{F} \), where \( G_{\mathbb{F}} \) is the generated group of \( \mathbb{F} \), and define
+\[
+x_i \in G_{\mathbb{F}}(U_i) \sim \mathbb{F}
+\]
+Then,
+\[
+U_i \leq F(x) \quad \text{implies} \quad x_i = G_{\mathbb{F}}(U_i) \leq x
+\]
+\[
+F(x) = F(x_i) \implies F(x_i) = F(x)
+\]
+
+\[
+\sup_{x \in \mathbb{R}} |F_n(x) - F(x)| = \sup_{x \in \mathbb{R}} |F_n^0(x) - F^0(x)|
+\]
+\[
+\leq \sup_{x \in \mathbb{R}} |F_n(x) - F(x)| \quad \text{a.s.}
+\]
+
+\begin{example}
+    \begin{enumerate}
+        \item If \( X_i \) are independent, \( \mathbb{E}[X_i] = 0 \) for all \( i \), and \( \mathbb{E}[X_i^2] < \infty \), then
+\[
+\mathbb{P} \left( \lim_{n \to \infty} S_n = 0 \right) = 1
+\]
+\item If \( X_n \sim \text{Ber}(p_n) \) and are independent, then
+\[
+\mathbb{P} \left( \lim_{n \to \infty} X_n = 1 \right) = \mathbb{P}(X_n = 1 \text{ i.o.})
+\]
+where
+\[
+\mathbb{P}(X_n = 1 \text{ i.o.}) = 
+\begin{cases}
+0 & \text{if} \ \sum p_n < \infty \\
+1 & \text{if} \ \sum p_n = \infty
+\end{cases}
+\]
+\item If \( X_i \) are i.i.d. and \( \mathbb{E}[|X_i|^\infty] = \infty \), then
+\[
+\mathbb{P} \left( \lim_{n \to \infty} \frac{|X_n|}{n} = \infty \right) = 1
+\]
+    \end{enumerate}
+\end{example}
+\begin{definition}\textbf{(Tail $\sigma-$algebra)}
+    Let \( F_n^* = \sigma(X_{n+1}, \dots) \), which denotes the sigma-algebra generated by \( X_{n+1}, X_{n+2}, \dots \). Then,
+\[
+F_n^* = \sigma \left( \bigcup_{n=0}^\infty \{ X_n, X_{n+1}, \dots \} \right)
+\]
+\[
+\text{Tail \(\sigma\)-Algebra:} \quad F_\infty^* = \bigcap_{n=0}^\infty F_n^*
+\]
+and
+\[
+\{ X_{n+1}, \dots, X_m \} \in F_\infty^* \quad \text{implies that} \quad \{ (X_{n+1}, \dots, X_m) \in B \} \in F_\infty^*
+\]
+\end{definition}
+
+\begin{theorem}\textbf{(Kolmogorov's 0-1 Law:)} \\
+If \( X_1, X_2, \dots, X_n \) are independent and \( A \in \mathcal{F}_\infty \), then
+\[
+\mathbb{P}(A) \in \{0, 1\}
+\]
+\end{theorem}
+\begin{example} Let \( X_1 \) be such that \( \mathbb{E}[|X_1|^2] < \infty \). Then,
+\[
+\mathbb{P}(X_1 = 0) = \frac{1}{2}
+\]
+Also, let \( X_n = X_1 \) for \( n \geq 1 \), with \( X_n \) not independent, and consider the sequence \( Y_n = \frac{1}{n} \sum_{i=1}^n X_i \). Then,
+\[
+Y_n \to X_1 \quad \text{as} \quad n \to \infty
+\]
+and
+\[
+\mathbb{P}\left( \frac{S_n}{n} \to 0 \right) = \mathbb{P}(X_1 = 0) = \frac{1}{2}
+\]
+\end{example}
+\begin{proof} Suppose \( A \in \mathcal{F}_\infty \), and let \( A^c \in \mathcal{F}_\infty \) be the complement of \( A \). Then,
+\[
+\mathbb{P}(A \cap A^c) = \mathbb{P}(A) \cdot \mathbb{P}(A^c) = \mathbb{P}(A) \cdot (1 - \mathbb{P}(A))
+\]
+
+\noindent\textbf{Further Notation:} \\
+Let \( A \in \mathcal{F}_\infty \). We define:
+\[
+A^c = \{ B \in \mathcal{F}_\infty \mid \mathbb{P}(A \cap B) = \mathbb{P}(A) \mathbb{P}(B) \}
+\]
+and
+\[
+F_\infty = \sigma\left( \bigcup_{n=0}^\infty X_n \right)
+\]
+
+\textbf{Instead of proving} \( A \subseteq A^c \), we prove that if \( A \subseteq \mathcal{F}_\infty \) and \( B \subseteq \mathcal{F}_\infty \), then \( A^c = B^c \) if and only if \( A = B \).
+\textbf{T.S.T.}: \( \mathcal{F}^* = \bigcup_{n \geq 1} \sigma(X_1, \dots, X_n) \quad (A \perp B + B \in \mathcal{F}_\infty) \)
+
+\[
+\text{E.T.P.T.}(\mathcal{F}^*) = \bigcup_{n \geq 1} \sigma(X_1, \dots, X_n) \quad \text{because}
+\]
+
+\[
+\bigcup_{n \geq 1} \sigma(X_1, \dots, X_n) \text{ is a } \sigma\text{-algebra and independent of } \mathcal{F}^* \Rightarrow \mathcal{F}^\infty \perp \sigma(X_1, \dots, X_n)
+\]
+
+\[
+\sigma(X_1, \dots, X_n) \perp \mathcal{F}^*
+\]
+\end{proof}
+\begin{definition}\textbf{(Tail Random Variable)}
+    Let \( X \) be a random variable, where:
+\[
+X: (\Omega, \mathcal{F}^\infty) \to \mathbb{R}.
+\]
+The random variable \( X \) is said to be a tail random variable if for every \( B \in \mathcal{B} \),
+\[
+\{ X \in B \} \in \mathcal{F}^\infty.
+\]
+\end{definition}
+\begin{example}
+    $\limsup_n X_n,\ \liminf_n X_n$ are tail random variables as their limiting behavior does not depend on the first few values of the sequence.
+\end{example}
+\begin{exercise}
+\begin{enumerate}
+    \item $\lf\{\f{S_n}n\to 0\rg\}\in\F_\infty^*(X_1,\ldots,X_n).$
+    \item $\{S_n\text{ converges}\}\in\F_\infty^*(X_1,\ldots,X_n).$
+    \item $\{S_n\to 1\}\not\in\F_\infty^*.$
+\end{enumerate}
+\end{exercise}
+\section*{Percolation}
+
+Consider the lattice \( \mathbb{Z}^d \) with edge set \( E_d \).  
+Let \( X_e \in \{0,1\} \) for \( e \in E_d \), where \( X_e \overset{\text{iid}}{\sim} \text{Ber}(p) \).
+
+Let \( G(p) \) be the random subgraph of \( \mathbb{Z}^d \) where we:
+
+\begin{itemize}
+  \item \textbf{Keep} edge \( e \) if \( X_e = 1 \)
+  \item \textbf{Remove} edge \( e \) if \( X_e = 0 \)
+\end{itemize}
+
+\bigskip
+
+\textbf{Question:} Does \( \mathcal{C}_0 \) contain an infinite path in \( G(p) \)?  
+
+Let \( \omega := \{ X_e \}_{e \in E_d} \), and let \( \omega_m := \{ \omega_e \mid e \in W_m \} \), where \( W_m \subset E_d \) is finite.
+
+Define:
+\[
+\left\{ 0 \leftrightarrow \infty \right\} := \left\{ \text{there exists an infinite path from } 0 \right\}
+= \bigcap_{m=1}^\infty \left\{ 0 \leftrightarrow \partial W_m \right\}
+\]
+
+This is a tail event, i.e.,
+\[
+\left\{ 0 \leftrightarrow \infty \right\} \in \sigma\left( X_e : e \in E_d \setminus \bigcup_m W_m \right) \subseteq \mathcal{F}_\infty^*
+\]
+
+\bigskip
+
+Define the \textit{percolation probability}:
+\[
+\theta(p) := \mathbb{P}( \text{there exists an infinite path in } G(p) ) \in [0,1]
+\]
+
+Note that
+\[
+\left\{ \text{there exists an infinite path} \right\} 
+= \bigcup_{y \in \mathbb{Z}^d} \{ 0 \leftrightarrow y \} \in \mathcal{F}_\infty
+\]
+
+\bigskip
+
+\textbf{Properties of \( \theta(p) \):}
+\[
+\theta(p) \text{ is increasing in } p
+\]
+
+Define the \textit{critical probability} \( p_c(d) \) such that:
+\[
+\theta_d(p) = 
+\begin{cases}
+0 & \text{if } p < p_c(d) \\
+1 & \text{if } p > p_c(d) \\
+? & \text{if } p = p_c(d)
+\end{cases}
+\]
+
+\bigskip
+
+\textbf{Known results:}
+\[
+p_c(1) = 1 \quad \Rightarrow \quad \theta_1(p_c) = 1
+\]
+\[
+p_c(2) = \frac{1}{2} \quad \Rightarrow \quad \theta_2(p_c) = 0
+\]
+
+\bigskip
+
+\textbf{Asymptotics:}
+\[
+\theta_d(p_c) = 0 \text{ for } d \gg 1 \text{ (e.g. } d \geq 19 \text{ by non-trivial results)}
+\]
+\[
+p_c(d) \to \frac{1}{2} \quad \text{as } d \to \infty
+\]
+\section{Lecture 23 - 30/09/2025}
+\begin{definition}\textbf{(Convergence in Distribution)} \( X_n \xrightarrow{d} X \) or \( X_n \Rightarrow X \) (converges in distribution) if \(\forall x\), point of continuity of \(F_X\),
+\[
+F_{X_n}(x) \to F_X(x)
+\]
+\end{definition}
+\begin{proposition}
+    \[
+\implies X_n \xrightarrow{P} X \implies X_n \xrightarrow{d} X \quad \text{(check uniqueness)}
+\]
+\end{proposition}
+
+\begin{example} \( X_n \) i.i.d. \(\implies F_{X_n}(x) = F_X(x)\) \(\forall n \geq 1\), \(x \in \mathbb{R}\).
+
+\[
+\therefore X_n \xrightarrow{d} X_1, \quad X_1 \text{ is constant} \quad \longleftrightarrow \quad \text{Ex. (trials of Bernoulli, cannot have i.i.d. 0,1 seq. converging)}
+\]
+\end{example}
+\begin{theorem}
+    \[
+X_n \to X, \quad X_n \to Y, \quad \{X_n\} \perp \{Y_n\}\implies
+\]
+\begin{enumerate}
+    \item \(X_n + Y_n \to X + Y\)
+    \item \(X_n \cdot Y_n \to X \cdot Y\)
+\end{enumerate}
+\end{theorem}
+\begin{theorem} \(X_n \to X \iff \mathbb{E}[f(X_n)] \to \mathbb{E}[f(X)]\) \(\forall\) bounded continuous \(f: \mathbb{R} \to \mathbb{R}\).
+
+\[
+\iff \text{check for } f \in C_c^\infty
+\]
+\[
+\text{(locally differentiable, bounded derivatives)}
+\]
+\end{theorem}
+\begin{proof}
+    \(\quad \Longleftarrow\)
+
+\[
+g(x) = \begin{cases}
+e^{-1/x}, & x > 0, \\
+0, & x \leq 0,
+\end{cases}
+\quad g \in C^\infty(\mathbb{R}), \quad \left(g^{(n)}(0) = 0 \text{ for all } n \right)
+\]
+
+
+\[
+-\infty < a < b < \infty, \quad g_{a,b}(x) = g(x - a) g(b - x) = 
+\begin{cases}
+0, & x \notin (a,b), \\
+>0, & x \in (a,b)
+\end{cases}
+\]
+
+
+\[
+C_{a,b} = \int_a^b g_{a,b}(x) \, dx \in (0, \infty)
+\]
+
+\[
+f_{a,b}(x) = \frac{g_{a,b}(x)}{C_{a,b}} \quad \text{— pdf}
+\]
+
+
+\[
+H_{a,b}(x) = 
+\begin{cases}
+0, & x \leq a, \\
+\nearrow, & x \in (a,b), \\
+1, & x \geq b,
+\end{cases}
+\quad H_{a,b} \in C_b^\infty \quad \text{(CDF)}
+\]
+Let \( l \) be a point of continuity of \( F \) whose \( a < b \).
+
+\[
+1 - H_{a,b}(x) \leq 1_{[x \leq b]}
+\]
+
+Monotonicity \(\implies \mathbb{E}[1 - H_{a,b}(X_n)] \leq \mathbb{P}(X_n \leq b)\).
+
+Linearity + assumption \((C_b^\infty \ni f)\):
+
+\[
+1 - \mathbb{E}H_{a,b}(X) = \lim_{n \to \infty} \mathbb{E}[1 - H_{a,b}(X_n)] \leq \liminf \mathbb{P}(X_n \leq b)
+\]
+
+\[
+1 - \mathbb{E}H_{a,b}(X) \geq \mathbb{P}(X \leq a) \quad \text{by monotonicity}
+\]
+
+\[
+\therefore 1_{\{x \leq a\}} \leq 1 - H_{a,b}(x)
+\]
+
+\[
+\mathbb{P}(X \leq a) \leq \liminf \mathbb{P}(X_n \leq b) \quad \text{let } a < b
+\]
+
+\[
+\Downarrow
+\]
+
+\[
+F(b) = F(b-) \leq \liminf \mathbb{P}(X_n \leq b) \quad \text{(point of continuity)}
+\]
+
+Choose \( b < a \):
+
+\[
+\limsup F_n(b) \leq \limsup \mathbb{E}[1 - H_{b,a}(X_n)] = \mathbb{E}[1 - H_{b,a}(X)] \leq \mathbb{P}(X \leq a)
+\]
+
+\[
+F(b-) \leq \limsup F_n(b) \leq \limsup F_n(b) \leq F(b)
+\]
+
+\[
+\therefore \text{by right continuity of CDF, } \mathbb{P}(X < a) = \mathbb{P}(X \leq b)
+\]
+\end{proof}
+\section{Lecture 24 - 01/10/2025}
+\textbf{Given:} Let \( f \) be a bounded continuous function, compactly supported outside the interval \( [-k, k] \) for some \( k \in \mathbb{Z}^+ \).
+
+\textbf{Goal:} Show that for \( \gamma_n \to X \), there exist points \( x_1, \dots, x_m \) such that the \( x_i \)'s are distinct points of \( F \subset \mathbb{R}^n \), and
+
+\[
+\varphi(n) = \frac{1}{m} \sum_{i=1}^{m} f(x_i), \quad \sup_{n} \left| \varphi(n) - f(x) \right| \leq \epsilon \quad \text{for some} \quad x \in \mathbb{R}.
+\]
+
+\textbf{Step 1: Expectation Bound}
+
+We want to analyze the difference in expectations:
+
+\[
+\left| \mathbb{E}[f(X_n)] - \mathbb{E}[f(X)] \right| \leq \left| \mathbb{E}[f(X_n)] - f(X_n) \right| + \left| f(X_n) - f(X) \right| + \left| f(X) - \mathbb{E}[f(X)] \right|.
+\]
+
+\textbf{Step 2: Breaking the Sums}
+
+Now, breaking the sums:
+
+\[
+\sum_{i=1}^{m} \mathbb{E}[|f(X_i) - f(X)|] + \mathbb{E}[|f(X_n) - f(X)|] \leq \epsilon.
+\]
+
+\textbf{Step 3: Conclusion}
+
+Therefore, we obtain:
+
+\[
+\lim_{n \to \infty} \mathbb{E}[|f(X_n) - f(X)|] = 0.
+\]
+
+This completes the proof that \( \gamma_n \to X \) as \( n \to \infty \).
+\end{document} 

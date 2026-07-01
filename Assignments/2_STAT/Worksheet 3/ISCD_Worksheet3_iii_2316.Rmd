@@ -1,0 +1,24 @@
+---
+title: "**Introduction to Statistics and Computation with Data: WorkSheet 3, Part 3**"
+author: "Daibik Barik (Bmat2316)"
+date: "2024-02-09"
+output: pdf_document
+---
+
+\section{5}
+
+```{r}
+library(igraph)
+```
+\newpage
+
+```{r}
+edgeVec = c(1,2, 1,5, 1,6, 1,7, 1,8, 1,9, 1,10, 2,6, 2,7, 2,8, 2,9, 2,10, 3,4,
+            3,5, 3,7, 3,8, 3,10, 4,5, 4,6, 4,7, 4,9, 4,10, 5,7, 5,8, 5,9, 5,10,
+            6,8, 8,9)
+graph <- graph(edges = edgeVec, n = 10, directed = FALSE)
+ 
+plot(graph, layout = layout.circle, vertex.label = 1:10, 
+     vertex.size = 35, 
+     main = "Erdös Renyi Graph Group 8")
+```

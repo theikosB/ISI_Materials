@@ -1,0 +1,5 @@
+# Makefile.v01
+# The target line included the dependencies
+myprog:  ops.c mymain.c
+	gcc ops.c mymain.c -o myprog
+

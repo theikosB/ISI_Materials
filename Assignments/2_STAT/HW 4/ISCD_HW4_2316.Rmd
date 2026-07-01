@@ -1,0 +1,237 @@
+---
+title: "**Introduction to Statistics and Computation with Data: HomeWork 4**"
+author: "Daibik Barik (Bmat2316)"
+date: "2024-02-10"
+output: pdf_document
+---
+
+\section{1.}
+
+Let $X_1, X_2, \dots ,Xn$ be i.i.d. samples from Normal ($\mu$, $\sigma^2$). Then Likelihood is defined as 
+$$ L(X_1, X_2, \dots, X_n| \mu, \sigma^2) = \prod_{i=1}^n \frac{e^\frac{-(X_i-\mu)^2}{2\sigma^2}}{\sigma\sqrt{2\pi}}$$
+
+$$= \frac{e^{\sum_{i=1}^{n}\frac{-(X_i-\mu)}{2\sigma^2}}}{(\sigma\sqrt{2\pi})^n} $$
+
+For simplicity, we consider logarithm. Taking log with base $e$ on both sides and simplifying, we get
+
+$$ l(X_1,X_2,\dots,X_n|\mu,\sigma^2) := ln(L(X_1, X_2, \dots, X_n| \mu, \sigma^2)) $$ 
+$$ = -\frac{n}{2}ln(2\pi)-\frac{n}{2}ln(\sigma^2)-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(X_i-\mu)^2 $$
+
+Maximum likelihood estimate for $\mu$ is found by differentiating the expression w.r.t. to the mean ($\mu$).
+
+Let 
+$$ \frac{\partial}{\partial\mu}l(X_1,X_2,\dots,X_n|\mu,\sigma^2)= 0 $$ $$ \implies \frac{\partial}{\partial\mu}\left(-\frac{n}{2}ln(2\pi)-\frac{n}{2}ln(\sigma^2)-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(X_i-\mu)^2\right) = 0$$ $$ \implies \frac{1}{\sigma^2}\sum_{i=1}^{n}(X_i-\mu) = 0 $$ $$ \frac{1}{\sigma^2} \left(\sum_{i=1}^{n}X_i-n\mu \right) $$
+\newpage
+
+which is equal to zero only when, for some $\hat{\mu}$,
+
+$$ \sum_{i=1}^{n}X_i-n\hat{\mu} = 0 $$ 
+$$ \boxed{\hat{\mu} = \frac{1}{n}\sum_{i=1}^{n}X_i} $$
+
+Similarly, for the variance($\sigma^2$), we consider
+
+Let
+$$ \frac{\partial}{\partial\sigma^2}l(X_1,X_2,\dots,X_n|\mu,\sigma^2)= 0 $$ 
+$$ \implies \frac{\partial}{\partial\sigma^2}\left(-\frac{n}{2}ln(2\pi)-\frac{n}{2}ln(\sigma^2)-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(X_i-\mu)^2\right) = 0 $$ 
+$$ \implies -\frac{n}{2\sigma^2}-\left[\frac{1}{2}\sum_{i=1}^{n}(X_i-\mu)^2 \right]\frac{\partial}{\partial\sigma^2}\left( \frac{1}{\sigma^2}\right) = 0 $$ 
+$$ \implies -\frac{n}{2\sigma^2}-\left[\frac{1}{2}\sum_{i=1}^{n}(X_i-\mu)^2 \right]\left(-\frac{1}{(\sigma^2)^2} \right)= 0 $$
+$$ \implies -\frac{n}{2\sigma^2}+\left[\frac{1}{2}\sum_{i=1}^{n}(X_i-\mu)^2 \right]\frac{1}{(\sigma^2)^2} = 0 $$
+$$ \frac{1}{2\sigma^2}\left[\frac{1}{\sigma^2}\sum_{i=1}^{n}(X_i-\mu)^2-n \right] = 0 $$
+
+which, if we rule out $\sigma^2=0$, is equal to zero only if, for some $\hat{\sigma}^2$, 
+
+$$ \boxed{\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^{n}(X_i-\hat{\mu})^2} $$
+\newpage
+
+
+\section{2.}
+
+Let $X_1, X_2, \dots ,Xn$ be i.i.d. samples from Poisson ($\lambda$). Then Likelihood is defined as
+$$ L(X_1, X_2,\dots,X_n|\lambda) = \prod_{i=1}^{n} e^{-\lambda}\frac{1}{X_i!}\lambda^{X_j} $$
+
+For simplicity, we consider logarithm. Taking log with base $e$ on both sides and simplifying, we get
+
+$$ l(X_1,X_2,\dots,X_n|\lambda) := ln(L(X_1, X_2, \dots, X_n| \lambda)) $$
+$$ = -n\lambda -\sum_{i=1}^{n}ln(X_i!) +ln(\lambda)\sum_{i=1}^{n}X_i $$
+
+Maximum likelihood estimate for $\lambda$ is found by differentiating the expression w.r.t. to the mean ($\lambda$).
+
+Let
+$$ \frac{d}{d\lambda}l(X_1,X_2,\dots,X_n|\lambda) = 0 $$
+$$ \implies \frac{d}{d\lambda} \left(-n\lambda -\sum_{i=1}^{n}ln(X_i!) +ln(\lambda)\sum_{i=1}^{n}X_i \right) = 0 $$
+$$ \implies -n +\frac{1}{\lambda}\sum_{i=1}^{n}X_i = 0 $$
+$$ \implies \boxed{\hat{\lambda} = \frac{1}{n}\sum_{i=1}^{n}X_i} \quad \text{for some} \; \hat{\lambda}$$ 
+\newpage
+
+
+\section{3.}
+
+\subsection{(0)}
+The method used to calculate 'Nhat' and 'phat' is method of moments.
+This is done by equating
+$$ \mu_k(X_1,X_2,\dots,X_n) = \mathbb{E}(X^k) = m_k(X_1,X_2,\dots,X_n) $$
+where 
+$$ \mu_{k}(X_1,X_2,\dots,X_n) = \frac{\sum_{i=1}^{n}{X_i}^k}{n} $$
+
+Since the distribution is binomial,
+$$ \mu_1 = \mathbb{E}(X) = Np \qquad \text{and} $$
+$$ \mu_2 = \mathbb{E}(X^2) = Var(X) + [\mathbb{E}(X)]^2 = Np(1-p) + (Np)^2 $$
+
+Hence, $m_1 = Np$ and $m_2 = Np(1-p)+(Np)^2$
+$$ \therefore \; m_2 = m_1(1-p) + m_1^2 $$
+$$ \implies \hat{p} = \frac{m_1-(m_2-m_1^2)}{m_1} $$
+and then, 
+$$ \hat{N}=\frac{m_1}{\hat{p}}=\frac{m_1^2}{m_1-(m_2-m_1^2)} $$
+We get the estimated values of the quantities N, p as $\hat{N}$ and $\hat{p}$.
+\newpage
+
+\subsection{(a)}
+```{r}
+n <- 100
+N <- 20
+p <- 0.4
+x <- rbinom(n, N, p)
+m1 <- mean(x)
+m2 <- mean(x^2)
+Nhat <- m1^2 / (m1 -(m2-m1^2))
+phat <- (m1 - (m2-m1^2)) / m1
+```
+
+```{r}
+Nhat -N
+phat -p
+```
+
+\subsection{(b)}
+```{r}
+n <- 1000
+N <- 20
+p <- 0.4
+x <- rbinom(n, N, p)
+m1 <- mean(x)
+m2 <- mean(x^2)
+Nhat <- m1^2 / (m1 -(m2-m1^2))
+phat <- (m1 - (m2-m1^2)) / m1
+```
+
+```{r}
+Nhat -N
+phat -p
+```
+
+The error here, with more data, is significantly lower.
+\newpage
+
+\subsection{(c)}
+```{r}
+n <- 100
+N <- 10
+p <- 0.1
+x <- rbinom(n, N, p)
+m1 <- mean(x)
+m2 <- mean(x^2)
+Nhat <- m1^2 / (m1 -(m2-m1^2))
+phat <- (m1 - (m2-m1^2)) / m1
+```
+
+```{r}
+Nhat -N
+phat -p
+```
+
+```{r}
+n <- 100
+N <- 10
+p <- 0.9
+x <- rbinom(n, N, p)
+m1 <- mean(x)
+m2 <- mean(x^2)
+Nhat <- m1^2 / (m1 -(m2-m1^2))
+phat <- (m1 - (m2-m1^2)) / m1
+```
+
+```{r}
+Nhat -N
+phat -p
+```
+\newpage
+
+```{r}
+n <- 1000
+N <- 10
+p <- 0.1
+x <- rbinom(n, N, p)
+m1 <- mean(x)
+m2 <- mean(x^2)
+Nhat <- m1^2 / (m1 -(m2-m1^2))
+phat <- (m1 - (m2-m1^2)) / m1
+```
+
+```{r}
+Nhat -N
+phat -p
+```
+
+```{r}
+n <- 1000
+N <- 10
+p <- 0.9
+x <- rbinom(n, N, p)
+m1 <- mean(x)
+m2 <- mean(x^2)
+Nhat <- m1^2 / (m1 -(m2-m1^2))
+phat <- (m1 - (m2-m1^2)) / m1
+```
+
+```{r}
+Nhat -N
+phat -p
+```
+\newpage
+
+
+\section{4.}
+Let $M$ be a random variable, defined as \
+$$ M:= \text{maximum number of heads obtained} $$
+and $P[M=r]$ and $F_M(r)$ denote, respectively, the PMF and CDF for this random variable. 
+
+\subsection{(a)}
+We need the value of $P[M=30]$. \
+Since all the $n$ ($n$=$10$) trials are independent and identical (as i.i.d.s), 
+$$ F_M(r) = P[M \leq r] = P[X_i \leq r]^{10} $$
+and $$ P[X_i \leq r] = \sum_{k=0}^r \binom{50}{k}p^k(1-p)^{50-k} $$
+$$ \therefore F_M(r) = \left[\sum_{k=0}^r \binom{50}{k}p^k(1-p)^{50-k}\right]^{10} $$
+Now,
+$$ P[M=30] = F_M(30) - F_M(29) $$
+$$ = \left[\sum_{k=0}^{30} \binom{50}{k}p^k(1-p)^{50-k}\right]^{10} - \left[\sum_{k=0}^{29} \binom{50}{k}p^k(1-p)^{50-k}\right]^{10} $$
+
+\subsection{(b)}
+When we want to find an estimate for $p$ we usually take the probability function and differentiate it w.r.t. $p$, equate it with $0$. In this case tho, it is a $500$ degree polynomial and differentiating it gives us a $499$ degree polynomial which is unsolvable by us under 5 mins.
+
+Nevertheless, we can try to provide a (good enough) estimate.
+Defining $h_i$ as the number of heads in the $i^{th}$ trial. \
+$\therefore$ the empirical probability of getting heads in $i^{th}$ trial
+$$ P_{h_i}= \frac{h_i}{50} $$
+
+So, estimating $p$ (probability of getting head in each toss) as the mean of these probabilities is my best guess.
+$$ p = \frac{\sum_{i=1}^{10}P_{h_i}}{10}= \frac{\sum_{i=1}^{10}h_i}{500} $$
+\newpage
+
+\subsection{(c)}
+```{r}
+likelihood_max <- function(p, M=30, N=50, n=10) {
+pbinom(q = M, size = N, prob = p)^n - pbinom(q = M - 1, size = N, prob = p)^n
+}
+```
+According to the graph, the best estimate for 'p' is at about neighbourhood of 0.5, where it attains the maximum value.
+
+\subsection{(d)}
+\subsubsection{i.}
+```{r fig.height=4, fig.width=6}
+plot(likelihood_max, from=0, to =1)
+```
+
+\subsubsection{ii.}
+```{r}
+optimize(likelihood_max, interval=c(0,1), maximum=TRUE)
+```

@@ -1,0 +1,226 @@
+---
+title: "**Introduction to Statistics and Computation with Data: HomeWork 5**"
+author: "Daibik Barik (Bmat2316)"
+date: "2024-02-28"
+output: pdf_document
+---
+
+```{r}
+set.seed(2024)
+```
+
+\section{1.}
+```{r}
+E= rexp(100)
+qqnorm(E);qqline(E)
+```
+
+It follows the Normal distribution from the interval $(-1,1)$ and positively deviates from the normal graph on both the tails.
+\newpage
+
+```{r}
+U= runif(100)
+qqnorm(U);qqline(U)
+```
+
+It follows the Normal distribution from the interval $(-1,1)$ and positively deviates from the normal graph on the front tail and negatively deviates in the end tail.
+\newpage
+
+
+\section{2.}
+
+```{r}
+SupDF = read.csv(file= "./SuppandiZoomLog.csv", header = TRUE)
+library(tidyverse)
+#SupDF
+```
+\newpage
+
+\subsection{(a)}
+```{r}
+ggplot(data= SupDF) +
+  geom_bar(mapping= aes(x=Venue, fill = Meeting.Topic)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+\newpage
+
+\subsection{(b)}
+```{r}
+ggplot(data= SupDF, mapping= aes(x= Meeting.Topic, y= Duration..Minutes.)) +
+  geom_boxplot() + geom_jitter(mapping= aes(colour= Meeting.Topic))
+```
+\newpage
+
+\subsection{(c)}
+```{r}
+library(lubridate)
+SupDF$Day= weekdays(as.Date(SupDF$Start.Time))
+#SupDF
+SupWeek= subset(SupDF, Day!= "Sunday" & Day!= "Saturday")
+ggplot(data= SupWeek) + 
+  geom_bar(mapping= aes(x= Day), fill= "lightblue", colour= "black") +
+  coord_polar() 
+```
+\newpage
+
+\subsection{(d)}
+```{r}
+SupDF$Start.Hour= hour(SupDF$Start.Time)
+ggplot(data= SupDF) +
+  geom_histogram(mapping= aes(x= Start.Hour), fill="lightblue", color="black",
+                 binwidth=1)
+```
+\newpage
+
+\subsection{(e)}
+\paragraph{Null Hypothesis$(H_0)$:} The meeting time(Hours) follows exponential distribution with parameter = $\frac{1}{14}$
+\paragraph{Alternative Hypothesis$(H_1)$:} The meeting time(Hours) does not follow exponential distribution with parameter = $\frac{1}{14}$
+```{r}
+mean(SupDF$Start.Hour)
+ks.test(SupDF$Start.Hour, 'pexp', rate = 1/14)
+```
+As the \emph{p-value} is less than the level of significance, so we accept the $H_1$ and reject the $H_0$.
+\newpage
+
+\section{3.}
+```{r}
+x = c(1,2,3,4,5,6)
+probx= c(1/6,1/6,1/6,1/6,1/6,1/6)
+Rolls=sample(x, size=1500, replace=T, prob=probx)
+Rollm=matrix(Rolls, nrow = 5)
+ Rollsums = apply(Rollm, 2, sum)
+library(ggplot2)
+density = function(x,a,s){ (1/((2*pi)^(0.5)*s ))* exp(-(x-a)^2/(2*s^2))}
+dfrolls = data.frame(Rollsums)
+mu = mean(dfrolls$Rollsums)
+sigma= sd(dfrolls$Rollsums)
+ggplot(data=dfrolls) + 
+  geom_histogram(mapping=aes(x=Rollsums,y=after_stat(density)),
+                 color="#00846b", fill=NA, binwidth=1) +
+  xlim(5,30) + geom_function(fun=density,args=list(a=mu, s= sigma),
+                             color="black")
+```
+\newpage
+
+\subsection{(a)}
+* The **matrix()** function is utilized to organize a set of values into a matrix format. Here, the *matrix()* function is used to transform the 1500 generated samples(Rolls) into a matrix with 5 rows and 300 columns. 
+
+* The **apply()** function computes a vector, array, or list of values by applying a specified function to the margins (rows or columns) of an array or matrix. Here, *apply()* calculates the sum of elements along row 2 (margin) and stores 300 sums.
+
+\subsection{(b)}
+The most approximate value of $\int_{12}^{21}\text{density}(x,mu,sigma)dx$ is the area under the histogram from $x=12$ to $x=21$.
+```{r}
+area_hist= 0
+for(x in 12:21)
+  area_hist= area_hist + sum(Rollsums== x)
+area_hist/300
+```
+
+Hence the approximate area is $0.773$.
+
+\subsection{(c)}
+As the histogram follows fairly normal distribution, in the area under the graph, to approximate $a$ and $b$ by standardizing $12$ and $21$, we can use the formula for standardization:
+$$ z=\frac{x-\mu}{\sigma} $$
+where $\mu$ and $\sigma$ are-
+```{r}
+mu;sigma
+```
+$$ \therefore \; a=\frac{12-17.83667}{3.908227} \quad \text{and} \quad b=\frac{21-17.83667}{3.908227} $$
+```{r}
+a= (12-mu)/sigma
+b= (21-mu)/sigma
+a;b
+```
+$$ \implies a= -1.493431 \quad \text{and} \quad b= 0.8094037 $$
+which are more or less approximate guesses.
+\newpage
+
+\subsection{(d)}
+```{r}
+Dice= read.csv(file="Dice.csv",head=TRUE)
+names(Dice)= "Sum";
+Dice$Sum= as.numeric(Dice$Sum);
+Dice= na.omit(Dice$Sum);mu=mean(Dice);sigma=sd(Dice);
+density= function(x,a,s){ (1/((2*pi)^(0.5)*s ))* exp(-(x-a)^2/(2*s^2))}
+diceroll= data.frame(Dice)
+ggplot(data= diceroll) +
+  geom_histogram(mapping= aes(x= Dice, y= after_stat(density)),
+                 color= "#00846b", fill= NA, binwidth= 1) +
+  xlim(5,30) + geom_function(fun= density, 
+                             args= list(a= mu, s= sigma),
+                             color="black") +
+  xlab("Sum of Rolls")
+```
+\newpage
+
+$\int_{12}^{21}\text{density}(x,mu,sigma)dx$ can be approximated by calculating the area of the histogram between $x=12$ and $x=21$.
+
+```{r}
+area_hist= 0
+for(x in 12:21)
+  area_hist= area_hist + sum(Dice== x)
+area_hist / length(Dice)
+```
+Hence the approximate area is $0.807$.
+
+To approximate $a$ and $b$ by standardizing $12$ and $21$, we can use the formula for standardization:
+$$ z=\frac{x-\mu}{\sigma} $$
+where $\mu$ and $\sigma$ are-
+```{r}
+mu;sigma
+```
+$$ \therefore \; a=\frac{12-17.23077}{3.670899} \quad \text{and} \quad b=\frac{21-17.23077}{3.670899} $$
+```{r}
+a= (12-mu)/sigma
+b= (21-mu)/sigma
+a;b
+```
+$$ \implies a= -1.424929 \quad \text{and} \quad b= 1.026787 $$
+which are more or less approximate guesses.
+\newpage
+
+
+\section{4.}
+
+\subsection{(a)}
+```{r}
+x=seq(-2,2,0.1)
+y=pnorm(x)
+plot(x,y,type='l')
+```
+\newpage
+
+\subsection{(b)}
+```{r}
+x=seq(-2,2,0.1)
+m=100
+p=0.4
+y=pbinom(x*((m*p)*(1-p))^(1/2)+m*p,m,p)
+plot(x,y, type="l")
+```
+\newpage
+
+\subsection{(c)}
+```{r}
+m= 100; p= 0.4;
+Bin= rbinom(1000,m,p)
+density= function(x,a,s){(1/((2*pi)^(0.5)*s ))*exp(-(x-a)^2/(2*s^2))}
+mu= m*p; sigma= (m*p*(1-p))^(1/2);
+BinDf= data.frame(Bin)
+ggplot(BinDf) + geom_histogram(mapping=aes(x=Bin,y=after_stat(density)),
+color="#00846b", fill=NA, binwidth=1)+
+geom_function(fun=density,args=list(a=mu, s= sigma), color="black")+
+xlab("Sample Outcome")
+```
+
+\paragraph{Conclusion:} As $m$ increases, the binomial distribution converges to Normal distribution with the parameters- mean($\mu$): $mp$, variance($\sigma^2$): $mp(1-p)$.
+
+
+
+
+
+
+
+
+
+

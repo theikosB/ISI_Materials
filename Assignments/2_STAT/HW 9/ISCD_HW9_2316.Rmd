@@ -1,0 +1,83 @@
+---
+title: "**Introduction to Statistics and Computation with Data: HomeWork 9**"
+author: "Daibik Barik (Bmat2316)"
+header-includes:
+    - \usepackage{bm, amsmath, amssymb}
+date: "2024-03-23"
+output: pdf_document
+---
+
+\section{1.}
+
+\subsection{(a)}
+Let $x$ be the mean household income.
+\paragraph{Null Hypothesis: } $x= 50000$
+\paragraph{Alternate Hypothesis: } $x\neq 50000$
+
+\subsection{(b)}
+Let $t$ be Siva's mean commute time to ISI in minutes.
+\paragraph{Null Hypothesis: } $t\geq 90$
+\paragraph{Alternate Hypothesis: } $t <90$
+
+\subsection{(c)}
+Let $t$ be the mean delay arrival time in minutes.
+\paragraph{Null Hypothesis: } $t\leq 15$
+\paragraph{Alternate Hypothesis: } $t >15$
+
+\subsection{(d)}
+Let $p$ be the chance(or probability) that superstudent will submit homework late.
+\paragraph{Null Hypothesis: } $p <0.15$
+\paragraph{Alternate Hypothesis: } $p\geq 0.15$
+\newpage
+
+
+\section{2.}
+Given $X_1, X_2, \dots, X_{100} \sim \mathcal{N}(\mu, 3)$.
+We use the $Z$-test for testing of the hypothesis. 
+
+(Significance level of $\alpha= 0.05$)
+
+\paragraph{Null Hypothesis: } $\mu= c$
+\paragraph{Alternate Hypothesis: } $\mu> c$
+
+\subsection{(a)}
+Consider $Y_1, Y_2, \dots, Y_{100} \sim^{iid} \mathcal{N}(8.5, 3)$ under the null hypothesis ($\mu= 8.5$). 
+
+By CLT, we know, $$ \frac{\sqrt{n}(\overline{Y}- \mu_Y)}{\sigma_Y} \sim \mathcal{N}(0,1)= Z\; (\text{let}) $$
+$\begin{aligned}
+\mathbb{P}[\overline{Y} \geq \overline{X}] &= \mathbb{P}[\overline{Y} \geq 10.2] \\
+&= \mathbb{P}\left[\frac{\sqrt{n}(\overline{Y}- \mu_Y=\mu)}{\sigma_Y} \geq \frac{\sqrt{n}(10.2- \mu_X=\mu)}{\sigma_X}\right] \\
+&= \mathbb{P}\left[\frac{\sqrt{100}(\overline{Y}- 8.5)}{\sqrt{3}} \geq \frac{\sqrt{n}(10.2- 8.5)}{\sqrt{3}}\right] \\
+&= \mathbb{P}\left[Z \geq \frac{10\times (1.7)}{1.732}\right] \\
+&= \mathbb{P}\left[Z \geq \frac{17}{1.732}= 9.81\right]
+\end{aligned}$
+```{r}
+1-pnorm(9.81)
+```
+Therefore, $\mathbb{P}\left[\overline Y \geq 10.2\right]= 0$, which is less than our $\alpha= 0.05$ and hence we reject our null hypothesis and accept our.
+
+\subsection{(b)}
+Consider $Y_1, Y_2, \dots, Y_{100} \sim^{iid} \mathcal{N}(9.5, 3)$ under the null hypothesis ($\mu= 8.5$).
+
+By CLT, we know, $$ \frac{\sqrt{n}(\overline{Y}- \mu_Y)}{\sigma_Y} \sim \mathcal{N}(0,1)= Z\; (\text{let}) $$
+$\begin{aligned}
+\mathbb{P}[\overline{Y} \geq \overline{X}] &= \mathbb{P}[\overline{Y} \geq 10.2] \\
+&= \mathbb{P}\left[Z \geq \frac{7}{1.732}= 4.04\right]
+\end{aligned}$
+```{r}
+1-pnorm(4.04)
+```
+Therefore, $\mathbb{P}\left[\overline Y \geq 10.2\right]\approx 2.67256\times 10^{-5}$, which is less than our $\alpha= 0.05$ and hence we reject our null hypothesis.
+\newpage
+
+
+\section{3.}
+
+Te random variables in question 
+
+
+
+
+
+
+

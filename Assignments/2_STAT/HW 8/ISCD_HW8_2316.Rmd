@@ -1,0 +1,130 @@
+---
+title: "**Introduction to Statistics and Computation with Data: HomeWork 8**"
+author: "Daibik Barik (Bmat2316)"
+header-includes:
+    - \usepackage{bm, amsmath, amssymb}
+date: "2024-03-20"
+output: pdf_document
+---
+
+\section*{1. }
+Constructing a confidence interval for the given data, 
+
+Let $X_1, X_2, \dots, X_{n=8} = 300,500,300,700,300,500,300,700$ respectively.
+\[\overline X = \frac{300+500+300+700+300+500+300+700}{8} = \frac{3600}{8} = 450\]
+It is given that each $X_i \sim \mathcal{N}(\mu, \sigma^2)$, where $\sigma^2 = 100$
+\[\implies K =\frac{\sqrt{n}(\bar{X} - \mu)}{\sigma} \sim \mathcal{N}(0,1)\]
+To construct a $95\%$ confidence interval, 
+we need to find '$z$' such that 
+\[P\left[\mu \in \left(\bar X - \frac{z\sigma}{\sqrt{n}},\bar X + \frac{z\sigma}{\sqrt{n}}\right)\right] = 0.95\]
+
+\[P\left[\mu \in \left(450 - \frac{z\sqrt{100}}{\sqrt{8}},450 + \frac{z\sqrt{100}}{\sqrt{8}} \right) \right] = 0.95\]
+
+\[P\left[\frac{\sqrt{2}(\mu - 450)}{5} \in \left( - z,+ z \right) \right] = 0.95\]
+\[\implies P[-z< K < z] = 0.95, \text{ where } K \sim \mathcal{N}(0,1) \]
+\[\implies \Phi(z) - \Phi(-z) = 0.95\]
+\[\implies \Phi(z) - (1 - \Phi(z)) = 0.95\]
+\[\implies \Phi(z) = 0.975\]
+```{r}
+qnorm(0.975)
+```
+\[\implies z = 1.959964 \approx 1.96\]
+Hence the interval we get is
+\[\left(450 - \frac{(1.96)\sqrt{100}}{\sqrt{8}},450 + \frac{(1.96)\sqrt{100}}{\sqrt{8}} \right)\]
+\[ = \left( 450 - 6.93,450 + 6.93 \right)\]
+\[ = \left( 443.07,456.93\right)\]
+
+\section*{2. }
+
+\subsection*{(a). }
+$X_1, ..., X_n$ are iid $Uniform(0,\theta)$
+\[L(\theta| X_1, ..., X_n) = \prod_{i=1}^n\frac{1}{\theta} = \theta^{-n}\]
+\[\log(L(\theta| X_1, ..., X_n)) = -n\cdot \log(\theta)\]
+
+Differentiating on both sides, 
+\[\frac{d\log(L(\theta| X_1, ..., X_n))}{d\theta} = \frac{1}{L(\theta| X_1, ..., X_n)}\frac{-n}{\theta}\]
+\[\implies \frac{-n}{\theta} \rightarrow 0\]
+
+This happens when $\theta$ takes the maximum possible value,which is $Max\{X_1, ..., X_n\}$
+
+\subsection*{(b). }
+$\hat{\theta} = Max\{X_1, ..., X_n\}$ and we have to find the distribution of $T = \frac{ \hat{ \theta }}{ \theta }$
+
+\[P\left[ \frac{\hat{\theta}}{\theta} \leq t\right] = P[\hat{\theta} \leq t\theta]\]
+\[ = P[Max\{X_1, ..., X_n\} \leq t\theta]\]
+\[ = P[X_1 < t\theta] \cap ... \cap P[X_n < t\theta]\]
+\[ = \left(\frac{t\theta}{\theta}\right)^n\]
+\[ = t^n\]
+
+\subsection*{(c). }
+
+
+\section*{3. }
+\[\frac{\sqrt{n}(\overline{X} - \mu)}{S} \sim t_{n-1}\]
+\[K = \frac{\sqrt{19}(12 - \mu)}{6.3} \sim t_{18}\]
+
+To construct a 95% confidence interval for the true mean, 
+\[P\left[\mu \in \left(12 -\frac{z\cdot6.3}{\sqrt{19}},12 +\frac{z\cdot6.3}{\sqrt{19}} \right)\right] = 0.95\]
+\[P[K \in (-z,z) = 0.95]\]
+```{r}
+qt(0.975, 18)
+```
+$\implies z = 1.734064 \approx 1.7$ 
+
+So the 95% confidence interval is, 
+\[\left(12 -\frac{2.1\times 6.3}{\sqrt{19}},12 +\frac{2.1\times6.3}{\sqrt{19}}\right)\]
+\[= \left(8.96483,15.03517\right)\]
+
+\section*{4. }
+
+Given, $X_i \sim Bernoulli(p), \text{ } \forall \text{ } x \in \{1,2, .. n\}$
+We estimate p as $\hat{p} = \frac{1}{n}\sum_1^n X_i$
+For the bernoulli distribution, the standard deviation is estimated by, 
+\[\sqrt{\hat{p}(1-\hat{p})}\] 
+Now,the Central Limit Theorem says, 
+\[\frac{\sqrt{n}(X - \hat{p})}{\sqrt{\hat{p}(1-\hat{p})}} \sim \mathcal{N}(0,1)\]
+So, to find the 95% confidence interval we have to find z such that, 
+\[P\left[K = \frac{\sqrt{n}(X - \hat{p})}{\sqrt{\hat{p}(1-\hat{p})}} \in (-z,z) \right] = 0.95\]
+\[\implies P[-z < K < z] = 0.95, \text{ where } K \sim N(0,1) \]
+\[\implies \Phi(z) - \Phi(-z) = 0.95\]
+\[\implies \Phi(z) = 0.975\]
+```{r}
+qnorm(0.975)
+```
+\[\implies z = 1.959964 \approx 1.96\]
+So, we say that the 95% confidence interval for p is 
+\[\left(\hat{p} - 1.96\sqrt{ \frac{\hat{p}(1-\hat{p})}{n}}, \hat{p} + 1.96\sqrt{ \frac{\hat{p}(1-\hat{p})}{n}}\right)\]
+
+\section*{5. }
+\subsection*{(a). }
+Given, $X_i \sim \mathcal{N}(0,\sigma^2), \text{ } \forall \text{ } i \in \{1,2, .. n\}$
+\[\implies \frac{X_i}{\sigma} \sim \mathcal{N}(0,1)\]
+\[\implies \left(\frac{X_i}{\sigma}\right)^2 \sim \Gamma\left(\frac{1}{2}, \frac{1}{2}\right)\]
+Now, by the additivity of the $\Gamma$ distribution, 
+\[\implies \left(\sum_{i=1}^n\left(\frac{X_i}{\sigma}\right)^2\right) \sim \Gamma\left(\frac{n}{2}, \frac{1}{2}\right) \sim \chi_n^2\]
+Hence, $\left(\sum_{i=1}^n\left(\frac{X_i}{\sigma}\right)\right)^2$ follows the chi-squared distribution with n degrees of freedom.
+
+\newpage
+\subsection*{(b). }
+```{r}
+alpha = 0.95
+n = 100
+lower_value = qchisq((1-alpha)/2,n)
+upper_value = qchisq((1+alpha)/2,n)
+cat("The 95% confidence interval for the chi-squared distribution 
+            with 100 degrees of freedom is (", lower_value, ",", upper_value , ")")
+```
+\subsection{(c). }
+```{r}
+alpha = 0.95
+n = 100
+lower_value = qchisq(1-alpha,n)
+upper_value = qchisq(alpha,n)
+cat("The 95% confidence interval for the chi-squared distribution 
+            with 100 degrees of freedom is either", "(", 0, ",", upper_value , ")", 
+            ("or"), "(",lower_value, ",", Inf , ")" )
+```
+
+
+
+

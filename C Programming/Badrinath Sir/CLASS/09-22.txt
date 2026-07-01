@@ -1,0 +1,19 @@
+0. More on preprocessing directives #define and #include 
+    #include "my.h"
+    #define MAX(A,B) A>B?A:B
+1. "break" and "continue" in loops
+2. More loops 'for' and 'do.. while'
+    Some examples like printing in reverse
+4. switch/case 
+5. arrays declaration, initialization  and use, indexing
+   arrays as addresses
+   arrays as parameters to functions
+   -- se apnf.c
+
+Pushed to next class:
+6. Using Files for IO
+   Using files for IO
+
+
+
+

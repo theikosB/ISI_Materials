@@ -1,0 +1,185 @@
+1. file  commands  : How to view, copy, list, rename and remove files
+--------------------
+  1. cat
+    $ cat <filename>	       to see the text in a file
+  2. more
+    $ more <filename>	       to see the text in a file, but pagewise
+  3. ls 
+    $ ls    		       to see the list of files in the current directory
+    $ ls  <dirname>		to see all files in a directory <dirname>
+    $ ls  <filename>		to list the file <filename>
+  4. cp 
+    $ cp  <filename-1> <filename-2>   to copy  the first file to the second
+    $ cp  <filename> <dirname>	      to copy the file into the directory, keeping the name same
+  5. mv
+    $ mv  <filename1> <filename2>   to rename the file from the first to the second name
+    $ mv  <filename> <dirname>	    to move the file into the given directory
+  6. rm
+    $ rm  <filename>  		       to remove(delete) a file
+
+2. concept - directory structure
+--------------------------------
+   1. Note that in linux (and most operating systems) files are thought of 
+      as existing in a tree structure.
+   2. A directory is a place to hold any number of files or other directories
+   3. Example 
+       / is the top level directory - also called the root
+       /home is the directory "home" under "/"
+       /home/lab is the directrory "lab" under "home" which is under "/"
+       /home/lab/file1.c is the file "file1.c" sitting inside the "lab" directory
+   4. Often we need to use the commands in "file commands" section above so 
+      as to copy them and move them from one directory to another. 
+   5. 'current directory' :
+     At any time at the command prompt we have a directory that we call
+     the current directory of that terminal which is used in many commands. 
+     The concept of current directory is important to know 
+     to understand how many commands work.
+
+3. directory commands : how to know create, remove and change to directories
+-----------------------
+  3.1 pwd
+    $ pwd    			show the current directory
+  3.2 cd
+    $ cd <dirname>		change the current directory to <dirname>
+  3.3 mkdir
+    $ mkdir <new-dirname>	create a new directory <new-dirname>
+  3.4 rmdir
+    $ rmdir  <dirname>		delete(remove) the directory <dirname>
+
+4. A note about file and directory names 
+----------------------------------------
+   * <filename> in the above can be one of three types:
+        1. <simple-filename>             Eg. cat file1.c
+        2. /<dirpath>/<simple-filename>  Eg. cat /home/lab/newdir/file1.c
+        3. <dirpath>/<simple-filename>   Eg. cat newdir/file1.c
+
+        Type-1 assumes file1.c is in the current directory
+        Type-2 assumes file1.c is in the directory /home/lab/newdir
+	Type-3 assumes file1.c is in the directory newdir which is inside the current directory
+
+    * <dirname> can be one of:
+	1. <simple-dirname>		Eg. mkdir newdir
+	2. /<dirpath>/<simple-dirname>	Eg. mkdir /home/lab/newdir
+	3. <dirpath>/<simple-dirname>	Eg. mkdir newdir/newsubdir
+
+    * Special directory names:
+	1. "/"  is the root(topmost) direcory       
+		Eg. the command:    ls /        lists the root directory
+	2. "."  is the current direcory
+		Eg. the command:    ./a.out     executes the file a.out in the current directory
+	3. ".." is the parent to the current directory
+		Eg. the command:    cp ../main.c  .    copies the file called main.c from the parent directory to the current directory
+   
+
+5. *Editing* with vim 
+---------------------
+   $ vim <filename>
+   ABOUT VIM
+   *concept* - vim operates in two important modes:
+	1. insert mode  - In this mode when you type it appears on the screen
+			  so this is the mode to write code.
+	2. editing mode - In this mode you can give commands (So also called "command" mode)
+     In both these modes the arrow keys and pgup/pgdown  work as expected.
+     when one opens a file vim starts in editing mode.
+
+    **Commands in insert mode:**
+     * There are no interesting commands just type and navigate using the arrow
+        or page up/down keys
+     * <ESC-key> pressing this key takes you to editing mode. 
+        so press ESC key before trying out the following editing mode commands
+     
+    **Commands in editing mode:** There are a large number, we list a few:
+     ** Moving around, in addition to arrow keys:
+       * "G"      moves to the end of the file
+       * ":25"    moves to the line number 25
+       * ":se nu" shows line numbers
+       * "w"	moves to the end of the current/next word
+       * "b"	moves to the beginning of the current/next word
+       * "^"	moves to the first character in the current line
+       * "$"	moves to the last  character in the current line
+       * "h","j","k","l"  work as if they were the arrow keys
+                     (<Backspace-key> also moves left)
+       * "Ctrl-u", "Ctrl-d" work as if they were page up and down keys
+
+     ** Different ways to enter insert mode:
+       * "cw"   deletes the word starting with the cursor position
+                                       and puts it in insert mode
+       * "i"    puts it in insert mode
+       * "I"    puts it in insert mode at the beginning of the current line
+       * "a"    puts it in insert mode after the current character
+       * "A"    puts it in insert mode after the end of the current line
+       * "o"    creates a new line below and puts it in insert mode there
+       * "O"    creates a new line above and puts it in insert mode there
+
+     ** Saving and Exiting:
+       * ":w"	saves the current file
+       * ":wq"     saves the current file and exits
+       * ":x"      same as "wq"
+       * ":q!"     exit without saving
+
+     ** Deleting stuff:
+       * "dd"   deletes the line with the cursor
+       * "5dd"  deletes 5 lines starting with the cursor line
+       * "x"    deletes the character under the cursor position (Same as <Delete-Key>)
+       * "5x"   deletes 5 characters starting with the current position
+       * "dw"   deletes the word starting with the cursor position
+
+     ** Undo:
+       * "u"    undo the edits 
+
+     ** Searching
+       * "/" followed by a string searches for a string in the file
+		forward from the position where the cursor was
+		Eg. "/main" goes to the place containing the word "main"
+		    If you hit the <Enter-key> it will go back to edit mode
+       * "?" is line "/" except it searches in the backward direction
+       * "n" Once done a search with "/" or "?" this will repeat the search.
+     
+  
+     vim has many more interesting commands, see https://devhints.io/vim
+     for more information. Also just type vimtutor command to get a 
+     guided tour.
+
+6. *utilities* 
+--------------
+	* Linux has many utilities that are very useful. They are 
+	  commands you can run at the prompt.
+	* Useful utilities are : -  grep, shuf, sort, date, wc, man
+	* Learn to use the "man" utitlity to understand more about
+		each of these. eg try:  :~$  man wc
+
+7. *concept* -  shell  
+----------------------
+        A shell is a program that runs to accept your commands. In fact,
+	it is the shell which shows the prompt like ":~$"
+
+	bash as an example of a shell and is the default shell on Ubuntu.
+
+    *Shortcuts*
+	bash is what lets you do a number of shortcuts. For example bash
+	lets you use the arrow keys to go to previous commands and execute
+	them. Other shortcuts include:
+	!!  this reruns the last command
+	the <tab> key is used for filename completion so "cat first_<tab>" will
+	expand to "cat first_example.c", assuming that file is in the 
+	current direcory.
+
+    *Builtins*
+	In addition to executing the Linux commands you give on the prompt,
+	bash also has some builtin commands.
+	Example useful builtin commands: history, alias, exit, ...
+
+	bash also support some builtin variables:
+	Examples useful varaibles: $PWD, $PATH, $HOME, $USERNAME, ...
+	For example you can say the command : cd $HOME    to 
+		change to the home directory
+
+    *Redirection and piping*
+	bash also lets you redirect input and output from a command. Eg:
+	:~$ date > of   causes the output of "date" to be stored 
+			in the file named "of" insted of on the terminal
+	:~$ ./a.out < if causes the a.out to execute but read input from
+			the file called "if" instead of the terminal
+	:~$ cat first_example.c | sort      causes the output of the 
+			first command, ie "cat first_example.c" to
+			be the input of the second command ie "sort"

@@ -1,0 +1,259 @@
+---
+title: "**Introduction to Statistics and Computation with Data: HomeWork 11**"
+author: "Daibik Barik (Bmat2316)"
+header-includes:
+    - \usepackage{bm, amsmath, amssymb, multirow}
+date: "2024-04-14"
+output: pdf_document
+---
+
+\section{1.}
+\paragraph{Null Hypothesis ($H_0$):} $m=0$
+\paragraph{Alternate Hypothesis ($H_A$):} $m>0$
+
+[Let, level of significance($\alpha$)= $0.05$]
+
+\subsection{(a)}
+We assign our random variables as $X_1= 0.22, X_2= 1.05, X_3= -0.24, \cdots, X_{10}= -0.03$ respectively.
+
+th expected mean ($m_0$)= $0$.
+
+$s_-= \{i: X_i -m_0= X_i>0 \}$
+
+```{=latex}
+\begin{table}[!h]
+\begin{center}
+  \caption{\textbf{Sign Test}}
+    \begin{tabular}{c||c|c|c|c|c|c|c|c|c|c}
+        \hline
+        i & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+        \hline
+        \hline
+        $X_i$ \text{values} & 0.22 & 1.05 & -0.24 & 0.18 & 0.16 & -0.67 & 2.49 & -0.07 & -0.13 & -0.03 \\
+        \hline
+        $X_i -m_0= X_i$ & 0.22 & 1.05 & -0.24 & 0.18 & 0.16 & -0.67 & 2.49 & -0.07 & -0.13 & -0.03\\
+        \hline
+        $s_i$ \text{values} & 1 & 1 & 0 & 1 & 1 & 0 & 1 & 0 & 0 & 0 \\
+        \hline
+    \end{tabular}
+\end{center}
+\end{table}
+```
+
+$\therefore\;$ Matching the $s-values$ with the respective $X_i's$, we get the statistic $\rightarrow$
+$$ s_-= \{1, 1, 0, 1, 1, 0, 1, 0, 0, 0\} $$.
+
+Now, our test statistic $\#s_-= 5$.
+
+And constructing random variables $Y_1, Y_2, \cdots, Y_{10}$ such that each element of $S_-= \{i: Y_i -m_0= Y_i>0 \}$
+follows $Bernoulli(\frac{1}{2})$ and hence $\#S_- \sim Binom(10, \frac{1}{2})$.
+
+Since $H_A= m>0,$
+$$ \therefore\; p-value \rightarrow \mathbb P[\#S_- \leq \#s_-= 5] $$
+$$ =\left(\frac{1}{2}\right)^{10} \left[\binom{10}{0} +\binom{10}{1} +\binom{10}{2} +\binom{10}{3} +\binom{10}{4} +\binom{10}{5} \right]= \frac{638}{1024}= 0.623 $$.
+
+Since we have our $p-value= 0.623> 0.05= \alpha$, we **don't have enough evidence to reject our NULL hypothesis.**
+\newpage
+
+\subsection{(b)}
+```{=latex}
+\begin{table} [!h]
+\begin{center}
+  \caption{\textbf{Wilcoxen Sign test}}
+    \begin{tabular}{c|c|c|c|c|c}
+        \hline
+        \textbf{i} & \textbf{$X_i$ Values} & $X_i -m_0= X_i$ & $|X_i -m_0= X_i|$ & \textbf{$R_i$} & \textbf{$Z_i$} \\
+        \hline
+        \hline
+        1 & 0.22 & 0.22 & 0.22 & 6 & 1 \\
+        \hline
+        2 & 1.05 & 1.05 & 1.05 & 9 & 1 \\
+        \hline
+        3 & -0.24 & -0.24 & 0.24 & 7 & 0 \\
+        \hline
+        4 & 0.18 & 0.18 & 0.18 & 5 & 1 \\
+        \hline
+        5 & 0.16 & 0.16 & 0.16 & 4 & 1 \\
+        \hline
+        6 & -0.67 & -0.67 & 0.67 & 8 & 0 \\
+        \hline
+        7 & 2.49 & 2.49 & 2.49 & 10 & 1 \\
+        \hline
+        8 & -0.07 & -0.07 & 0.07 & 2 & 0 \\
+        \hline
+        9 & -0.13 & -0.13 & 0.13 & 3 & 0 \\
+        \hline
+        10 & -0.03 & -0.03 & 0.03 & 1 & 0 \\
+    \end{tabular}
+\end{center}
+\end{table}
+```
+
+Test Statistic $\rightarrow$
+$$ W= \sum_{i=1}^{10} Z_i \times R_i= 1 \times 6 + 1 \times 9 + 1 \times 5 + 1 \times 4 + 1 \times 10 = 34 $$
+
+Now, from the $W$- table, we get the $W_{critical}\; (n=10,\; \alpha= 0.05)= 11$.
+
+Since $W= 34> 11= W_{critical}$, we **don't have enough evidence to reject NULL hypothesis.**
+
+\subsection{(c)}
+```{r}
+X= c(0.22,1.05,-0.24,0.18,0.16,-0.67,2.49,-0.07,-0.13,-0.03) 
+wilcox.test(X, alternative= "greater")
+```
+\newpage
+
+
+\section{2.}
+\paragraph{Null Hypothesis ($H_0$):} $m=0$
+\paragraph{Alternate Hypothesis ($H_A$):} $m>0$
+
+[Let, level of significance($\alpha$)= $0.05$]
+
+$\begin{aligned}
+\text{Given } n_{pcb}= n_{pt}= 10 \implies n_{pcb}\times n_{pt}= 100 \\
+\implies \frac{n_{pcb}(n_{pcb} +1)}{2}= \frac{n_{pt}(n_{pt} +1)}{2}= \frac{10\times 11}{2}= 55 \\
+\end{aligned}$
+
+\subsection{(a)}
+```{=latex}
+\begin{table} [!h]
+\begin{center}
+  \caption{\textbf{Mann Whitney U test}}
+    \begin{tabular}{c|c|c|c|c|c}
+        \hline
+        \multirow{2}{4em}{\textbf{Placebo}} & \multirow{2}{4em}{\textbf{P. Treat.}} & \multicolumn{2}{|c|}{\textbf{Order}} & \multicolumn{2}{|c}{\textbf{Rank}} \\
+        & & \text{Placebo} & \text{P. Treat.} & \text{Placebo} & \text{P. Treat.} \\
+        \hline
+        \hline
+        0.19 & 0.22 & & -0.03 & & 1 \\
+        \hline
+        3.00 & 1.05 & & -0.07 & & 2 \\
+        \hline
+        1.34 & -0.24 & & -0.13 & & 3 \\
+        \hline
+        1.35 & 0.18 & & 0.16 & & 4 \\
+        \hline
+        1.95 & 0.16 & & 0.18 & & 5 \\
+        \hline
+        1.63 & -0.67 & 0.19 & & 6 & \\
+        \hline
+        0.68 & 2.49 & & 0.22 & & 7 \\
+        \hline
+        0.51 & -0.07 & & -0.24 & & 8 \\
+        \hline
+        1.65 & -0.13 & 0.51 & & 9 & \\
+        \hline
+        0.92 & -0.03 & & -0.67 & & 10 \\
+        \hline
+         & & 0.68 & & 11 & \\
+        \hline
+         & & 0.92 & & 12 & \\
+        \hline
+         & & & 1.05 & & 13 \\
+        \hline
+         & & 1.34 & & 14 & \\
+        \hline
+         & & 1.35 & & 15 & \\
+        \hline
+         & & 1.63 & & 16 & \\
+        \hline
+         & & 1.65 & & 17 & \\
+        \hline
+         & & 1.95 & & 18 & \\
+        \hline
+         & & & 2.49 & & 19 \\
+        \hline
+         & & 3.00 & & 20 & \\
+         \hline
+         \hline
+         & & & & $R_{pcb}= 138$ & $R_{pt}= 72$
+    \end{tabular}
+\end{center}
+\end{table}
+```
+
+$\begin{aligned}
+U_{pcb}&= n_{pcb}\times n_{pt} +\frac{n_{pcb}(n_{pcb} +1)}{2} -R{pcb} \\
+&= 100 + 55 -138= 17 \\
+U_{pt}&= n_{pcb}\times n_{pt} +\frac{n_{pt}(n_{pt} +1)}{2} -R{pt} \\
+&= 100 + 55 -72= 83 \\
+\end{aligned}$
+
+$\implies U= min\{U_{pcb}, U_{pt}\}= min\{17, 83\}= 17$, which is our test statistic.
+\newpage
+
+\subsection{(b)}
+```{r}
+pt= abs(c(0.22,1.05,-0.24,0.18,0.16,-0.67,2.49,-0.07,-0.13,-0.03))
+pcb= abs(c(0.19, 3.00, 1.34, 1.35, 1.95, 1.63, 0.68, 0.51, 1.65, 0.92))
+wilcox.test(pt, pcb, alternative= "greater")
+```
+\newpage
+
+
+\section{3.}
+```{r}
+set.seed(2024)
+```
+
+\subsection{(a)}
+```{r}
+pois_sample= rpois(25, 5)
+pois_sample
+```
+
+\subsection{(b)}
+```{r}
+bootstrap_means= replicate(200, {
+  btsp_sample= sample(pois_sample, 25, replace = TRUE)
+  mean(btsp_sample)
+})
+bootstrap_means
+```
+\newpage
+
+\subsection{(c)}
+```{r}
+hist(bootstrap_means, col= "lightblue")
+abline(v = 5, 
+       col = "darkblue", lwd= 2)
+mean(bootstrap_means)
+abline(v = mean(bootstrap_means), 
+       col = 'darkred', lwd= 2)
+```
+\newpage
+
+\subsection{(d)}
+The Bootstrap Bias is given by 
+$$ \left(\frac{1}{200}\sum_{i = 1}^{200}\lambda^*_i\right) - \lambda = `r mean(bootstrap_means)` - 5 =  `r mean(bootstrap_means) - 5` $$
+The Standard Error is given by
+$$ \sqrt{\frac{1}{199}\sum_{i = 1}^{200}(\hat{\theta}_i - \overline{\theta^*})^2} = `r sd(bootstrap_means)` $$
+The 95% confidence interval is given by 
+$$ \left[\hat{\theta} - 1.96 \times \sqrt{\frac{1}{199}\sum_{i = 1}^{200}(\hat{\theta}i^* - \overline{\theta^*})^2} , \hat{\theta} + 1.96 \times \sqrt{\frac{1}{199}\sum{i = 1}^{200}(\hat{\theta}_i^* - \overline{\theta^*})^2}\right] = \left[`r 5 - 1.96*sd(bootstrap_means)`,`r 5+ 1.96*sd(bootstrap_means)`\right] $$
+\newpage
+
+\subsection{(e)}
+We actually want to show that $\rightarrow$
+$$ \mathbb P\left(\theta\in \left[\hat \theta -1.96\times \sqrt{\frac{1}{199}\sum_{i=1}^{200}(\hat \theta_i -\overline{\theta^*})^2},\; \hat \theta +1.96\times \sqrt{\frac{1}{199}\sum_{i=1}^{200}(\hat \theta_i -\overline{\theta^*})^2} \right]\right)= 0.95 $$
+$$ \implies \mathbb P\left[\hat \theta -1.96\times stder(\overline{\theta^*}) \leq \theta \leq \hat \theta +1.96\times stder(\overline{\theta^*}) \right]= 0.95\qquad \text{ (where $stder$ means standard error, simplified)} $$
+
+Also, $\rightarrow$
+$$ \mathbb P\left[\hat \theta -1.96\times stder(\overline{\theta^*}) \leq \theta \leq \hat \theta +1.96\times stder(\overline{\theta^*}) \right]= \mathbb P\left[-1.96\leq \frac{\theta -\hat \theta}{stder(\hat{\theta^*})}\leq 1.96 \right]= \mathbb P\left[|Z|\leq 0 \right] $$
+
+$\underline{\text{ where } Z\sim \mathcal N(0,1), \text{ approximately shown in graph.}}$
+
+```{r}
+qqnorm(bootstrap_means)
+qqline(bootstrap_means)
+```
+
+$\therefore\;$ Continuing as $\rightarrow$
+$$ \mathbb P\left[\hat \theta -1.96\times stder(\overline{\theta^*}) \leq \theta \leq \hat \theta +1.96\times stder(\overline{\theta^*}) \right]= 2\times \Phi(1.96) -1= `r 2 *pnorm(1.96) -1` \approx 95\%\qquad \blacksquare$$
+
+
+
+
+
+
+

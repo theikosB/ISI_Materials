@@ -1,0 +1,109 @@
+---
+title: "**Introduction to Statistics and Computation with Data: HomeWork 3**"
+author: "Daibik Barik (Bmat2316)"
+date: "2024-01-31"
+output: pdf_document
+---
+
+\section{1}
+```r
+install.packages("forcats")                                                
+install.packages("gapminder")
+```
+
+```{r setup, echo=FALSE}
+install.packages(c("gapminder", "forcats"),
+  repos = "http://cloud.r-project.org"
+)
+```
+\newpage
+
+\section{2}
+```{r}
+library(tidyverse)
+library(gapminder)
+str(gapminder$continent)
+```
+
+Concisely exhibit the internal composition of an R object using a diagnostic function, serving as an alternative to the *summary()*.
+So here it displays about the 5 factors of *gapminder*, which are also continents named "Africa", "America" etc.
+
+```{r}
+levels(gapminder$continent)
+```
+
+The *levels()* grants access to the levels attribute of a variable. Here the levels are named after different continents like "Africa", "Americas", etc.
+
+```{r}
+nlevels(gapminder$continent)
+```
+
+Return the number of levels which its argument has. Here it has exactly 5.
+
+```{r}
+class(gapminder$continent)
+```
+
+Several R objects contain a class attribute, which is a character vector that provides the names of the classes from which the object inherits.
+\newpage
+
+\section{3}
+```{r}
+gapminder %>% count(continent)
+```
+
+*count()* lets you quickly count the unique values of frequencies of one or more variables.
+
+```{r}
+fct_count(gapminder$continent)
+```
+
+*fct_count()* Count entries in a factor, here it gives same output because number of entries in factors and frequencies of the variables are same.
+\newpage
+
+\section{4}
+```{r}
+nlevels(gapminder$country)
+```
+
+Prints the number of levels in the country column of the gapminder dataset.
+
+```{r}
+h_countries <- c("Egypt", "Haiti", "Romania", "Thailand", "Venezuela")
+h_gap <- gapminder %>% filter(country %in% h_countries)
+nlevels(h_gap$country)
+```
+
+It prints the number of levels in the country column, and **since the other levels are still present with 0 entries**, it shows the total number of levels same as before.
+
+```{r}
+h_gap_dropped <- h_gap %>%droplevels()
+nlevels(h_gap_dropped$country)
+```
+
+*droplevels()* removes the unused levels from a factor. So, now if we count number of levels, it returns 5.
+
+```{r}
+h_gap$country %>% fct_drop() %>%levels()
+```
+
+*fct_drop()* drops the unused levels in the factor, and *levels()* print the remaining levels, by default in alphabetical order.
+\newpage
+
+\section{5}
+```{r}
+gapminder$continent %>% levels()
+```
+Prints the levels in the continent column of Gapminder dataset.
+
+```{r}
+gapminder$continent %>% fct_infreq() %>% levels()
+```
+
+Prints the levels in the decreasing order of the number of observations.
+
+```{r}
+gapminder$continent %>% fct_infreq() %>%fct_rev() %>%levels()
+```
+
+Prints the levels in the increasing order of the number of observations (**opposite to the order made by *fct_infreq***)

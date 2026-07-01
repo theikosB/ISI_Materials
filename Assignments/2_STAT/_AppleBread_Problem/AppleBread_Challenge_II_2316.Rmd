@@ -1,0 +1,223 @@
+---
+title: '**Introduction to Statistics and Computation with Data: AppleBread Problem Solution 2**'
+author: "Daibik Barik (Bmat2316)"
+date: "2024-03-22"
+output:
+  html_document:
+    citation_package: pandoc-citeproc
+    number_sections: TRUE
+    df_print: paged
+header-includes: \usepackage{bm, amsmath, amssymb}
+bibliography: ["Reference.bib"]
+link-citations: TRUE
+---
+
+```{r}
+#set.seed(2024)
+library(tidyverse)
+library(viridis)
+library(ggplot2)
+library(gganimate)
+library(gifski)
+```
+\newpage
+
+
+<font size="8"> **Challenge Problem 2]** </font> 
+
+```{r}
+##Functioning of the model
+process<- function(A, K) {
+  #Creation
+  for(i in 1:K) {
+    boundary= c()
+    for(element in A) {
+      if(! (element +1) %in% A) {
+        boundary<- append(boundary, (element+1))
+      }
+      if(! (element -1) %in% A) {
+        boundary<- append(boundary, (element-1))
+      }
+    }
+    A<- append(A, sample(boundary, 1))
+  }
+  
+  #Annihilation
+  for(i in 1:(K-1)) {
+    length= length(A)
+    remove_index= sample(1:length, 1)
+    A<- A[-c(remove_index)]
+  }
+  return(A)
+}
+```
+
+# .
+Let the number of elements of $A_n$ be $N$ at time $n$.
+
+At time $n+1$, $K$ new sites are added one by one, making the total number of occupied sites $N+K$. After that $K-1$ sites are chosen uniformly from those $N+K$ sites and are deleted, one by one.
+
+Therefore, in the end, the total number of sites result to $N+K-(K-1)= N+1$.
+\newpage
+
+# .
+```{r}
+##Code Run for 100 steps
+A= c(0); K= 3
+A_n= list(A)
+for(n in 1:100) {
+  A= process(A, K)
+  A_n[[n+1]]= A 
+}
+#print(length(A)) for verification
+```
+
+As per the discussion with Siva in class of $22^{nd}$ March $2024$, this model is being represented for $n=100$ instead of $n=1000$, as in the second case the plot is indistinguishable from a straight line. 
+
+Siva also suggested the use of "Gaps" instead of the "Occupied Sites" to one of our fellow students. But personally I didn't like the plot at all since it didn't help to provide an intuition, or what was in this case, not a proper simlation of the Model.  
+
+```{r}
+##Static Representation of Model
+x_values= c(0)
+for(i in 1:100) {
+  x_values= c(x_values, rep(i,i+1))
+}
+A_n_flattened= unlist(A_n, use.names= FALSE)
+df= data.frame(
+  x_cords= x_values,
+  y_cords= A_n_flattened 
+)
+ggplot(data= df) +
+  geom_point(mapping= aes(x= x_cords, y= y_cords),
+             size= 1/2) +
+  geom_line(mapping= aes(x= x_cords, y= 0), col= "darkred")+
+  xlab("n Values") + ylab("A_n sites") +
+  labs(title= "The Annhilation Creation model", 
+       subtitle= "Static Sites Representation" )
+```
+
+```{r}
+##Dynamic Simulation of model
+model= ggplot(data= df) +
+  geom_point(mapping= aes(x= x_cords, y= y_cords),
+             size= 1/2) +
+  transition_manual(x_values)+ 
+  xlab("n Values") + ylab("A_n sites") +
+  labs(title= "The Annhilation Creation model", 
+       subtitle= "Dynamic Simulation" )
+animate(model, fps= 7.5)
+```
+\newpage
+
+# .
+```{r}
+##Functioning of L(A_n) and G2(A_n)
+L<- function(A) {
+  A_sorted= sort(A)
+  A_gaplength= diff(A_sorted)-1
+  sum(A_gaplength)
+}
+
+G2<- function(A) {
+  A_sorted= sort(A)
+  A_gaplength= diff(A_sorted)-1
+  sum(A_gaplength >=2)
+}
+```
+
+```{r}
+##Finding L_n and G2_n for n=1000 over 100 trials
+L_tn= matrix(nrow= 100, ncol= 1000)
+G2_tn= matrix(nrow= 100, ncol= 1000)
+trials= 1:100; n_values= 1:1000
+for(t in trials) {
+  A= c(0); K= 3
+  for(n in n_values) {
+    A= process(A, K)
+    L_tn[t,n]= L(A)
+    G2_tn[t,n]= G2(A)
+  }
+}
+```
+\newpage
+From theorem $2.1.1.$ [@Thesis], we say $\lim sup_{n\to\infty} \frac{L(A_n)}{h(n)}= \frac{K-1}{K}$, which means $\exists\; N_0 \in \mathbb{N}$ s.t. $L(A_n)$ and thus $\overline{L(A_n)}= L_n\leq \frac{2}{3}h(n)\; \forall\; n\geq N_0$ as, in this case $K=3$.
+
+We try to plot the line graph of $\frac{L(A_n)}{h(n)}$, and also show the line $y=\frac{2}{3}$, under which the graph should lies $\forall\; n\geq N_0$.
+
+```{r}
+##Showing (by plot) that L_n= O(h(n)) 
+L_n= c()
+for(n in n_values) {
+  L_n[n]= mean(L_tn[,n])
+}
+h<- function(n) {
+  log(n)/ log(log(n))
+}
+n_val<- 1:1001
+plot(n_val, c(0, L_n/h(n)),
+     xlab= "n Values", ylab= "L_n/ h(n)",
+     main= "The Upper Bound for L_n/h(n)", type='l')
+y_lim<- 0*n_val +2/3
+lines(n_val, y_lim, col = "darkred", lty = 2)
+text(x= 5, y= 7/5,
+     labels= "y= 3/2", col= "darkred")
+```
+
+\newpage
+
+We try to show, as Theorem $2.1.2$ [@Thesis], that 
+$$ \mathbb{P}\left[G^{(2)}(A_n)= 1\; \text{ i.o.}\right]= 1 $$
+$$ \implies \mathbb{P}\left[\;\forall N\geq 1\; \exists n\geq N\; s.t.\; G^{(2)}(A_n)= 1\right]= 1 $$
+$$ \implies \mathbb{P}\left[\;\forall N\geq 1\; \exists n\geq N\; s.t.\; \overline{G^{(2)}(A_n)}= G^{(2)}_n(A_n)= 1\right]= 1 $$
+
+Trying to find the empirical probability through statistics....
+
+
+```{r}
+##Showing by plot P[G2_n(A_n)=1 i.o.]= 1
+
+pG2_1= matrix(nrow= 100, ncol= 1000)
+for(t in trials) {
+  max_g2n_1= 1
+  for(n in n_values) {
+    if(G2_tn[t, n]== 1) {
+      max_g2n_1= n
+    }
+  }
+  for(n in n_values) {
+    if(n<= max_g2n_1) {
+      pG2_1[t,n]= 1
+    } else {
+      pG2_1[t,n]= 0
+    }
+  }
+}
+pG2n_1= c()
+for(n in n_values) {
+  pG2n_1[n]= mean(pG2_1[,n])
+}
+#print(pG2n_1)
+plot(n_val, c(1, pG2n_1),
+     xlab= "n Values", ylab= "P[N: N>=n, G2(N)=1]",
+     main= "Probability of Existence of Gap-2", type = "l")
+```
+
+We see for lower values of $n$, $\mathbb{P}= 1$. But as we go higher, the probability decreases since there are limited number of samples taken into consideration. 
+
+Therefore, if we take the whole Natural Number line, we can say $\mathbb{P}\left[G^{(2)}(A_n)= 1\; \text{ i.o.}\right]= 1$
+
+`r if (knitr::is_html_output()) '# References {-}'`
+
+
+
+
+
+
+
+
+
+
+
+
+
+

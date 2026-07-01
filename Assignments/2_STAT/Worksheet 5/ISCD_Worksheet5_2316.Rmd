@@ -1,0 +1,99 @@
+---
+title: "**Introduction to Statistics and Computation with Data: WorkSheet 5**"
+author: "Daibik Barik (Bmat2316)"
+date: "2024-03-01"
+output: pdf_document
+---
+
+```{r}
+set.seed(2024)
+```
+
+\section{1.}
+
+
+\newpage
+
+\section{2.}
+
+\subsection{(a)}
+```{r}
+x = c(1,2,3,4)
+cumsum(x)
+```
+
+\subsection{(b)}
+```{r}
+runningmean = function (x,N){
+  #function requires x-- vector of values, and N
+  y = sample(x,N, replace=TRUE)
+  # it gives N samples from x by replacement
+  c = cumsum(y)
+  # gives cumulative sum across y
+  n = 1:N
+  c/n
+  # gives running mean : c = c{sum_{i=1}^n y_i/n}
+}
+```
+\newpage
+
+\subsection{(c) + (d)}
+```{r}
+u = runningmean(c(0,1), 1000)
+# tossing a fair coin 1000 times
+# U-- running-- relative frequency of heads
+v=1:1000; plot(u~v, type="l")
+invisible(replicate(10, lines(runningmean(c(0,1), 1000)~v, type="l")))
+```
+\newpage
+
+\subsection{(e)}
+```{r}
+u = runningmean(c(0,1), 1000)
+library(viridis)
+v=1:1000; plot(u~v, type="l", col= sample(viridis(1000),1)) 
+invisible(replicate(9, lines(runningmean(c(0,1), 1000)~v, type="l", 
+                   col= sample(viridis(1000),1)))) 
+```
+\newpage
+
+
+\section{3.}
+
+\subsection{(a)}
+```{r}
+p_hat=c()
+for(i in 1:100) {
+  u= runningmean(c(0,1), 1000)
+  p_hat[i]= u[1000]
+}
+```
+\newpage
+
+\subsection{(b)}
+```{r}
+error= p_hat-1/2
+errorDF= data.frame(error)
+library(tidyverse)
+ggplot(data= errorDF) +
+  geom_histogram(mapping= aes(x= error), 
+                 fill= "lightblue", colour= "black", bins= 10) +
+  xlim(-0.05, 0.05)
+```
+\newpage
+
+\subsection{(c)}
+```{r}
+std_error= (p_hat-1/2)/5
+std_errorDF= data.frame(std_error)
+ggplot(data= std_errorDF) +
+  geom_histogram(mapping= aes(x= std_error), 
+                 fill= "lightblue", colour= "black", bins = 10) +
+  xlim(-0.01, 0.01)
+```
+
+
+
+
+
+

@@ -1,0 +1,10 @@
+DONE:
+
+   Prototypes and declarations
+   The notion of addresses as values
+   The notion of pointer variable types to hold address values
+   Examples of using pointers swap two variables.
+        swapping pointers; we also saw pointers to pointers just for fun.
+   We know why things go wrong if in scanf we do not give address of a variable
+
+QUIZ 1 done

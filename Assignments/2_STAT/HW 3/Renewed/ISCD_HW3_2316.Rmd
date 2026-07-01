@@ -1,0 +1,233 @@
+---
+title: "**Introduction to Statistics and Computation with Data: HomeWork 3**"
+author: "Daibik Barik (Bmat2316)"
+date: "2024-01-31"
+output: pdf_document
+---
+
+\section{1}
+
+``` r
+install.packages("forcats")                                                
+install.packages("gapminder")
+```
+
+```{r setup, echo=FALSE}
+install.packages(c("gapminder", "forcats"),
+  repos = "http://cloud.r-project.org"
+)
+```
+
+\newpage
+
+\section{2}
+
+```{r}
+library(tidyverse)
+library(gapminder)
+str(gapminder$continent)
+```
+
+Concisely exhibit the internal composition of an R object using a diagnostic function, serving as an alternative to the *summary()*. So here it displays about the 5 factors of *gapminder*, which are also continents named "Africa", "America" etc.
+
+```{r}
+levels(gapminder$continent)
+```
+
+The *levels()* grants access to the levels attribute of a variable. Here the levels are named after different continents like "Africa", "Americas", etc.
+
+```{r}
+nlevels(gapminder$continent)
+```
+
+Return the number of levels which its argument has. Here it has exactly 5.
+
+```{r}
+class(gapminder$continent)
+```
+
+Several R objects contain a class attribute, which is a character vector that provides the names of the classes from which the object inherits. \newpage
+
+\section{3}
+
+```{r}
+gapminder %>% count(continent)
+```
+
+*count()* lets you quickly count the unique values of frequencies of one or more variables.
+
+```{r}
+fct_count(gapminder$continent)
+```
+
+*fct_count()* Count entries in a factor, here it gives same output because number of entries in factors and frequencies of the variables are same. \newpage
+
+\section{4}
+
+```{r}
+nlevels(gapminder$country)
+```
+
+Prints the number of levels in the country column of the gapminder dataset.
+
+```{r}
+h_countries <- c("Egypt", "Haiti", "Romania", "Thailand", "Venezuela")
+h_gap <- gapminder %>% filter(country %in% h_countries)
+nlevels(h_gap$country)
+```
+
+It prints the number of levels in the country column, and **since the other levels are still present with 0 entries**, it shows the total number of levels same as before.
+
+```{r}
+h_gap_dropped <- h_gap %>%droplevels()
+nlevels(h_gap_dropped$country)
+```
+
+*droplevels()* removes the unused levels from a factor. So, now if we count number of levels, it returns 5.
+
+```{r}
+h_gap$country %>% fct_drop() %>%levels()
+```
+
+*fct_drop()* drops the unused levels in the factor, and *levels()* print the remaining levels, by default in alphabetical order. \newpage
+
+\section{5}
+
+```{r}
+gapminder$continent %>% levels()
+```
+
+Prints the levels in the continent column of Gapminder dataset.
+
+```{r}
+gapminder$continent %>% fct_infreq() %>% levels()
+```
+
+Prints the levels in the decreasing order of the number of observations.
+
+```{r}
+gapminder$continent %>%fct_infreq() %>%fct_rev() %>%levels()
+```
+
+Prints the levels in the increasing order of the number of observations (**opposite to the order made by *fct_infreq***)
+
+```{r}
+ggplot(data= gapminder) + 
+  geom_bar(mapping= aes(x= continent)) +
+  coord_flip()
+```
+
+```{r}
+ggplot(data= gapminder) + 
+  geom_bar(mapping= aes(x= fct_rev(fct_infreq(continent)))) +
+  coord_flip() +xlab("continent")
+```
+
+\newpage
+
+\section{6}
+
+```{r}
+fct_reorder(gapminder$country, gapminder$lifeExp) %>%levels() %>%head()
+```
+
+This sorts the levels(countries), acc to the ascending order of median life expectancy, the lowest being Sierra Leone at 37.55
+
+```{r}
+fct_reorder(gapminder$country,gapminder$lifeExp,min)%>%levels()%>%head()
+```
+
+This sorts the levels(countries), acc to the ascending order of min life expectancy ever recorded, the lowest being Rwanda at 23.6
+
+```{r}
+fct_reorder(gapminder$country, gapminder$lifeExp,.desc=TRUE)%>%levels() %>% head()
+```
+
+This sorts the levels(countries), acc to the descending order of median life expectancy, the higest being Iceland at 76.55 \newpage
+
+```{r}
+gap<-subset(gapminder,year==2007 & continent=="Asia")
+ggplot(gap)+geom_point(aes(lifeExp,country))
+```
+
+\newpage
+
+```{r}
+gap<-subset(gapminder,year==2007 & continent=="Asia")
+ggplot(gap)+geom_point(aes(lifeExp,forcats::fct_reorder(country, lifeExp)))+ ylab("continent")
+```
+
+\newpage
+
+Without using *fct_reorder()*,
+
+```{r}
+ggplot(gap)+geom_point(aes(lifeExp,forcats::fct_infreq(country,lifeExp)%>%fct_rev()))+
+ylab("continent")
+```
+
+\newpage
+
+\section{7}
+
+```{r}
+gapsub<-subset(gapminder,country=="Egypt"|country=="Haiti"|country=="Romania"|
+country=="Thailand"|country=="Venezuela")
+ggplot(gapsub)+geom_line(aes(year,lifeExp,color=country))
+```
+
+\newpage
+
+```{r}
+ggplot(gapsub)+
+geom_line(aes(year,lifeExp,
+color=forcats::fct_relevel(country,c("Venezuela","Romania","Egypt",
+                                     "Thailand","Haiti"))))+ 
+  labs(color="country")
+```
+
+\newpage
+
+```{=tex}
+\section{8}
+\subsection{10.8}
+```
+```{r}
+gapcode <- subset(gapminder,country=="Australia"|country=="Korea, Dem. Rep."|
+country=="Korea, Rep.")
+gapcode$country %>% droplevels()
+```
+
+```{r}
+gapcode$country=gapcode$country %>% fct_recode("Oz" = "Australia",
+"North Korea" = "Korea, Dem. Rep.",
+"South Korea"="Korea, Rep.") %>% droplevels()
+```
+
+\newpage
+
+\subsection{10.9}
+
+```{r}
+df1 <- subset(gapminder,country=="United States"|country=="Mexico"&year > 2000) %>% droplevels()
+df2 <- subset(gapminder,country=="France"|country=="Germany"&year > 2000) %>% droplevels()
+```
+
+```{r}
+levels(df1$country)
+levels(df2$country)
+```
+
+```{r}
+fct_c(df1$country,df2$country)
+```
+
+```{r}
+bind_rows(df1,df2)
+```
+
+\newpage
+
+```{r}
+rbind(df1,df2)
+```

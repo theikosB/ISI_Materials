@@ -1,0 +1,141 @@
+---
+title: "**Introduction to Statistics and Computation with Data: AppleBread Problem Solution 1**"
+author: "Daibik Barik (Bmat2316)"
+header-includes:
+    - \usepackage{bm, amsmath, amssymb}
+date: "2024-03-10"
+output: pdf_document
+---
+
+```{r}
+#set.seed(2024)
+library(tidyverse)
+library(viridis)
+```
+\newpage
+
+
+\section{Challenge 1]}
+```{r}
+step= c(1, -1, 1i, -1i) #Creating a vector containing the possible moves
+```
+
+\subsection{(a)}
+```{r fig.height=4, fig.width=4}
+start_pt= 0 +0i #Initialization
+moves= sample(step, 10, replace = T) #Randomly choosing moves with equal probability
+positions= c(start_pt, start_pt + cumsum(moves)) #Storing the positions by cumulatively 
+#adding the moves to the start_pt
+positions #Displaying the positions as complex numbers
+ggplot() +
+  geom_path(mapping = aes(x = Re(positions),
+                          y = Im(positions)),
+            colour= "#30106B") + #Plotting the path 
+  geom_point(mapping= aes(Re(start_pt), Im(start_pt)),
+             colour= "red", pch= 1, size= 5) + #Plotting the start_pt 
+  geom_point(mapping= aes(Re(positions), Im(positions))) +
+  scale_x_continuous(breaks = seq(-10, 10, by = 1)) +
+  scale_y_continuous(breaks = seq(-10, 10, by = 1)) +
+  xlab("X-axis") + ylab("Y-axis")
+```
+
+$Range(S_{10})= \{(x,y) \in \mathbb{Z}^2: \; 2|(x+y); |x|+|y| \leq 10 \}$
+\newpage
+
+\subsection{(b)}
+```{r}
+start_pt= 0 +0i
+moves= sample(step, 100, replace = T)
+positions= c(start_pt, start_pt + cumsum(moves))
+positions
+```
+\newpage
+```{r}
+ggplot() +
+  geom_path(mapping = aes(x = Re(positions),
+                          y = Im(positions)),
+            colour= "#30106B") +
+  geom_point(mapping= aes(Re(start_pt), Im(start_pt)),
+             colour= "red", pch= 1, size= 5) +
+  geom_point(mapping= aes(Re(positions), Im(positions))) +
+  scale_x_continuous(breaks = seq(-100, 100, by = 1)) +
+  scale_y_continuous(breaks = seq(-100, 100, by = 1)) +
+  xlab("X-axis") + ylab("Y-axis")
+```
+
+$Range(S_{100})= \{(x,y) \in \mathbb{Z}^2: \; 2|(x+y); |x|+|y| \leq 100 \}$
+\newpage
+
+\subsection{(c)}
+```{r}
+start_pt= 0 +0i
+current_position= start_pt
+positions= c(start_pt); index= 2
+while(Re(current_position)^2 + Im(current_position)^2 < (55)^2) #Checking condition for 
+#distance from the start greater than equal to 55 
+  { 
+  move= sample(step, 1)
+  current_position= current_position +move 
+  #current_position
+  positions[index]= current_position
+  index= index +1
+}
+end_pt= current_position +move
+print(paste("The last postion: ", end_pt))
+print(paste("Distance: ", Mod(end_pt)))
+positions[index]= end_pt
+```
+\newpage
+```{r}
+ggplot() +
+  geom_path(mapping = aes(x = Re(positions),
+                          y = Im(positions)),
+            colour= "#30106B") +
+  geom_point(mapping= aes(Re(start_pt), Im(start_pt)),
+             colour= "red", pch= 20, size= 4) +
+  geom_point(mapping= aes(Re(end_pt), Im(end_pt)),
+             colour= "green", pch= 20, size= 4) + #Plotting the end_point
+  xlab("X-axis") + ylab("Y-axis")
+```
+
+Only allowed points to reach are $\{(x,y) \in \mathbb{Z}^2: |x|+|y| \geq 55\}$.
+
+$Range(S_n)= \{(x,y) \in \mathbb{Z}^2 \}$, Since $n\to \infty$.
+\newpage
+
+\subsection{(d)}
+```{r}
+start_pt= 55 +0i
+current_position= start_pt
+positions= c(start_pt); index= 2
+while(Re(current_position)^2 + Im(current_position)^2 >0) {
+  move= sample(step, 1)
+  current_position= current_position +move 
+  positions[index]= current_position
+  index= index +1
+}
+end_pt= current_position +move 
+positions[index]= end_pt
+```
+\newpage
+```{r}
+ggplot() +
+  geom_path(mapping = aes(x = Re(positions),
+                          y = Im(positions)),
+            colour= "#30106B") +
+  geom_point(mapping= aes(Re(start_pt), Im(start_pt)),
+             colour= "red", pch= 20, size= 3) +
+  geom_point(mapping= aes(Re(end_pt), Im(end_pt)),
+             colour= "green", pch= 20, size= 3) + 
+  xlab("X-axis") + ylab("Y-axis")
+```
+
+
+Only allowed point to reach is $(0,0)$.
+
+$Range(S_n)= \{(x,y) \in \mathbb{Z}^2 \}$, Since $n\to \infty$.
+
+
+
+
+

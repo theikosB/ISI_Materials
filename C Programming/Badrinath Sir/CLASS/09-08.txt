@@ -1,0 +1,27 @@
+Plan:
+1. Repeat the main concepts in programming:
+    Notion of stored variables
+    Notion of algorithm with instructions
+    C Programs comprise functions for instructions, variables as storage
+    Define (declare) before use
+    Notion of expression, assignment, statement and block;
+	In particular assignment
+        Recall the interesting m = n = 5 ;
+    In C function calls only values are passed, not variables!
+    Everything is binary
+    Operators: Arithmetic, comparision and logical (we didnt do examples of logical)
+    Arithmetic operation and (automatic) type conversions
+        Recalle 13/2  is different from 13/2.0
+    printf(), scanf() and elementery notion of the format string
+    if (conditions) { } else { }
+    while { }
+    Always remember the (edit, compile, execute) loop
+2. Towards end of class some unanswered questions include what is the & in scanf
+3. A bit about seeing the binary in the files. od -cx and gdb 
+      Use gdb also  to step through the execuiton
+4. 10 Exercises in 09-05-exercises.txt
+   The aim today is to simply do all those exercises.
+   Along the way we re-emphasises the notions studied so far. 
+5. Homework:
+   (1) Read for the quiz on 12-09 (Monday)
+   (2) Read up about operator precedence (only for those operators taught in class). You can read from the Kernighan and Ritchie book (2nd Ed. pp 52-53) or from online sites, like: https://en.cppreference.com/w/c/language/operator_precedence

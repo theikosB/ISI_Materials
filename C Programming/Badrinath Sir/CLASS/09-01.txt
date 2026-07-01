@@ -1,0 +1,32 @@
+1. Notion of function invocation. How the control flows. Concept of variables
+   (including parameters being local to a function). We took a swap example.
+
+
+2. Notion of "Everything is a (binary) number"
+  - Base-2 notion. Byte. 2's complement concept.
+  - Character as integer
+  - ASCII
+
+3. Operators in C 
+  Arithmetic:
+      numbers -> numbers
+      + - / *     (dependnce on types)
+  Conditional:
+      numbers -> True/False
+      == >= <=
+  Logical:
+      True/False -> True/False
+      && || !
+
+4. *TBD* Formally define the types and variable definitions in C
+5. Simple if  and  while  using the conditionals above
+   - notion of codes block in { }
+6. Binary representation
+       Simple notions of binary arithmetic
+       * TBD * Bitwise operations and or and not
+       * TBD * Other interesting operations: shift
+7. Fill this form: http://shorturl.at/bgmws
+
+EXERCISE : fillin_simple.c print_next_char.c
+EXERCISE : Look at main.c, stats.c hello_world.[ch] 
+EXERCISE : do the 09-05-exercises and prepare for a quiz.

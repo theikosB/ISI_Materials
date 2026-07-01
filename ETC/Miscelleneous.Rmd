@@ -1,0 +1,26 @@
+---
+title: "Matrix Multiplication"
+author: "Daibik Barik (Bmat2316)"
+date: "2025-08-13"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+\section*{4>}
+
+\subsection*{(e)}
+```{r}
+P <- matrix(c(0.2, 0.4, 0.4, 0.4, 0.4, 0.6, 0.4, 0.2, 0),
+            nrow = 3, ncol = 3)
+print(P)
+
+P2 = P %*% P #denotes matrix multiplication
+print(P2)
+
+P3 = P2 %*% P
+print(P3)
+
+P4 = P3 %*% P
+print(P4)
+```

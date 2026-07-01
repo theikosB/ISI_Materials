@@ -1,0 +1,140 @@
+---
+title: "Assignment 7.1 LM&R"
+author: "Daibik Barik (Bmat2316)"
+date: "2025-03-30"
+output: pdf_document
+---
+
+**Table 1: Production Rates with Replicates**
+
+| Reagent | Catalyst I | Catalyst II | Catalyst III |
+|---------|------------|-------------|---------------|
+| A       | 4, 6       | 11, 7       | 5, 9          |
+| B       | 6, 4       | 13, 15      | 9, 7          |
+| C       | 13, 15     | 15, 9       | 13, 13        |
+| D       | 12, 12     | 12, 14      | 7, 9          |
+
+
+```{r}
+```
+
+
+\section*{Q1.}
+
+```{r}
+#Generate the Linear Regression Model
+model <- lm(Y ~ X1 + X2 + X3, data = data)
+summary(model)
+```
+As we only need the normal equation, we use the coefficients. If the amount of energy is $Y$, and the varuious variables are given by $X_1$ (Area), $X_2$ (Age), $X_3$ (No. of guest rooms); then the equation is- 
+
+$$ Y = a_0 + a_1(X_1- \overline{X_1}) + a_2(X_2- \overline{X_2}) + a_3(X_3- \overline{X_3}) $$
+Getting the values of $\overline{X_1}, \overline{X_2}, \overline{X_3}$ from the dataset, we modify the equation to- 
+
+$$ Y = b_0 + \sum_{i=1}^3 b_iX_i \text{ whose coefficients are given by}$$
+
+```{r}
+#Fetching the values from the model
+coefficients(model)
+b0 = unname(coefficients(model)["(Intercept)"])
+b1 = unname(coefficients(model)["X1"])
+b2 = unname(coefficients(model)["X2"])
+b3 = unname(coefficients(model)["X3"])
+```
+
+
+\section*{Q2.} 
+
+For _Goodness of Fit_ measure, $R^2$ and $p$ values are required.
+$R^2$ is calculated as  $$ 1-R^2 = \frac{SS_{pred}}{SS_{obs}} = \frac{\sum_{i=1}^{19} (Y-\hat Y)^2}{\sum_{i=1}^{19} (Y-\overline Y)^2} $$
+
+```{r}
+SS_obs = sum((data$Y - mean(data$Y))^2) 
+#for observed deviation, we just subtract the true mean the Y's and calculate
+predicted_Y = b0 + b1 * data$X1+ b2 * data$X2+ b3 * data$X3 
+SS_pred = sum((data$Y- (predicted_Y) )^2) 
+#for predicted deviation, we calculate the predicted Y value 
+# from our regression eqn and use it for calculation
+R2= 1 - SS_pred/ SS_obs 
+print(R2)
+```
+which matches the evaluated value in R,
+
+```{r}
+summary(model)$r.squared
+#The value calculated in R
+```
+which says that $80.15455\%$ of data in the dataset fits into our predicted regression model.
+
+**~ ALITER ~**
+
+The multiple correlation coefficient of $Y$ (or $X_4$) is given by $Corr(\hat{X4},X4)$, and hence gives us the relation between the observed and the predicted data. 
+
+$$ m_4 = \sqrt{1 - \frac{|R|}{R_{44}}} $$
+
+```{r}
+data = data.frame(data)
+colnames(data)[colnames(data)=='Y'] = 'X4'
+data = data[,c('Hotel','X1','X2','X3','X4')]
+subdata = subset(data,select=c(X1=X1,X2=X2,X3=X3,X4=X4))
+R = cor(subdata)
+m4 = sqrt(1-det(R)/det(R[-4,-4]))
+print(m4)
+```
+
+The multiple correlation coefficient is $89.5\%$, which is very high. This indicates that the model serves as a good fit to the data.
+
+
+
+\section*{Q3.}
+
+Using the values given, we substitute them in R-
+
+```{r}
+Y = b0 + b1 * 37+ b2 * 11+ b3 * 215.3
+#We are using the constants that we defined previously
+print(Y)
+```
+and get the energy consumption Y as 6234010 kWh.
+
+
+\section*{Q4.}
+
+The partial correlation between $X_2$ (age) and $Y$ (energy consumption) gives us an idea about their impact on each other. We do it in R-
+
+```{r}
+library(ppcor)
+colnames(data)[colnames(data)=='X4'] = 'Y'
+partial_corr <- pcor(data[, c("Y", "X2", "X1", "X3")]) 
+#Calculate the partial correlation matrix
+partial_corr_value <- partial_corr$estimate["Y", "X2"] 
+#Extract the partial correlation between Y and X2
+print(partial_corr_value) 
+```
+Since the value is a small positive number, increase in age of Hotel implies a slight increase in its energy consumption.
+
+**~ ALITER ~**
+
+We use the formula 
+$$ r_{24} = \frac{-R_{24}}{\sqrt{R_{22} \times R_{44}}} $$
+in R.
+
+```{r}
+r_24 = -1*det(R[-2,-4])/sqrt(det(R[-2,-2])*det(R[-4,-4]))
+r_24
+```
+which matches our previous result.
+
+
+\section*{Q5.}
+
+We can easily form a regression model by making the relationships **non-linear**, possibly a polinomial regression with squares and cubic terms.
+
+Say the model (non-linear) be-
+$$ Y \sim X_1 + X_2^2 + X_3^3 $$
+
+```{r}
+model_poly <- lm(Y ~ X1 + I(X2^2)+ I(X3^3), data = data)
+summary(model_poly)
+```
+Since the $R^2 = 0.7853$, which resembles about $78.5\%$ data fit into our model, so it's not a bad one! 

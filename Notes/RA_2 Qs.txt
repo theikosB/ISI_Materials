@@ -1,0 +1,40 @@
+Limaye (pg-144) ~
+Let C be an algebraic plane curve, that is, let C be implicitly defined
+by F(x, y) = 0, where F(x, y) is a nonzero polynomial in two variables x
+and y with coefficients in R. Let the (total) degree of F(x, y) be n. Let
+P = (x0, y0) be a point on C, so that F(x0, y0) = 0.
+(i) If we let X := x − c and Y := y − d and define g(X, Y ) := f(x, y),
+then show that g(X, Y ) is a polynomial in X and Y with g(0, 0) = 0.
+Deduce that there is a unique m ∈ N such that m ≤ n and
+g(X, Y ) = gm(X, Y ) + gm+1(X, Y ) + · · · + gn(X, Y ),
+where gi(X, Y ) is either the zero polynomial or a nonzero homogeneous
+polynomial of degree i, for m ≤ i ≤ n, and gm(X, Y ) = 0. We
+denote the integer m by multP (C), and call it the multiplicity of C
+at the point P.
+{Differentiation}
+
+Apostol (pg-200) ~
+The pair (f, s) is called a double series and is denoted by the symbol Em.m f(m, n) or, more briefly, by Σf(m, n). 
+The double series is said to converge to the sum a if
+lim s(p,q) = 0.
+{Infinite Series}
+
+Apostol (pg-30) ~
+A sequence (2) converges in the Cesaro sense if
+C-lim = lim
+1-400+n-400+ €x + 3x + 1ɛ 11+ In
+exists and is finite. Find all functions which are Cesaro continuous,
+that is,
+ƒ(C-_lim_1,) = C- lim_ ƒ(*,)
+for every Cesaro convergent sequence {z}.
+{Limits & Continuity}
+
+Putnam & Beyond (pg-187) ~
+Let x1, x2,...,xn be arbitrary real numbers. Prove the inequality
+{Functional Equations}
+
+
+
+
+
+

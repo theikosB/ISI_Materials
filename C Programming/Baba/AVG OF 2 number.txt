@@ -1,0 +1,15 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+
+int main() {
+    int i,j;
+    float avg=0;
+    // Write C code here
+    printf("\tHello world\n");
+    printf("\nEnter  two numbers:  ");
+    scanf("%d %d",&i,&j);
+    printf("\nEntered   two numbers are :%d and %d  ",i,j);
+ avg=(float)(i+j)/2;
+ printf("\n Avg of 2 numbers is %f  ",avg);
+    return 0;
+}

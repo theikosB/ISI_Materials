@@ -1,0 +1,467 @@
+---
+title: "**Introduction to Statistics and Computation with Data: HomeWork 2**"
+author: "**Daibik Barik (Bmat2316)**"
+date: "2024-01-24"
+output: 
+  pdf_document: 
+    fig_width: 5
+    fig_height: 4
+---
+
+```{r, include= FALSE}
+library(tidyverse)
+library(viridis)
+```
+
+\section{1.}
+\subsection{(a) Exercise 3.5.1}
+\subsubsection{(1)}
+Converting the continuous variable into a categorical one results in a plot with distinct facets corresponding to each unique value.
+
+\subsubsection{(2)}
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = drv, y = cyl)) +
+  facet_grid(drv ~ cyl)
+```
+
+The empty cells (facets) in this plot are combinations of drv and cyl that have no observations. Comparing to the plot
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = drv, y = cyl))
+```
+
+We see these are the same locations in the scatter plot that have no points.
+\newpage
+
+\subsubsection{(3)}
+The symbol '.' ignores that dimension when faceting. For example, drv ~ . facet by values of drv on the y-axis.
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ .)
+```
+\newpage
+While, . ~cyl will facet by values of cyl on the x-axis.
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+```
+\newpage
+
+\subsection{(4)}
+Plotting the faceted plot
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~class, nrow = 2)
+```
+\newpage
+In the following plot the class variable is mapped to color.
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+```
+
+Advantages:-  
+(i) Encoding class with facets allows for the representation of a larger number of distinct categories.  
+(ii) Presenting observations from different categories on varied scales complicates direct value comparisons.  
+(iii) Facets, however, ease the comparison of the relationship shape between the x and y variables across diverse categories.
+
+Disadvantages:-  
+(i) Encoding class variables with facets instead of the color aesthetic makes it difficult to compare observation values between categories.  
+(ii) Observations for each category are on different plots, hindering a direct comparison.  
+(iii) Even with the use of consistent x- and y-scales across facets, comparing values remains more challenging than if displayed on the same plot.  
+
+As the number of categories increases, the difference between colors decreases, to the point that the color of categories will no longer be visually distinct.
+
+\subsection{(5)}
+The arguments nrow (ncol) determines the number of rows (columns) to use when laying out the facets. It is necessary since facet_wrap() only facets on one variable.  
+The other options are astable(), dir(), drop() etc.  
+The nrow and ncol arguments are unnecessary for facet_grid() since the number of unique values of the variables specified in the function determines the number of rows and columns.
+
+\subsection{(6)}
+There will be more space for columns if the plot is laid out horizontally (landscape).
+
+\subsection{(b) Exercise 3.6.1}
+\subsubsection{(1)}
+(i) line chart: geom_line()
+(ii) boxplot: geom_boxplot()
+(iii) histogram: geom_histogram()
+(iv) area chart: geom_area()
+
+\subsubsection{(2)}
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, colour = drv)) +  geom_point() +
+  geom_smooth(se = FALSE)
+#> `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+```
+
+This code produces a scatter plot with displ on the x-axis, hwy on the y-axis, and the points colored by drv. There will be a smooth line, without standard errors, fit through each drv group.
+\newpage
+
+\subsubsection{(3)}
+The theme option show.legend = FALSE hides the legend box.
+Consider this example
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(
+    mapping = aes(x = displ, y = hwy, colour = drv),
+    show.legend = FALSE
+  )
+```
+\newpage
+In that plot, there is no legend. Removing the show.legend argument or setting show.legend = TRUE will result in the plot having a legend displaying the mapping between colors and drv.
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy, colour = drv))
+```
+\newpage
+
+\subsubsection{(4)}
+It adds standard error bands to the lines.
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, colour = drv)) +  geom_point() +
+  geom_smooth(se = TRUE)
+```
+
+By default se = TRUE:
+\newpage
+
+\subsection{(5)}
+No. Because both geom_point() and geom_smooth() will use the same data and mappings. They will inherit those options from the ggplot() object, so the mappings don’t need to specified again.
+
+\subsection{(6)}
+(i) 
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  geom_smooth(se = FALSE)
+```
+\newpage
+(ii)
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_smooth(mapping = aes(group = drv), se = FALSE) +
+  geom_point()
+```
+\newpage
+(iii)
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, colour = drv)) +
+  geom_point() +
+  geom_smooth(se = FALSE)
+```
+\newpage
+(iv)
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = drv)) +
+  geom_smooth(se = FALSE)
+```
+\newpage
+(v)
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = drv)) +
+  geom_smooth(aes(linetype = drv), se = FALSE)
+```
+\newpage
+(vi)
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(size = 4, color = "white") +
+  geom_point(aes(colour = drv))
+```
+\newpage
+
+\subsection{(c) Exercise 3.7.1}
+\subsubsection{(1)}
+The default geom for stat_summary() is geom_pointrange(). The default stat for geom_pointrange() is identity() but we can add the argument stat = "summary" to use stat_summary() instead of stat_identity().
+```{r}
+ggplot(data = diamonds) +
+  geom_pointrange(
+    mapping = aes(x = cut, y = depth),
+    stat = "summary"
+  )
+```
+\newpage
+The resulting message says that stat_summary() uses the mean and sd to calculate the middle point and endpoints of the line. However, in the original plot the min and max values were used for the endpoints. To recreate the original plot we need to specify values for fun.min, fun.max, and fun.
+```{r}
+ggplot(data = diamonds) +
+  geom_pointrange(
+    mapping = aes(x = cut, y = depth),
+    stat = "summary",
+    fun.min = min,
+    fun.max = max,
+    fun = median
+  )
+```
+\newpage
+
+\subsubsection{(2)}
+The geom_col() function has different default stat than geom_bar(). The default stat of geom_col() is stat_identity(), which leaves the data as is. The geom_col() function expects that the data contains x values and y values which represent the bar height. 
+The default stat of geom_bar() is stat_count(). The geom_bar() function only expects an x variable. The stat, stat_count(), preprocesses input data by counting the number of observations for each value of x. The y aesthetic uses the values of these counts.
+
+\subsection{(3)}
+The following are the pairs of geoms and stats that are almost always used in concert. \
+(i) geom_bar() -->	stat_count() \
+(ii) geom_bin2d() -->	stat_bin_2d() \
+(iii) geom_boxplot() -->	stat_boxplot() \
+(iv) geom_contour_filled() -->	stat_contour_filled() \
+(v) geom_contour() --> stat_contour() \
+(vi) geom_count() -->	stat_sum() \
+(vii) geom_density_2d() -->	stat_density_2d() \
+(viii) geom_density() -->	stat_density() \
+(ix) geom_dotplot() -->	stat_bindot() \
+(x) geom_function() -->	stat_function() \
+(xi) geom_sf() -->	stat_sf() \
+(xii) geom_smooth() -->	stat_smooth() \
+(xiii) geom_violin() -->	stat_ydensity() \
+(xiv) geom_hex() -->	stat_bin_hex() \
+(xv) geom_qq_line() -->	stat_qq_line() \
+(xvi) geom_qq() -->	stat_qq() \
+(xvii) geom_quantile() -->	stat_quantile() \
+
+These pairs of geoms and stats tend to have their names in common, such stat_smooth() and geom_smooth() and be documented on the same help page. The pairs of geoms and stats that are used in concert often have each other as the default stat (for a geom) or geom (for a stat).
+\newpage
+
+\subsection{(4)}
+The function stat_smooth() calculates the following variables: \
+(i) y: predicted value \
+(ii) ymin: lower value of the confidence interval \
+(iii) ymax: upper value of the confidence interval \
+(iv) se: standard error 
+ 
+The parameters that control the behavior of stat_smooth() include:\  
+
+(i) method: This is the method used to compute the smoothing line. If NULL, a default method is used based on the sample size: stats::loess() when there are less than 1,000 observations in a group, and mgcv::gam() with formula = y ~ s(x, bs = "CS) otherwise. Alternatively, the user can provide a character vector with a function name, e.g. "lm", "loess", or a function, e.g. MASS::rlm\  
+
+(ii) formula: When providing a custom method argument, the formula to use. The default is y ~ x. For example, to use the line implied by lm(y ~ x + I(x ^ 2) + I(x ^ 3)), use method = "lm" or method = lm and formula = y ~ x + I(x ^ 2) + I(x ^ 3). \  
+
+(iii) method.arg(): Arguments other than than the formula, which is already specified in the formula argument, to pass to the function inmethod`. \  
+
+(iv) se: If TRUE, display standard error bands, if FALSE only display the line. \  
+
+(v) na.rm: If FALSE, missing values are removed with a warning, if TRUE the are silently removed. The default is FALSE in order to make debugging easier. If missing values are known to be in the data, then can be ignored, but if missing values are not anticipated this warning can help catch errors.
+\newpage
+
+\subsubsection{(5)}
+If group = 1 is not included, then all the bars in the plot will have the same height, a height of 1. The function geom_bar() assumes that the groups are equal to the x values since the stat computes the counts within the group. 
+The problem with these two plots is that the proportions are calculated within the groups.
+```{r}
+ggplot(data = diamonds) +
+  geom_bar(mapping = aes(x = cut, y = after_stat(prop)))
+```
+\newpage
+```{r}
+ggplot(data = diamonds) +
+  geom_bar(mapping = aes(x = cut, fill = color, y = after_stat(prop)))
+```
+\newpage
+The following code will produce the intended stacked bar charts for the case with no fill aesthetic.
+```{r}
+ggplot(data = diamonds) +
+  geom_bar(mapping = aes(x = cut, y = after_stat(prop), group = 1))
+```
+\newpage
+With the fill aesthetic, the heights of the bars need to be normalized.
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(aes(x = cut, y = after_stat(count)/ sum(after_stat(count)), fill = color))
+```
+\newpage
+
+\subsection{(d) Exercise 3.8.1}
+\subsubsection{(1)}
+There is overplotting because there are multiple observations for each combination of cty and hwy values.
+
+We could improve the plot by using a jitter position adjustment to decrease overplotting.
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point(position = "jitter")
+```
+\newpage
+
+\subsubsection{(2)}
+From the geom_jitter() documentation, there are two arguments to jitter:  
+(i) width: controls the amount of horizontal displacement, and  
+(ii) height: controls the amount of vertical displacement.  
+
+The defaults values of width and height will introduce noise in both directions.
+
+\subsection{(3)}
+The geom_jitter() adds random variation to the locations points of the graph. In other words, it “jitters” the locations of points slightly. This method reduces overplotting since two points with the same location are unlikely to have the same random variation.  
+The geom_count() changes the relative sizes of the points based on their frequency of the plot. But it does not change x and y coordinates of the points. However, if the points are close together and counts are large, the size of some points can itself create overplotting.
+
+\subsubsection{(4)}
+The default position for geom_boxplot() is "dodge2", which is a shortcut for position_dodge2. This position adjustment does not change the vertical position of a geom but moves the geom horizontally to avoid overlapping other geoms.  
+
+When we add colour = class to the box plot, the different levels of the drv variable are placed side by side, i.e., dodged.
+```{r}
+ggplot(data = mpg, aes(x = drv, y = hwy, colour = class)) +
+  geom_boxplot()
+```
+\newpage
+If position_identity() is used the boxplots overlap.
+```{r}
+ggplot(data = mpg, aes(x = drv, y = hwy, colour = class)) +
+  geom_boxplot(position = "identity")
+```
+\newpage
+
+\subsection{(e) Exercise 3.9.1}
+\subsubsection{(1)}
+We take a stacked bar chart with a single category.
+```{r}
+ggplot(mpg, aes(x = factor(1), fill = drv)) +
+  geom_bar()
+```
+\newpage
+Now adding coord_polar(theta="y") to create pie chart.
+```{r}
+ggplot(mpg, aes(x = factor(1), fill = drv)) +
+  geom_bar(width = 1) +
+  coord_polar(theta = "y")
+```
+\newpage
+
+\subsubsection{(2)}
+The labs function adds axis titles, plot titles, and a caption to the plot.
+
+\subsubsection{(3)}
+The coord_map() function uses map projections to project the three-dimensional Earth onto a two-dimensional plane. By default, coord_map() uses the Mercator projection. This projection is applied to all the geoms in the plot.  
+The coord_quickmap() function uses an approximate but faster map projection. This approximation ignores the curvature of Earth and adjusts the map for the latitude/longitude ratio.   
+The coord_quickmap() project is faster than coord_map() both because the projection is computationally easier, and unlike coord_map(), the coordinates of the individual geoms do not need to be transformed.
+
+\subsubsection{(4)}
+The function coord_fixed() ensures that the line produced by geom_abline() is at a 45-degree angle. A 45-degree line makes it easy to compare the highway and city mileage.
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+geom_point() + geom_abline() + coord_fixed()
+```  
+
+In this case, the highway mileage is higher than the city mileage because of the difference in traffic.
+\newpage
+
+
+\section{2.}
+```{r}
+statedf= read.csv(file= "E:/_DAIBIK/__ISI/Assignments/2_STAT/HW 2/states.csv",
+                  header = TRUE)
+```  
+\subsection{(a)}
+The recorded dataset, in its 7 columns, contains the daily number of people who were confirmed, recovered and deceased among the active cases of COVID 19. The dataset is dated from 30th Jan 2020 to 22nd August 2023. The data is collected statewise and also INDIA is shown daily.
+
+\subsection{(b)}
+\subsubsection{(1)}
+```{r}
+mystate= "Bihar"   #Choosing my state
+```
+
+\subsubsection{(2)}
+```{r}
+mystatedf= subset(statedf, State== mystate)
+```
+\newpage
+
+\subsubsection{(3)}
+```{r}
+mystatedf$Cases=mystatedf$Confirmed-mystatedf$Recovered-
+mystatedf$Deceased
+mystateclip=mystatedf %>% filter(between(Date,"2021-07-01",
+"2021-12-31"))
+mystateclip$Date <- as.Date(mystateclip$Date, "%Y-%m-%d")
+ggplot(mystateclip)+geom_line(mapping = aes(x = Date, y = Cases,
+color = Date)) + labs(title="Active Cases for the State -
+Bihar",x= "Dates", y = "Cases",color="Dates") +
+scale_x_date(date_breaks = "1 month") + theme(axis.text.x =
+element_text(angle = 45, size = 8.5,vjust = 0.5, hjust = 0.5),
+axis.title = element_text(size = 14, vjust = 0.5, hjust = 0.5),
+plot.title = element_text(size = 15, face = "bold", hjust = 0.5))+
+scale_color_viridis(option = "magma",trans="date")
+```
+\newpage
+
+\subsubsection{(4)}
+```{r fig.height=5, fig.width=7}
+library(lubridate)
+monthclip=mystatedf %>% filter(between(Date,"2020-03-01","2022-01-01"))
+monthclip$Date <- as.Date(monthclip$Date, "%Y-%m-%d")
+monthclip$Month <- month(monthclip$Date,label = T,abbr = T)
+monthclip$Year <- year(monthclip$Date)
+monthly_deceased <- aggregate(data = monthclip,
+monthclip$Deceased ~ (monthclip$Month + monthclip$Year),sum)
+colnames(monthly_deceased) <- c("Month", "Year", "Deceased")
+monthly_deceased$my <- paste(as.character(monthly_deceased$Month),
+as.integer(monthly_deceased$Year),sep = "-")
+monthly_deceased$my <-factor(monthly_deceased$my,levels = monthly_deceased$my)
+ggplot(data = monthly_deceased) +geom_bar(mapping = aes(x = my, y = Deceased,
+fill = Month),stat = "identity") +theme(axis.text.x = element_text(
+angle = 60, size = 8.5,vjust = 0.5, hjust = 0.5),
+axis.title = element_text(size = 14, vjust = 0.5, hjust = 0.5),
+plot.title = element_text(size = 15, face = "bold", hjust = 0.5)) +
+scale_fill_viridis_d(option = "magma") +labs(x = "Months", y = "Deceased Total",
+title = paste("Monthly Deceased Totals for State - ", "Bihar"),
+fill = "Month")
+```
+\newpage
+
+\subsubsection{(5)}
+```{r fig.height=7, fig.width=7}
+stateclip=statedf %>% filter(between(Date,"2020-03-01","2022-01-01"))
+stateclip$Date <- as.Date(stateclip$Date, "%Y-%m-%d")
+statecdf<-aggregate(stateclip$Confirmed,by = list(stateclip$State),
+sum)
+stateddf<-aggregate(stateclip$Deceased,by = list(stateclip$State),
+sum)
+statecd<-data.frame(State=stateddf$Group.1,Confirmed=statecdf$x,
+Deceased=stateddf$x)
+maxc=max(stateclip$Confirmed)
+maxd=max(stateclip$Deceased)
+ggplot(data = statecd, aes(x = Deceased,y = Confirmed,color = State,
+label = State)) +
+geom_point() +geom_text(check_overlap = TRUE) +
+scale_x_continuous(name="Deceased Figures",limits=c(0,maxd))+
+scale_y_continuous(name="Confirmed Cases",limits=c(0,maxc))+
+theme(axis.text.x = element_text(angle = 60, size = 8.5,vjust =
+0.5, hjust = 0.5),axis.title = element_text(size = 14, vjust = 0.5,
+hjust = 0.5),
+plot.title = element_text(size = 15.5, face = "bold", hjust = 0.5),
+legend.position = "bottom")+labs(title = "Scatter Plot of Confirmed Versus Deceased")+ 
+scale_fill_viridis_d(option="magma")
+```
+\newpage
+
+\subsection{(c)}
+\subsubsection{(1)}
+```{r}
+simulated_data <- rnbinom(1000, size = 10, prob = 0.4)
+x_values <- 0:max(simulated_data)
+true_probabilities <- dnbinom(x_values, size = 10, prob = 0.4)
+hist(simulated_data, breaks =
+seq(-0.5, max(simulated_data) + 0.5, by = 1), col = "lavender",
+xlab = "Number of Trials Until 10th Success", ylab = "Frequency")
+lines(x_values, true_probabilities * length(simulated_data),
+type = "l", col = "darkgreen")
+legend("topright", legend =
+c("Simulated Data", "Scaled Probabilities"), col =
+c("lavender", "darkgreen"), lty = 1:1, cex = 0.8)
+```
+\newpage
+
+\subsubsection{(2)}
+```{r}
+simulated_data <- rpois(1000, lambda = 3)
+x_values <- 0:max(simulated_data)
+true_probabilities <- dpois(x_values, lambda = 3)
+hist(simulated_data, breaks =
+seq(-0.5, max(simulated_data) + 0.5, by = 1), col = "lavender",
+xlab = "Number of Events", ylab = "Frequency")
+lines(x_values, true_probabilities * length(simulated_data),
+type = "l", col = "darkgreen")
+legend("topright", legend =
+c("Simulated Data", "Scaled Probabilities"), col =
+c("lavender", "darkgreen"), lty = 1:1, cex = 0.8)
+```

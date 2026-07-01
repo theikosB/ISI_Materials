@@ -1,0 +1,213 @@
+---
+title: "**Introduction to Statistics and Computation with Data: HomeWork 7**"
+author: "Daibik Barik (Bmat2316)"
+header-includes:
+    - \usepackage{bm, amsmath, amssymb}
+date: "2024-03-13"
+output: pdf_document
+---
+
+```{r}
+set.seed(2024)
+```
+
+\section{1.}
+
+\subsection{(a)}
+Let the sample consists of $X_1, X_2, \dots, X_n \sim Poisson(\lambda)$.
+
+$\implies \mathbb{E}(X_i)= \lambda \text{ and } Var(X_i)= \lambda \quad \forall\; i \in \{1,2, \dots, n\}$
+
+We need to show, $\mathbb{E}$xpectation of Sample Mean($\overline{X}$) and Sample Variance($S^2$) is $\lambda$.
+
+$$ \text{Here, Sample mean }(\overline{X})= \frac{1}{n}\sum_{i=1}^n X_i $$
+$$ \therefore \; \mathbb{E}(\overline{X}) = \frac{1}{n} \sum_{i=1}^n \mathbb{E}(X_i) $$
+$$ = \frac{1}{n} \sum_{i=1}^n \lambda= \frac{1}{n} \cdot n\lambda= \lambda $$
+$$ \boxed{\implies \mathbb{E}(\overline{X})= \lambda} $$
+\hrule
+$$ \text{Also, we need } \mathbb{E}(S^2), \text{ where } S^2= \sum_{i=1}^n \frac{(X_i -\overline{X})^2}{n-1} $$
+$$ \mathbb{E}(S^2)= \mathbb{E}\left[\sum_{i=1}^n \frac{(X_i -\overline{X})^2}{n-1}\right] $$
+$$ =\mathbb{E}\left[\frac{1}{n-1} \sum_{i=1}^n (X_i -\overline{X})^2\right]= \frac{1}{n-1} \left(\mathbb{E}\left[\sum_{i=1}^n (X_i -\overline{X})^2\right]\right) $$
+$$ =\frac{1}{n-1} \left(\mathbb{E}\left[\sum_{i=1}^n (X_i^2 +\overline{X}^2 -2\cdot X_i\cdot \overline{X})\right]\right) $$
+$$ =\frac{1}{n-1} \sum_{i=1}^n \left(\mathbb{E}[X_i^2] +\mathbb{E}[\overline{X}^2] -2\cdot\mathbb{E}[X_i\cdot \overline{X}]\right) $$
+\newpage
+Now,
+
+**(i)** $Var(X_i)= \mathbb{E}(X_i^2) -[\mathbb{E}(X_i)]^2$
+
+$\implies \mathbb{E}(X_i^2)= Var(X_i) +[\mathbb{E}(X_i)]^2 = \lambda +\lambda^2$
+\newline
+
+**(ii)** $Var(\overline{X})= Var(\frac{1}{n}\sum_{i=1}^n X_i)$ 
+
+$=\frac{1}{n^2} \sum_{i=1}^n Var(X_i)= \frac{1}{n^2} \sum_{i=1}^n \lambda= \frac{1}{n^2} \cdot n\lambda= \frac{\lambda}{n}$
+
+Also, $Var(\overline{X})= \mathbb{E}(\overline{X}^2) -[\mathbb{E}(\overline{X})]^2$
+
+$\implies \mathbb{E}(\overline{X}^2)= Var(\overline{X}) +[\mathbb{E}(\overline{X})]^2= \frac{\lambda}{n} +\lambda^2$
+\newline
+
+**(iii)** $\underline{\textbf{Claim}}: \sum_{i=1}^n\mathbb{E}[X_i\cdot \overline{X}]= n\cdot \mathbb{E}[\overline{X}^2]$
+
+$\underline{\textbf{Proof}}: \sum_{i=1}^n\mathbb{E}[X_i\cdot \overline{X}]= \mathbb{E}\left[\sum_{i=1}^n (X_i\cdot \overline{X})\right]= \mathbb{E}\left[n\cdot \left(\frac{1}{n}\sum_{i=1}^n X_i \right)\cdot \overline{X}\right]= n\cdot \mathbb{E}[\overline{X}^2]$
+\newline
+
+Using **(i)**, **(ii)** and **(iii)** We get
+$$ \sum_{i=1}^n \left(\mathbb{E}[X_i^2] +\mathbb{E}[\overline{X}^2] -2\cdot\mathbb{E}[X_i\cdot \overline{X}]\right) = \sum_{i=1}^n (\lambda +\lambda^2) +\sum_{i=1}^n \left(\frac{\lambda}{n} +\lambda^2\right) -2\sum_{i=1}^n \left(\frac{\lambda}{n} +\lambda^2\right) $$
+$$ =\sum_{i=1}^n (\lambda +\lambda^2) -\sum_{i=1}^n \left(\frac{\lambda}{n} +\lambda^2\right)= n\lambda +n\lambda^2 -n\cdot \frac{\lambda}{n} -n\lambda^2= (n-1)\lambda $$
+$$ \therefore\; \frac{1}{n-1} \sum_{i=1}^n \left(\mathbb{E}[X_i^2] +\mathbb{E}[\overline{X}^2] -2\cdot\mathbb{E}[X_i\cdot \overline{X}]\right)= \frac{(n-1)\lambda}{n-1}= \lambda $$
+$$ \boxed{\implies Var(S^2)= \lambda} $$
+
+And we are done.
+\newpage
+
+\subsection{(b)}
+```{r}
+lambda_values= c(10, 20, 50) 
+n_values= c(100, 500, 1000)
+plot(n_values, c(0, 0, 0), type= "n", ylim= c(0,70), 
+     xlab= "n Values", ylab= "Estimates")
+mean_lambda= c(); variance_lambda= c(); index= 1
+for (lambda in lambda_values) {
+  for(n in n_values) {
+    sample= rpois(n, lambda)
+    mean_lambda[index]= mean(sample)
+    variance_lambda[index]= var(sample)
+    index= index +1
+  }
+  points(n_values, mean_lambda, type = "o")
+  points(n_values, variance_lambda, type = "o")
+  index= 1
+}
+```
+\newpage
+
+\section{2.}
+Given $f:[a,b]\to \bm{R}$ is a continuous function. 
+
+$\implies f$ is bounded.
+
+And we wish to compute
+$$ \int_a^b f(x) \; dx $$
+
+\subsection{(a)}
+Given $X_1, X_2, \dots, X_n$ be i.i.d. $\sim Uniform(a,b)$ 
+
+$\implies X_1, X_2, \dots, X_n \in [a,b]$
+
+Consider the Random Variables $f(X_1), f(X_2), \dots, f(X_n)$. Since $f$ is bounded, the mean $\mu = \bm{E}(f(X))$ and variance $\sigma^2$ are bounded, hence finite.
+
+Then by Weak Law of Large Numbers,
+$$ \lim_{n\to \infty} \bm{P}(|{f(X_n)} - \mu|> \epsilon) \to 0 $$
+$$ \implies \lim_{n\to \infty} \bm{P}\left(\left|\frac{1}{b-a}\int_a^b{f(x)\;dx} - \frac{1}{n}\sum_{i=1}^n f(X_i)\right|> \epsilon\right)= 0 $$
+\newpage
+
+\subsection{(b)}
+```{r}
+f= function(x) {
+  (16 +sin(x)) /(x^2 +4) #Defining the function
+}
+I= function(n) {
+  sample= runif(n, 0, 7) #Generates n samples X1,X2, . . . ,Xn of Uniform (0, 7)
+  mean(f(sample)) #Computes In= 1/n[\sum_{i=1}^n f(Xi)]
+}
+sum= 0
+for(x in 1:100) #Simulating 100 samples of In
+  sum= sum +I(50)/100 #n = 50, Computes mean and adds to sum
+print(paste("Estimated area = ", 7 *sum)) #sum*(b-a)= sum*(7)= \int_0^7f(x)dx
+```
+
+$$ \because \bm{P}\left(\left|\frac{1}{n}\sum_{i=1}^n f(X_i) -\frac{1}{b-a}\int_a^b{f(x)\;dx}\right|> \epsilon \right)\to 0 \text{ for large values of } n $$
+For $n= 50$ (large enough) and $f(x)= \frac{16 +sin(x)}{x^2+4}$, 
+$$ \frac{1}{50}\sum_{i=1}^n \frac{16 +sin(x)}{x^2+4} \approx \frac{1}{7}\int_a^b{\frac{16 +sin(x)}{x^2+4}\;dx} $$
+$$ \implies \int_a^b{\frac{16 +sin(x)}{x^2+4}\;dx} \approx 7\times \frac{1}{50}\sum_{i=1}^n \frac{16 +sin(x)}{x^2+4} $$
+
+\subsection{(c)}
+```{r}
+i= integrate(f, 0, 7) #Calculates \int_0^7f(x)dx
+print(paste("Value of the integral = ", i$value))
+print(paste("Actual integral - Approx integral = ", i$value -7*sum))
+```
+Error is very less, an order of $10^{-2}$. Hence it's a **quite good** approximation.
+\newpage
+
+
+\section{3.}
+Given number of fishes in pond= $N$, $M= 50$ fishes are captured, marked and then left back in the pond. Then we catch $n= 20$ fishes from the pond and find $X$ of them marked.
+
+\subsection{(a)}
+Firstly, we find the $Range(X)$.
+
+If $k\in Range(X)$, then $k<n=20 \text{ and } k<M=50 \implies k\leq min\{20, 50\}= 20$.
+
+Trvially, $k\geq 0 \implies n-k\leq n$
+
+Also, $n-k\leq N-M \implies k\geq n-N+M= 20-N+50= 70-N$.
+
+$\therefore Range(X)= \{k\in \bm{Z}: max\{0, 70-N\}\leq k\leq 20\}$.
+
+If $k$ is not in the above $Range$, then $\bm{P}[X=k]= 0$
+
+Otherwise,
+$$ \bm{P}[X=k]= \frac{{\binom{M=50}{k}}{\binom{N-M=N-50}{n-k=20-k}}}{\binom{N}{n=20}} $$
+$$ \textit{p}_X(k)= \begin{cases} 
+      \frac{{\binom{50}{k}}{\binom{N-50}{20-k}}}{\binom{N}{20}} & x\in Range(X)\\
+      0 & \text{otherwise} 
+      \end{cases} $$
+$$ [\text{PMF of HyperGeometric distribution}] $$
+      
+which is $X\sim Hyp(N,50,20)$.
+
+\subsection{(b)}
+```{r}
+#Generating 100 samples of hyp(100,50,20)
+rhyper(nn= 100, m= 50, n= 50, k= 20) 
+```
+\newpage
+
+\subsection{(c)}
+By equating the proportion of marked members in the sample and the population sample, we get an estimate $\hat{N}$ of $N$. 
+$$ \frac{X}{20}= \frac{50}{\hat{N}} \implies \hat{N} = \frac{50 \times 20}{X} = \frac{1000}{X} $$
+
+\subsection{(d)}
+Considering the case of $X=0$, we modify the approximation a bit
+$$ \frac{X+1}{20+1}= \frac{50+1}{\hat{N}+1} \implies \hat{N} = \frac{1071}{X} -1 $$
+which is known as the **Chapman estimator** and is asymptotically equal to the first one.
+```{r}
+Nhat= function(N){
+sample= rhyper(1000, 50, N-50, 20) #Generating 1000 samples of hyp(N,50,20)
+(51 *21)/ (sample +1) -1 #estimation of N_hat
+}
+for(N in c(100, 200, 300, 400, 500)) {
+vl= Nhat(N) #samples values for N= 100, 200, 300, 400
+print(paste("N = ",N))
+print(paste("E[N_hat] = ", mean(vl))) #Estimates E[N_hat]
+print(paste("Var[N_hat] = ", var(vl))) #Estimates Var[N_hat]
+}
+```
+\newpage
+
+As we see $\bm{E}[\hat{N}] \approx N$, it will plot a straight line of slope $1$.
+
+```{r}
+values= seq(50,500,10)
+mean= c(); variance= c(); index= 1;
+for(N in values){
+  mean[index]= mean(Nhat(N)) #Stores E[N_hat] for each N
+  variance[index]= var(Nhat(N)) #stores Var[N_hat] for each N
+  index= index +1
+}
+plot(values, mean, type= "l", 
+     xlab= "N", ylab= "E[N_hat]") #plots E[N_hat] w.r.t. N 
+```
+\newpage
+```{r}
+plot(values, variance, type="l",
+     xlab= "N", ylab= "Var[N_hat]") #plots Var[N_hat] w.r.t. N
+```
+
+
+
+
+
+

@@ -1,0 +1,80 @@
+---
+title: "Assignment II Problem 7"
+author: "Daibik Barik (Bmat2316)"
+date: "2025-08-05"
+output: pdf_document
+---
+
+\section*{Q7.}
+
+\subsection*{(a)}
+```{r fig.height=3.5, fig.width=5.5}
+rw = function (x, N){
+  y = sample(x, N, replace = TRUE)
+  c = cumsum(y)
+  c
+}
+N = 100 
+S = rw(c(-1, 1), N) 
+S = c(0, S) 
+t = 0:N 
+plot(S~t, type = "l")
+```
+
+This graph shows the random walk, which is basically $S_N$ plotted over the steps $N = 100$, starting from $0$. Here the walker choses, with equal probability, a step either $+1$ or $-1$ for $100$ times and stores the sum which is plotted later against the step number.
+\newpage
+
+\subsection*{(b)}
+```{r}
+endings = c()
+rw = function (x, N, trials){
+  for (i in 1:trials){
+    y = sample(x, N, replace = TRUE)
+    endings = append(endings, sum(y))
+  }
+  return(endings)
+}
+N = 100 
+trials = 100
+S_N = rw(c(-1,1), N, trials) 
+hist(S_N)
+```
+\newpage
+
+\subsection*{(c)}
+```{r}
+rw = function (x, N, visitings){
+  y = sample(x, N, replace = TRUE)
+  c = cumsum(y)
+  for (position in c){
+    visitings[position + N + 1] = visitings[position + N + 1] + 1
+  }
+  visitings
+}
+N = 100
+L = -N:N
+visitings = rep(0, length(L))
+time_spent = rw(c(-1, 1), N, visitings)
+range = (-sqrt(N)):(sqrt(N))
+opt_time_spent = time_spent[(-sqrt(N) + N + 1):(sqrt(N) + N + 1)]
+barplot(opt_time_spent~range)
+```
+\newpage
+
+\subsection*{(d)}
+```{r}
+rw = function (N, x){
+  positive_steps = rep(1, (N + x) / 2)
+  negative_steps = rep(-1, (N - x) / 2)
+  steps = c(positive_steps, negative_steps)
+  y = sample(steps, N)
+  c = cumsum(y)
+  c
+}
+N = 100
+end_position = 42
+S = rw(N, end_position) 
+S = c(0, S) 
+t = 0:N 
+plot(S~t, type = "l")
+```

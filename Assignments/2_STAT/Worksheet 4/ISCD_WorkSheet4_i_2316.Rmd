@@ -1,0 +1,82 @@
+---
+title: "**Introduction to Statistics and Computation with Data: Worksheet 4, Part 1**"
+author: "Daibik Barik (Bmat2316)"
+date: "2024-02-16"
+output: pdf_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+\section{1.}
+
+\subsection{(a)}
+
+The given density is to be integrated to find $F(x)$ and thus
+$F^{-1}(x)$.
+
+```{r}
+U = runif(1, min = 0, max = 1)
+X = U^(2/5)
+X
+```
+
+\subsection{(b)}
+
+The given distribution is $F(x)$, we find $F^{-1}(x)$.
+
+```{r}
+U = runif(1, min = 0, max = 1)
+X = (2*U+1/4)^(1/2) - (1/2)
+X
+```
+
+\newpage
+
+\section{2.}
+
+\subsection{(a)}
+
+$$ P(2.1 < X < 3.4 ) $$
+$$ = P\left(\frac{2.1-\mu}{\sigma} < \frac{X-\mu}{\sigma} < \frac{3.4-\mu}{\sigma} \right) $$
+$$ = \Phi(0.4) - \Phi(-0.9) $$ $$ -1+\Phi(0.9) + \Phi(0.4) = 0.4713 $$
+
+\subsection{(b)}
+
+```{r}
+pnorm(3.4, mean = 3, sd = 1) - pnorm(2.1, mean = 3, sd = 1 )
+```
+
+\newpage
+
+\section{3.}
+
+\subsection{(a)}
+
+$$ P(|X-\mu|<\sigma) $$ $$ P(\mu-\sigma<X<\mu+\sigma) $$
+$$ P(-1<\frac{X-\mu}{\sigma}<1) $$
+$$ \Phi(1)-\Phi(-1) = 2\Phi(1)-1=0.6826 $$
+
+```{r}
+pnorm(7, mean = 3, sd = 4) - pnorm(-1, mean = 3, sd = 4 )
+```
+
+\subsection{(b)}
+
+$$ P(|X-\mu|<2\sigma) $$ $$ P(\mu-2\sigma<X<\mu+2\sigma) $$
+$$ P(-2<\frac{X-\mu}{\sigma}<2) $$
+$$ \Phi(2)-\Phi(-2) = 2\Phi(2)-1=0.9544 $$
+
+```{r}
+pnorm(11, mean = 3, sd = 4) - pnorm(-5, mean = 3, sd = 4 )
+```
+
+\subsection{(C)}
+
+$$ P(|X-\mu|<3\sigma) $$ $$ P(\mu-3\sigma<X<\mu+3\sigma) $$
+$$ P(-3<\frac{X-\mu}{\sigma}<3) $$
+$$ \Phi(3)-\Phi(-3) = 2\Phi(3)-1=0.9974 $$
+
+```{r}
+pnorm(15, mean = 3, sd = 4) - pnorm(-9, mean = 3, sd = 4 )
+```
